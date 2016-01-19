@@ -34,15 +34,14 @@ RUN set -ex \
 	; do \
 		mkdir -p "$path"; \
 		chown -R elasticsearch:elasticsearch "$path"; \
-	done
+	done \
+  && /usr/share/elasticsearch/bin/plugin install mobz/elasticsearch-head \
+  && /usr/share/elasticsearch/bin/plugin install license \
+  && /usr/share/elasticsearch/bin/plugin install marvel-agent
 
 COPY config /usr/share/elasticsearch/config
 
 VOLUME /usr/share/elasticsearch/data
-
-RUN /usr/share/elasticsearch/bin/plugin install mobz/elasticsearch-head \
-	  && /usr/share/elasticsearch/bin/plugin install license \
-	  && /usr/share/elasticsearch/bin/plugin install marvel-agent
 
 COPY docker-entrypoint.sh /
 
