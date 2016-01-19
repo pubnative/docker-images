@@ -37,7 +37,8 @@ RUN set -ex \
 	done \
   && /usr/share/elasticsearch/bin/plugin install mobz/elasticsearch-head \
   && /usr/share/elasticsearch/bin/plugin install license \
-  && /usr/share/elasticsearch/bin/plugin install marvel-agent
+  && /usr/share/elasticsearch/bin/plugin install marvel-agent \
+  && /usr/share/elasticsearch/bin/plugin install https://github.com/github/elasticsearch-srv-discovery/releases/download/1.5.1/elasticsearch-srv-discovery-1.5.1.zip
 
 COPY config /usr/share/elasticsearch/config
 

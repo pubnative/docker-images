@@ -1,3 +1,5 @@
 network.host: 0.0.0.0
-discovery.zen.ping.multicast.enabled: false
-discovery.zen.ping.unicast.hosts: ["mesos-master.service.consul:31036"]
+discovery:
+  type: srv
+  srv:
+    query: elasticsearch-9300.service.consul
