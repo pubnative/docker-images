@@ -1,4 +1,5 @@
 FROM python:2.7
+MAINTAINER PubNative Team <team@pubnative.net>
 
 COPY docker-entrypoint.sh /
 
@@ -17,7 +18,6 @@ RUN groupadd -r curator && useradd -r -g curator curator \
     && pip install elasticsearch-curator==3.4.0 \
     && chown curator:curator /docker-entrypoint.sh \
     && chmod +x /docker-entrypoint.sh
-
 
 ENV INTERVAL_IN_HOURS=24
 ENV OLDER_THAN_IN_DAYS="20"

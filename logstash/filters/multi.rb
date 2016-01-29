@@ -20,7 +20,7 @@ class LogStash::Filters::Multi < LogStash::Filters::Base
   # Replace the message with this value.
   config :source, :validate => :hash, :default => {'dsps_action_lost' => 'lost', 'dsps_action_won' => 'won'}
   config :field_name, :validate => :string, :default => 'dsp_id'
-  config :field_value, :validate => :string, :default => 'dsp.auction.status'
+  config :field_value, :validate => :string, :default => 'dsp_auction_status'
   config :exclude_fields, :validate => :array, :default => ["request_uri", "context", "endpoint", "user_agent", "request_ip", "client_ip", "isp", "auth_token", "request_id", "request_time_nanosec", "created_at"]
 
   public
