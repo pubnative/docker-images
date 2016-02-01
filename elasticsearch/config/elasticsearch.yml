@@ -1,0 +1,5 @@
+network.host: 0.0.0.0
+discovery:
+  type: srv
+  srv:
+    query: elasticsearch-9300.service.consul
