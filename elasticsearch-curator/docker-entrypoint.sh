@@ -2,6 +2,14 @@
 
 set -ex
 
+envtpl /etc/curator.yml.tpl
+envtpl /etc/actions.yml.tpl
+
+echo "config:"
+cat /etc/curator.yml
+echo "actions:"
+cat /etc/actions.yml
+
 # Add curator as command if needed
 if [ "${1:0:1}" = '-' ]; then
 	set -- curator "$@"
@@ -9,7 +17,8 @@ fi
 
 # Step down via gosu
 if [ "$1" = 'curator' ]; then
-	exec gosu curator bash -c "while true; do curator --host $ELASTICSEARCH_HOST delete --disk-space $MAX_SPACE indices --older-than $OLDER_THAN_IN_DAYS --time-unit=days --timestring '%Y.%m.%d'; set -e; sleep $(( 60*60*INTERVAL_IN_HOURS )); set +e; done"
+  export SLEEP="sleep $(( 60*60*$INTERVAL_IN_HOURS ))"
+  exec gosu curator bash -c "set +e; while true; do date; curator --config /etc/curator.yml /etc/actions.yml ; $SLEEP ; done"
 fi
 
 # As argument is not related to curator,
