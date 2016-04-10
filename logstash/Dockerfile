@@ -2,7 +2,7 @@ FROM centos:latest
 MAINTAINER PubNative Team <team@pubnative.net>
 
 ENV JAVA_HOME /usr/lib/jvm/jre
-ENV LOGSTASH_VERSION 2.2.0
+ENV LOGSTASH_VERSION 2.3.1
 
 ADD https://download.elastic.co/logstash/logstash/packages/centos/logstash-${LOGSTASH_VERSION}-1.noarch.rpm /tmp/logstash.rpm
 
@@ -13,7 +13,7 @@ RUN yum update -y && \
     rpm -i /tmp/logstash.rpm && \
     rm -f /tmp/logstash.rpm && \
     mkdir -p /opt/logstash/plugins/logstash/filters && \
-    /opt/logstash/bin/plugin install logstash-filter-de_dot
+    /opt/logstash/bin/logstash-plugin install logstash-filter-de_dot
 
 ADD ./filters /opt/logstash/plugins/logstash/filters
 
