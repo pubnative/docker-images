@@ -10,6 +10,7 @@ RUN yum update -y && \
     yum install -y \
       logrotate \
       java-1.8.0-openjdk-headless && \
+    sed -i "s/#networkaddress.cache.ttl=-1/networkaddress.cache.ttl=60/" ${JAVA_HOME}/lib/security/java.security && \
     rpm -i /tmp/logstash.rpm && \
     rm -f /tmp/logstash.rpm && \
     mkdir -p /opt/logstash/plugins/logstash/filters && \
