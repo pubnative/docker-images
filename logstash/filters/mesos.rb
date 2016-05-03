@@ -31,22 +31,23 @@ class LogStash::Filters::Mesos < LogStash::Filters::Base
 
   def filter(event)
     if event['slaves'].size != 0
-      have_resources = 0
+      have_resources = []
       event['slaves'].map! do |slave|
         slave['free_resources'] = {}
         %w(mem cpus disk).each do |metric|
           slave['free_resources'][metric] = slave['unreserved_resources'][metric] - slave['used_resources'][metric]
         end
-        have_resources += 1 if subject?(slave['attributes']) && enough_resources?(slave['free_resources'])
+        have_resources << slave['hostname'] if subject?(slave['attributes']) && enough_resources?(slave['free_resources'])
         slave
       end
       @logger.debug("Found resources: #{have_resources}", required_instances: @required_instances, instances_count: have_resources)
 
       notification_event = create_event(have_resources)
       notification_event['type'] = event['type']
-      if @required_instances > have_resources
-        notification_event['message'] = 'Not Enough Mesos Resources'
+      if @required_instances > have_resources.size
+        notification_event['message'] = "Not Enough Mesos Resources [#{@required_instances}/#{have_resources.size}]"
         notification_event['is_invalid'] = true
+        notification_event['warning'] = true
       end
       yield notification_event
     end
@@ -58,7 +59,7 @@ class LogStash::Filters::Mesos < LogStash::Filters::Base
 
   def enough_resources?(free_resources)
     @logger.debug(free_resources)
-    @required_resources.keys.all? { |k| free_resources[k].to_i > @required_resources[k] }
+    @required_resources.keys.all? { |k| free_resources[k] >= @required_resources[k] }
   end
 
   def subject?(slave_attributes)
@@ -67,8 +68,9 @@ class LogStash::Filters::Mesos < LogStash::Filters::Base
     end
   end
 
-  def create_event(instances_count)
-    LogStash::Event.new('instances_count' => instances_count,
+  def create_event(instances)
+    LogStash::Event.new('instances_count' => instances.size,
+                        'valid_instances' => instances,
                         'required_instances' => @required_instances,
                         'slave_attributes' => @slave_attributes,
                         'required_resources' => @required_resources

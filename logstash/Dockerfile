@@ -2,7 +2,7 @@ FROM centos:latest
 MAINTAINER PubNative Team <team@pubnative.net>
 
 ENV JAVA_HOME /usr/lib/jvm/jre
-ENV LOGSTASH_VERSION 2.3.1
+ENV LOGSTASH_VERSION 2.3.2
 
 ADD https://download.elastic.co/logstash/logstash/packages/centos/logstash-${LOGSTASH_VERSION}-1.noarch.rpm /tmp/logstash.rpm
 
