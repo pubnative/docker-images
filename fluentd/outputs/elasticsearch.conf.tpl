@@ -1,10 +1,3 @@
-<source>
-  @type syslog
-  port ${SYSLOG_PORT}
-  bind 0.0.0.0
-  tag system.local
-</source>
-
 <match **>
   @type elasticsearch
   logstash_format true
