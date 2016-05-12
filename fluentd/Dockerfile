@@ -35,5 +35,7 @@ ENV FLUENTD_OPT=""
 
 EXPOSE 24224 5140
 ADD entrypoint.sh /
-ADD fluent.conf.tpl /fluentd/etc/
+ADD inputs /fluentd/etc/inputs
+ADD filters /fluentd/etc/filters
+ADD outputs /fluentd/etc/outputs
 CMD /entrypoint.sh
