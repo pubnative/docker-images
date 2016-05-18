@@ -1,4 +1,4 @@
-<match json.docker.**>
+<match json.**>
   @type parser
   remove_prefix json
   key_name log
