@@ -2,6 +2,8 @@ FROM java:8-jdk
 
 MAINTAINER PubNative Team <team@pubnative.net>
 
+RUN apt-get update -y
+
 ENV PRESTO_VERSION 0.148
 
 RUN mkdir -p /opt/presto/data /opt/presto/installation /opt/presto/installation/etc/catalog
@@ -22,6 +24,25 @@ ENV CONFD_VERSION  0.11.0
 RUN mkdir -p /usr/local/bin/ && \
     wget -nv -O /usr/local/bin/confd https://github.com/kelseyhightower/confd/releases/download/v${CONFD_VERSION}/confd-${CONFD_VERSION}-linux-amd64 &&\
     chmod +x /usr/local/bin/confd
+
+ENV PRESTO_INCLUDE_COORDINATOR false
+ENV PRESTO_COORDINATOR_ENABLED false
+ENV PRESTO_DISCOVERY_ENABLED false
+ENV PRESTO_HTTP_PORT 8080
+ENV PRESTO_HOST localhost
+ENV PRESTO_QUERY_MAXMEMORY 20GB
+ENV PRESTO_QUERY_MAXMEMORY_PERNODE 1GB
+ENV PRESTO_ENVIRONMENT production
+ENV PRESTO_DATADIR /opt/presto/data
+
+ENV PRESTO_LOG_LEVEL ERROR
+ENV JAVA_MAXHEAP_SIZE 16G
+
+ENV HIVE_HOST localhost
+ENV HIVE_PORT 9083
+
+ENV MYSQL_HOST localhost
+ENV MYSQL_PORT 3306
 
 ADD confd /etc/confd
 ADD entrypoint.sh /

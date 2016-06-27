@@ -1,0 +1,9 @@
+[template]
+src = "mysql.properties.tmpl"
+dest = "/opt/presto/installation/etc/catalog/mysql.properties"
+
+keys = [
+   "/mysql/url",
+   "/mysql/user",
+   "/mysql/password"
+]

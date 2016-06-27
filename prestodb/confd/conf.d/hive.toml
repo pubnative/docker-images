@@ -1,0 +1,9 @@
+[template]
+src = "hive.properties.tmpl"
+dest = "/opt/presto/installation/etc/catalog/hive.properties"
+
+keys = [
+   "/hive/uri",
+   "/hive/s3/accesskey",
+   "/hive/s3/secretkey"
+]

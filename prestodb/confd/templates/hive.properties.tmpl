@@ -1,0 +1,11 @@
+connector.name=hive-hadoop2
+hive.metastore.uri={{getv "/hive/uri"}}
+hive.parquet.use-column-names=true
+hive.recursive-directories=true
+hive.s3.aws-access-key={{getv "/hive/s3/accesskey"}}
+hive.s3.aws-secret-key={{getv "/hive/s3/secretkey"}}
+hive.s3.max-client-retries=50
+hive.s3.max-error-retries=50
+hive.s3.max-connections=500
+hive.s3.connect-timeout=5m
+hive.s3.socket-timeout=5m

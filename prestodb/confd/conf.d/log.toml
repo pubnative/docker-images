@@ -2,6 +2,6 @@
 src = "log.properties.tmpl"
 dest = "/opt/presto/installation/etc/log.properties"
 
-keys = [ 
+keys = [
    "/presto/log/level"
 ]
