@@ -10,10 +10,14 @@ fatal() {
   export PRESTO_UUID
 }
 
-# build configuration files
-PRESTO_DISCOVERY_URI=http://${PRESTO_HOST}:${PRESTO_HTTP_PORT}
-HIVE_URI=thrift://${HIVE_HOST}:${HIVE_PORT}
-MYSQL_URL=jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}
-PRESTO_DISCOVERY_URI=$PRESTO_DISCOVERY_URI HIVE_URI=$HIVE_URI MYSQL_URL=$MYSQL_URL /usr/local/bin/confd -onetime -backend env
+[ "x${CATALOG_URL}" = "x" ] && {
+   fatal "CATALOG_URL must be defined"
+}
+
+echo "fetching catalog of connectors:"
+wget -q -O - ${CATALOG_URL} | tar xvfz - -C /opt/presto/installation/etc
+
+export PRESTO_DISCOVERY_URI=http://${PRESTO_DISCOVERY_HOST}:${PRESTO_DISCOVERY_PORT}
+/usr/local/bin/confd -onetime -backend env
 
 ./bin/launcher --config=/opt/presto/installation/etc/config.properties run

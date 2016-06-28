@@ -1,4 +1,0 @@
-[template]
-src = "jmx.properties.tmpl"
-dest = "/opt/presto/installation/etc/catalog/jmx.properties"
-keys = []

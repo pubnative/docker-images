@@ -1,4 +1,0 @@
-[template]
-src = "tpch.properties.tmpl"
-dest = "/opt/presto/installation/etc/catalog/tpch.properties"
-keys = []
