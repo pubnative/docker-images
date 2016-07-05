@@ -1,0 +1,13 @@
+[template]
+src = "config.properties.tmpl"
+dest = "/opt/presto/installation/etc/config.properties"
+
+keys = [
+  "/presto/include/coordinator",
+  "/presto/discovery/enabled",
+  "/presto/coordinator/enabled",
+  "/presto/http/port",
+  "/presto/discovery/uri",
+  "/presto/query/maxmemory",
+  "/presto/query/maxmemory/pernode"
+]
