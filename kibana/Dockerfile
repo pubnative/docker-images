@@ -1,4 +1,4 @@
-FROM kibana:4.5.1
+FROM kibana:4.5.4
 MAINTAINER PubNative Team <team@pubnative.net>
 
 RUN /opt/kibana/bin/kibana plugin --install kibana/timelion \
