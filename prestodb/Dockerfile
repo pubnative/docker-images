@@ -4,7 +4,7 @@ MAINTAINER PubNative Team <team@pubnative.net>
 
 RUN apt-get update -y
 
-ENV PRESTO_VERSION 0.148
+ENV PRESTO_VERSION 0.153
 
 RUN mkdir -p /opt/presto/data /opt/presto/installation /opt/presto/installation/etc/catalog
 WORKDIR /opt/presto/installation
