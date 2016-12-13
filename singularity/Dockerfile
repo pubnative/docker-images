@@ -14,6 +14,6 @@ RUN yum install -y java-1.8.0-openjdk java-1.8.0-openjdk-devel subversion cyrus-
 # SINGULARITY SERVICE
 RUN mkdir -p /SingularityService/target && \
   cd /SingularityService/target && \
-  curl -O https://s3.amazonaws.com/applift-public-spark-distributions/SingularityService-0.12.0-shaded.jar
+  curl -O https://s3.amazonaws.com/applift-public-spark-distributions/SingularityService-0.13.0-shaded.jar
 
-CMD ["java","-jar","/SingularityService/target/SingularityService-0.12.0-shaded.jar","server","singularity_config.yml"]
+CMD ["java","-jar","/SingularityService/target/SingularityService-0.13.0-shaded.jar","server","singularity_config.yml"]
