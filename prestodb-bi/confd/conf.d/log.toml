@@ -1,0 +1,7 @@
+[template]
+src = "log.properties.tmpl"
+dest = "/opt/presto/installation/etc/log.properties"
+
+keys = [
+   "/presto/log/level"
+]
