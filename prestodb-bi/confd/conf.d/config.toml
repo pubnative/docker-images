@@ -10,10 +10,5 @@ keys = [
   "/presto/discovery/uri",
   "/presto/query/maxmemory",
   "/presto/query/maxmemory/pernode",
-  "/presto/query/max/age",
-  "/presto/query/max/concurrent/queries",
-  "/presto/lowmemory/killer/enabled",
-  "/presto/task/concurrency",
-  "/presto/task/max/worker/threads",
-  "/presto/nodescheduler/min/candidates"
+  "/presto/query/min/expire/age"
 ]
