@@ -10,5 +10,5 @@ keys = [
   "/presto/discovery/uri",
   "/presto/query/maxmemory",
   "/presto/query/maxmemory/pernode",
-  "/presto/query/max/age"
+  "/presto/query/min/expire/age"
 ]

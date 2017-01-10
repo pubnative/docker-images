@@ -4,7 +4,7 @@ MAINTAINER PubNative Team <team@pubnative.net>
 
 RUN apt-get update -y
 
-ENV PRESTO_VERSION 0.153
+ENV PRESTO_VERSION 0.157
 
 RUN mkdir -p /opt/presto/data /opt/presto/installation /opt/presto/installation/etc/catalog
 WORKDIR /opt/presto/installation
@@ -25,19 +25,32 @@ RUN mkdir -p /usr/local/bin/ && \
     wget -nv -O /usr/local/bin/confd https://github.com/kelseyhightower/confd/releases/download/v${CONFD_VERSION}/confd-${CONFD_VERSION}-linux-amd64 &&\
     chmod +x /usr/local/bin/confd
 
-ENV PRESTO_INCLUDE_COORDINATOR false
+RUN apt-get -y install autossh
+
+ARG CACHEBUST=0
+
+# PRESTO COORDINATOR
 ENV PRESTO_COORDINATOR_ENABLED false
 ENV PRESTO_DISCOVERY_ENABLED false
-ENV PRESTO_QUERY_MAXMEMORY 20GB
-ENV PRESTO_QUERY_MAXMEMORY_PERNODE 1GB
-ENV PRESTO_QUERY_MAX_AGE 2880m
-ENV PRESTO_ENVIRONMENT production
-ENV PRESTO_DATADIR /opt/presto/data
-ENV PRESTO_LOG_LEVEL ERROR
+ENV PRESTO_INCLUDE_COORDINATOR false
+# PRESTO OPS
+ENV PRESTO_DISCOVERY_ENABLED true
 ENV PRESTO_DISCOVERY_HOST localhost
 ENV PRESTO_DISCOVERY_PORT 8080
 ENV PRESTO_HTTP_PORT 8080
-ENV JAVA_MAXHEAP_SIZE 16G
+ENV PRESTO_ENVIRONMENT production
+ENV PRESTO_DATADIR /opt/presto/data
+ENV PRESTO_LOG_LEVEL ERROR
+ENV JAVA_MAXHEAP_SIZE 7G
+# S3
+ENV CATALOG_URL=http://sssp.service.consul:31204/prestodb/catalog.tar.gz
+ENV CHARTIO_KEY=http://sssp.service.consul:31204/prestodb/bi/chartio
+# PRESTO REQUIRED OPTIONS
+ENV PRESTO_QUERY_MAXMEMORY 20GB
+ENV PRESTO_QUERY_MAXMEMORY_PERNODE 3GB
+ENV PRESTO_QUERY_MIN_EXPIRE_AGE 720m
+# BI
+ENV CHARTIO_TUNNEL false
 
 ADD confd /etc/confd
 ADD entrypoint.sh /

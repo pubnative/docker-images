@@ -15,3 +15,8 @@ docker exec -it test-presto /bin/bash
 root@installation# bin/presto --server localhost:8080 --catalog hive --schema default
 presto:default> show tables;
 ```
+
+Build with `--build-arg CACHEBUST=1` to force rebuild with --no-cache from a specific step.
+
+Eg.
+```docker build -t pubnative/prestodb:0.157 --build-arg CACHEBUST=1```
