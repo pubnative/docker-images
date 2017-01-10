@@ -5,4 +5,9 @@ http-server.http.port={{getv "/presto/http/port"}}
 discovery.uri={{getv "/presto/discovery/uri"}}
 query.max-memory={{getv "/presto/query/maxmemory"}}
 query.max-memory-per-node={{getv "/presto/query/maxmemory/pernode"}}
-query.min-expire-age={{getv "/presto/query/max/age"}}
+query.min-expire-age={{getv "/presto/query/min/expire/age"}}
+{{getenv "EXTRA_CONFIG_PROP_1"}}
+{{getenv "EXTRA_CONFIG_PROP_2"}}
+{{getenv "EXTRA_CONFIG_PROP_3"}}
+{{getenv "EXTRA_CONFIG_PROP_4"}}
+{{getenv "EXTRA_CONFIG_PROP_5"}}

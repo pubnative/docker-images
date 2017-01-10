@@ -1,8 +1,0 @@
-[template]
-src = "node.properties.tmpl"
-dest = "/opt/presto/installation/etc/node.properties"
-keys = [
-    "/presto/environment",
-    "/presto/uuid",
-    "/presto/datadir"
-]
