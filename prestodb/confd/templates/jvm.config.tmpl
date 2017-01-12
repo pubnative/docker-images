@@ -1,5 +1,6 @@
 -server
 -Xmx{{getv "/java/maxheap/size"}}
+-Xms{{getv "/java/maxheap/size"}}
 -XX:+UseG1GC
 -XX:G1HeapRegionSize=32M
 -XX:+UseGCOverheadLimit
