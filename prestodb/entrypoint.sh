@@ -30,4 +30,6 @@ wget -q -O - ${CATALOG_URL} | tar xvfz - -C /opt/presto/installation/etc
 export PRESTO_DISCOVERY_URI=http://${PRESTO_DISCOVERY_HOST}:${PRESTO_DISCOVERY_PORT}
 /usr/local/bin/confd -onetime -backend env
 
+cat /opt/presto/installation/etc/*
+
 ./bin/launcher --config=/opt/presto/installation/etc/config.properties run
