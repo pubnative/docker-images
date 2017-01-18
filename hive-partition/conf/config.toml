@@ -1,0 +1,9 @@
+dates = []
+replace = false
+[s3]
+  path = "s3n://your-bucket"
+
+[hive]
+  tables = [ "table1" ]
+  host = "localhost"
+  port = 10000
