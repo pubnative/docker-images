@@ -1,0 +1,1 @@
+0 * * * * root /opt/druid/bin/hadoop-data-cleanup.sh
