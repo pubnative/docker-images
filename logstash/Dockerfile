@@ -2,9 +2,9 @@ FROM centos:latest
 MAINTAINER PubNative Team <team@pubnative.net>
 
 ENV JAVA_HOME /usr/lib/jvm/jre
-ENV LOGSTASH_VERSION 2.3.2
+ENV LOGSTASH_VERSION 2.4.1
 
-ADD https://download.elastic.co/logstash/logstash/packages/centos/logstash-${LOGSTASH_VERSION}-1.noarch.rpm /tmp/logstash.rpm
+ADD https://download.elastic.co/logstash/logstash/packages/centos/logstash-${LOGSTASH_VERSION}.noarch.rpm /tmp/logstash.rpm
 
 RUN yum update -y && \
     yum install -y \
@@ -13,8 +13,7 @@ RUN yum update -y && \
     sed -i "s/#networkaddress.cache.ttl=-1/networkaddress.cache.ttl=60/" ${JAVA_HOME}/lib/security/java.security && \
     rpm -i /tmp/logstash.rpm && \
     rm -f /tmp/logstash.rpm && \
-    mkdir -p /opt/logstash/plugins/logstash/filters && \
-    /opt/logstash/bin/logstash-plugin install logstash-filter-de_dot
+    mkdir -p /opt/logstash/plugins/logstash/filters
 
 ADD ./filters /opt/logstash/plugins/logstash/filters
 
