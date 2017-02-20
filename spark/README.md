@@ -11,7 +11,7 @@ $ docker push pubnative/spark:2.0.2
 
 ## Sample
 
-Run inside cluster
+Run inside cluster example
 
 ```bash
 docker run --net=host pubnative/spark:2.0.2 bin/spark-submit \
@@ -32,3 +32,5 @@ docker run --net=host pubnative/spark:2.0.2 bin/spark-submit \
            --master "mesos://zk://zookeeper.service.consul:2181/mesos" \
            /spark/examples/src/main/python/pi.py 1
 ```
+
+Run task from the other image
