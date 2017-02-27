@@ -1,6 +1,9 @@
 FROM java:8-jdk
-
 MAINTAINER PubNative Team <team@pubnative.net>
+
+LABEL os="debian"
+LABEL app="presto"
+LABEL version="0.157.1"
 
 RUN apt-get update -y
 
@@ -27,12 +30,11 @@ RUN mkdir -p /usr/local/bin/ && \
 
 RUN apt-get -y install autossh
 
-ARG CACHEBUST=0
-
 # PRESTO COORDINATOR
 ENV PRESTO_COORDINATOR_ENABLED false
 ENV PRESTO_INCLUDE_COORDINATOR false
 ENV PRESTO_DISCOVERY_ENABLED false
+
 # PRESTO OPS
 ENV PRESTO_DISCOVERY_ENABLED true
 ENV PRESTO_DISCOVERY_HOST localhost
@@ -42,16 +44,16 @@ ENV PRESTO_ENVIRONMENT production
 ENV PRESTO_DATADIR /opt/presto/data
 ENV PRESTO_LOG_LEVEL ERROR
 ENV JAVA_MAXHEAP_SIZE 3G
-# S3
-ENV CATALOG_URL=http://sssp.service.consul:31204/prestodb/catalog.tar.gz
-ENV CHARTIO_KEY=http://sssp.service.consul:31204/prestodb/bi/chartio
+
 # PRESTO REQUIRED OPTIONS
 ENV PRESTO_QUERY_MAXMEMORY 20GB
 ENV PRESTO_QUERY_MAXMEMORY_PERNODE 1GB
 ENV PRESTO_QUERY_MIN_EXPIRE_AGE 720m
-# BI
-ENV CHARTIO_TUNNEL false
+
+# S3
+ENV CATALOG_URL=http://s3.amazon.com/prestodb/catalog.tar.gz
 
 ADD confd /etc/confd
 ADD entrypoint.sh /
-ENTRYPOINT ["/entrypoint.sh"]
+ADD ./scripts scripts
+CMD ["/entrypoint.sh"]
