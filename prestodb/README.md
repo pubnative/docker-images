@@ -7,16 +7,10 @@
 Prepare a tarball `catalog.tar.gz` containing all needed connectors, see `example/catalog`:
 
 ```
-docker build -t test/prestodb .
+docker build -t pubnative/prestodb:0.157 .
 
 docker run --env CATALOG_URL=http://s3.pubnative.com/catalog.tar.gz --env PRESTO_COORDINATOR_ENABLED=true --env PRESTO_DISCOVERY_ENABLED=true --env PRESTO_INCLUDE_COORDINATOR=true --name test-presto -d -t -i test/prestodb
 
-docker exec -it test-presto /bin/bash
-root@installation# bin/presto --server localhost:8080 --catalog hive --schema default
+docker exec -it test-presto bin/presto --server localhost:8080 --catalog hive --schema default
 presto:default> show tables;
 ```
-
-Build with `--build-arg CACHEBUST=1` to force rebuild with --no-cache from a specific step.
-
-Eg.
-```docker build -t pubnative/prestodb:0.157 --build-arg CACHEBUST=1```
