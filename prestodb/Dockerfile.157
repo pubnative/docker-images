@@ -3,11 +3,11 @@ MAINTAINER PubNative Team <team@pubnative.net>
 
 LABEL os="debian"
 LABEL app="presto"
-LABEL version="0.167"
+LABEL version="0.157.1"
 
 RUN apt-get update -y
 
-ENV PRESTO_VERSION 0.167
+ENV PRESTO_VERSION 0.157.1
 
 RUN mkdir -p /opt/presto/data /opt/presto/installation /opt/presto/installation/etc/catalog
 WORKDIR /opt/presto/installation
