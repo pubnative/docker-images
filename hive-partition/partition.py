@@ -31,10 +31,7 @@ def addPartition(table, day):
         )
         print('NEW PARTITION FOR: ' + table + ' | ' + day)
     except Exception as e:
-        error_message = operator.attrgetter('status.errorMessage')(e.args[0])[0:300]
-        print(error_message)
-        if error_message.find('AlreadyExistsException') == -1:
-            errors.append('FAILED: ' + table + '\n' + 'TRACEBACK:' + '\n' + error_message)
+        print(e)
 
 def dropPartition(table, day):
     try:
@@ -43,9 +40,7 @@ def dropPartition(table, day):
         )
         print('DROPPED PARTITION FOR: ' + table + ' | ' + day)
     except Exception as e:
-        error_message = operator.attrgetter('status.errorMessage')(e.args[0])[0:300]
-        print(error_message)
-        errors.append('FAILED: ' + table + '\n' + 'TRACEBACK:' + '\n' + error_message)
+        print(e)
 
 hive_conn = connect(host=config['hive']['host'], port=config['hive']['port'], auth_mechanism='PLAIN')
 cur = hive_conn.cursor()
