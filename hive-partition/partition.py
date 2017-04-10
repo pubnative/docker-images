@@ -71,5 +71,5 @@ for table in cleanup_tables:
 
 if len(errors) > 0:
     for err in errors:
-        print err
-    raise "Errors encountered during partitioning"
+        print(err)
+    raise Exception("Errors encountered during partitioning")
