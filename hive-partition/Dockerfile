@@ -14,7 +14,8 @@ RUN mkdir -p /opt/partition && \
 RUN pip install thrift_sasl \
     sasl \
     toml \
-    impyla
+    impyla \
+    python-dateutil
 
 COPY partition.py /opt/partition/partition.py
 
