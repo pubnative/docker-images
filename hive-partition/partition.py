@@ -14,6 +14,7 @@ with open("/opt/partition/config.toml") as conffile:
     config = toml.loads(conffile.read())
 
 print("Parsed config")
+print(config)
 
 errors = []
 location = "'" + config['s3']['path'] + "/{0}/{1}/'"
@@ -33,7 +34,7 @@ def add_partition(table, day):
         )
         print('NEW PARTITION FOR: ' + table + ' | ' + day)
     except Exception as e:
-        errors.append(e)
+        errors.append(("add_partition", table, day, e))
 
 def drop_partition(table, day):
     try:
@@ -42,17 +43,17 @@ def drop_partition(table, day):
         )
         print('DROPPED PARTITION FOR: ' + table + ' | ' + day)
     except Exception as e:
-        errors.append(e)
+        errors.append(("drop_partition", table, day, e))
 
 def drop_partitions_older_than(table, months_ago):
-    drop_date = (date.today() - relativedelta(months=months_ago)).strftime("%Y-%m-%d")
+    drop_date = (dt.datetime.today() - relativedelta(months=months_ago)).strftime("%Y-%m-%d")
     try:
         cur.execute(
             "ALTER TABLE {0} DROP PARTITION (dt < '{1}')".format(table, drop_date)
         )
         print('DROPPED PARTITIONS FOR: ' + table + ' older than ' + drop_date)
     except Exception as e:
-        errors.append(e)
+        errors.append(("drop_partitions_older_than", table, e))
 
 hive_conn = connect(host=config['hive']['host'], port=config['hive']['port'], auth_mechanism='PLAIN')
 cur = hive_conn.cursor()
@@ -66,6 +67,7 @@ for date in dates:
         else:
             add_partition(table, date)
 
+print("Cleaning old partitions ...")
 for table in cleanup_tables:
     drop_partitions_older_than(table["name"], table["months_ago"])
 
