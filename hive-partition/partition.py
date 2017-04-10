@@ -44,7 +44,7 @@ def drop_partition(table, day):
     except Exception as e:
         errors.append(e)
 
-def drop_old_partitions(table, months_ago):
+def drop_partitions_older_than(table, months_ago):
     drop_date = (date.today() - relativedelta(months=months_ago)).strftime("%Y-%m-%d")
     try:
         cur.execute(
@@ -67,7 +67,7 @@ for date in dates:
             add_partition(table, date)
 
 for table in cleanup_tables:
-    drop_old_partitions(table["name"], table["months_ago"])
+    drop_partitions_older_than(table["name"], table["months_ago"])
 
 if len(errors) > 0:
     for err in errors:
