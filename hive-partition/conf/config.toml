@@ -4,6 +4,9 @@ replace = false
   path = "s3n://your-bucket"
 
 [hive]
-  tables = [ "table1" ]
   host = "localhost"
   port = 10000
+  tables = [ "table1" ]
+  cleanup_tables = [
+    { name = "table1", months_ago = 3 }
+  ]
