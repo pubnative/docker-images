@@ -21,7 +21,7 @@ s3_path = config['s3']['path']
 tables = config['hive']['tables']
 replace_partition = config['replace']
 cleanup_tables = config['hive']['cleanup_tables']
-s2s_networks = config['s2s_networks']
+aggregate_tables = config['hive']['aggregate_tables']
 print("Parse dates")
 dates = config['dates']
 if len(dates) == 0:
@@ -79,10 +79,12 @@ for date in dates:
         if replace_partition == True:
             drop_partition(table, date)
         add_partition(table, date)
-    for network in s2s_networks:
-        if replace_partition == True:
-            drop_partition(table, date, "network", network)
-        add_partition_secondary_key(table, date, "network", network)
+    for table in aggregate_tables:
+        for path in table["paths"]:
+            if replace_partition == True:
+                drop_partition(table["name"], date, table["key"], path)
+            add_partition_secondary_key(table["name"], date, table["key"], path)
+
 
 print("Cleaning old partitions ...")
 for table in cleanup_tables:
