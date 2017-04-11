@@ -1,5 +1,6 @@
 dates = []
 replace = false
+
 [s3]
   path = "s3n://your-bucket"
 
@@ -9,4 +10,17 @@ replace = false
   tables = [ "table1" ]
   cleanup_tables = [
     { name = "table1", months_ago = 3 }
+  ]
+
+[[hive.aggregate_tables]]
+  name = "s2s_reports"
+  key = "network"
+  paths = [
+    "path1"
+  ]
+[[hive.aggregate_tables]]
+  name = "ml_reports"
+  key = "network"
+  paths = [
+    "path2"
   ]
