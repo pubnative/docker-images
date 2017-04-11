@@ -17,10 +17,11 @@ print("Parsed config")
 print(config)
 
 errors = []
-location = "'" + config['s3']['path'] + "/{0}/{1}/'"
+s3_path = config['s3']['path']
 tables = config['hive']['tables']
 replace_partition = config['replace']
 cleanup_tables = config['hive']['cleanup_tables']
+s2s_networks = config['s2s_networks']
 print("Parse dates")
 dates = config['dates']
 if len(dates) == 0:
@@ -28,24 +29,38 @@ if len(dates) == 0:
 
 
 def add_partition(table, day):
+    """Adds a day's partition to a specified table"""
     try:
         cur.execute(
-            ("ALTER TABLE {0} ADD PARTITION (dt = '{1}') location " + location).format(table, day)
+            ("ALTER TABLE {1} ADD PARTITION (dt = '{2}') location '{0}/{1}/{2}/'").format(s3_path, table, day)
         )
-        print('NEW PARTITION FOR: ' + table + ' | ' + day)
+        print('NEW PARTITION FOR: {} | {}'.format(table, day))
     except Exception as e:
         errors.append(("add_partition", table, day, e))
 
-def drop_partition(table, day):
+def add_partition_secondary_key(table, day, key, path):
+    """Adds a day's partition to a specified table with compound partitioning key, using specified path as source"""
     try:
         cur.execute(
-            """ALTER TABLE {0} DROP IF EXISTS PARTITION (dt = '{1}')""".format(table, day)
+            ("ALTER TABLE {3} ADD PARTITION (dt = '{2}', {4} = '{1}') location '{0}/{1}/{2}/'").format(s3_path, path, day, table, key)
         )
-        print('DROPPED PARTITION FOR: ' + table + ' | ' + day)
+        print('NEW PARTITION FOR: {} | {} | {} = {}'.format(table, day, key, path))
+    except Exception as e:
+        errors.append(("add_partition", table, day, key, path, e))
+
+def drop_partition(table, day, key=None, path=None):
+    """Drops a day's partition from a specified table. If key and path are specified it can be used for compound indexed partitions"""
+    try:
+        cur.execute(
+            """ALTER TABLE {0} DROP IF EXISTS PARTITION (dt = '{1}'{2})""".format(
+                table, day, ", {} = '{}'".format(key, path) if key is not None and path is not None else '')
+        )
+        print('DROPPED PARTITION FOR: {} | {}'.format(table, day))
     except Exception as e:
         errors.append(("drop_partition", table, day, e))
 
 def drop_partitions_older_than(table, months_ago):
+    """Drops all partitions older than `months_ago` months from a specified table. Currently compound keys are not supported"""
     drop_date = (dt.datetime.today() - relativedelta(months=months_ago)).strftime("%Y-%m-%d")
     try:
         cur.execute(
@@ -63,9 +78,11 @@ for date in dates:
     for table in tables:
         if replace_partition == True:
             drop_partition(table, date)
-            add_partition(table, date)
-        else:
-            add_partition(table, date)
+        add_partition(table, date)
+    for network in s2s_networks:
+        if replace_partition == True:
+            drop_partition(table, date, "network", network)
+        add_partition_secondary_key(table, date, "network", network)
 
 print("Cleaning old partitions ...")
 for table in cleanup_tables:

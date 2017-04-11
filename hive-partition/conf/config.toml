@@ -1,5 +1,9 @@
 dates = []
 replace = false
+s2s_networks = [
+  "network1"
+]
+
 [s3]
   path = "s3n://your-bucket"
 
