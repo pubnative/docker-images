@@ -41,14 +41,15 @@ RUN yum -y install glibc.i686 \
 # Install Android SDK
 RUN mkdir -p /usr/local/android-sdk \
  && cd /usr/local/android-sdk \
- && curl -L -O https://dl.google.com/android/repository/tools_r23.2.3-linux.zip \
- && unzip tools_r23.2.3-linux.zip
+ && curl -L -O https://dl.google.com/android/repository/tools_r25.2.3-linux.zip \
+ && ls -la \
+ && unzip tools_r25.2.3-linux.zip
 
 RUN cd /usr/local/ && ls -la
 
 # Install Android tools
-RUN yes | /usr/local/android-sdk/tools/bin/sdkmanager --update
-RUN yes | /usr/local/android-sdk/tools/bin/sdkmanager "platforms;android-16" "build-tools;25.0.2" "extras;google;m2repository" "extras;android;m2repository"
+RUN /usr/local/android-sdk/tools/bin/sdkmanager --update <<< 'y'
+RUN yes | /usr/local/android-sdk/tools/bin/sdkmanager "platforms;android-16" "build-tools;23.0.2" "extras;google;m2repository" "extras;android;m2repository"
 #RUN echo yes | /usr/local/android-sdk-linux/tools/android update sdk --filter android-16 --no-ui --force -a
 #RUN echo yes | /usr/local/android-sdk-linux/tools/android update sdk --filter platform-tools --no-ui --force -a
 #RUN echo yes | /usr/local/android-sdk-linux/tools/android update sdk --filter tools --no-ui --force -a
