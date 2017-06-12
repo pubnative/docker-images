@@ -8,6 +8,7 @@ replace = false
   host = "localhost"
   port = 10000
   tables = [ "table1" ]
+  table_suffix = ""
   cleanup_tables = [
     { name = "table1", months_ago = 3 }
   ]
