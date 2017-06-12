@@ -3,13 +3,13 @@ MAINTAINER PubNative Team <team@pubnative.net>
 
 LABEL os="debian"
 LABEL app="presto"
-LABEL version="0.167"
+LABEL version="0.174"
 
 RUN apt-get update -y \
  && apt-get install -y python-pip \
  && pip install envtpl
 
-ENV PRESTO_VERSION 0.167
+ENV PRESTO_VERSION 0.174
 ENV PRESTO_DIR /opt/presto
 ENV PRESTO_ETC_DIR /etc/presto
 ENV PRESTO_DATA_DIR /data
