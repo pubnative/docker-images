@@ -50,7 +50,7 @@ RUN cd /usr/local/ && ls -la
 
 # Install Android tools
 RUN /usr/local/android-sdk/tools/bin/sdkmanager --update <<< 'y'
-RUN yes | /usr/local/android-sdk/tools/bin/sdkmanager "platforms;android-15" "build-tools;23.0.2" "extras;google;m2repository" "extras;android;m2repository"
+RUN yes | /usr/local/android-sdk/tools/bin/sdkmanager "platforms;android-15" "build-tools;25.0.3" "extras;google;m2repository" "extras;android;m2repository"
 #RUN echo yes | /usr/local/android-sdk-linux/tools/android update sdk --filter android-16 --no-ui --force -a
 #RUN echo yes | /usr/local/android-sdk-linux/tools/android update sdk --filter platform-tools --no-ui --force -a
 #RUN echo yes | /usr/local/android-sdk-linux/tools/android update sdk --filter tools --no-ui --force -a
