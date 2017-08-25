@@ -9,6 +9,7 @@ replace = false
   port = 10000
   tables = [ "table1" ]
   table_suffix = ""
+  table_prefix = ""
   cleanup_tables = [
     { name = "table1", months_ago = 3 }
   ]

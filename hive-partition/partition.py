@@ -20,6 +20,7 @@ errors = []
 s3_path = config['s3']['path']
 tables = config['hive']['tables']
 table_suffix = config['hive'].get('table_suffix', "")
+table_prefix = config['hive'].get('table_prefix', "")
 replace_partition = config['replace']
 cleanup_tables = config['hive']['cleanup_tables']
 aggregate_tables = config['hive']['aggregate_tables']
@@ -33,7 +34,7 @@ def add_partition(table, day):
     """Adds a day's partition to a specified table"""
     try:
         cur.execute(
-            ("ALTER TABLE {1}{3} ADD PARTITION (dt = '{2}') location '{0}/{1}/{2}/'").format(s3_path, table, day, table_suffix)
+            ("ALTER TABLE {4}{1}{3} ADD PARTITION (dt = '{2}') location '{0}/{1}/{2}/'").format(s3_path, table, day, table_suffix, table_prefix)
         )
         print('NEW PARTITION FOR: {} | {}'.format(table, day))
     except Exception as e:
@@ -43,7 +44,7 @@ def add_partition_secondary_key(table, day, key, path):
     """Adds a day's partition to a specified table with compound partitioning key, using specified path as source"""
     try:
         cur.execute(
-            ("ALTER TABLE {3}{5} ADD PARTITION (dt = '{2}', {4} = '{1}') location '{0}/{1}/{2}/'").format(s3_path, path, day, table, key, table_suffix)
+            ("ALTER TABLE {6}{3}{5} ADD PARTITION (dt = '{2}', {4} = '{1}') location '{0}/{1}/{2}/'").format(s3_path, path, day, table, key, table_suffix, table_prefix)
         )
         print('NEW PARTITION FOR: {} | {} | {} = {}'.format(table, day, key, path))
     except Exception as e:
@@ -53,7 +54,7 @@ def drop_partition(table, day):
     """Drops a day's partition from a specified table. If key and path are specified it can be used for compound indexed partitions"""
     try:
         cur.execute(
-            """ALTER TABLE {0}{2} DROP IF EXISTS PARTITION (dt = '{1}')""".format(table, day, table_suffix)
+            """ALTER TABLE {3}{0}{2} DROP IF EXISTS PARTITION (dt = '{1}')""".format(table, day, table_suffix, table_prefix)
         )
         print('DROPPED PARTITION FOR: {} | {}'.format(table, day))
     except Exception as e:
@@ -63,7 +64,7 @@ def drop_partition_secondary_key(table, day, key, path):
     """Drops a day's partition from a specified table. If key and path are specified it can be used for compound indexed partitions"""
     try:
         cur.execute(
-            """ALTER TABLE {0}{2} DROP IF EXISTS PARTITION (dt = '{1}', {3} = '{4}')""".format(table, day, table_suffix,  key, path)
+            """ALTER TABLE {3}{0}{2} DROP IF EXISTS PARTITION (dt = '{1}', {4} = '{5}')""".format(table, day, table_suffix, table_prefix, key, path)
         )
         print('DROPPED PARTITION FOR: {} | {} | {} = {}'.format(table, day, key, path))
     except Exception as e:
@@ -74,7 +75,7 @@ def drop_partitions_older_than(table, months_ago):
     drop_date = (dt.datetime.today() - relativedelta(months=months_ago)).strftime("%Y-%m-%d")
     try:
         cur.execute(
-            "ALTER TABLE {0}{2} DROP PARTITION (dt < '{1}')".format(table, drop_date, table_suffix)
+            "ALTER TABLE {3}{0}{2} DROP PARTITION (dt < '{1}')".format(table, drop_date, table_suffix, table_prefix)
         )
         print('DROPPED PARTITIONS FOR: ' + table + ' older than ' + drop_date)
     except Exception as e:
