@@ -6,6 +6,8 @@ ENV SWAN_VER 3.21
 
 WORKDIR /opt
 
+COPY ./run.sh /usr/local/bin/run.sh
+
 RUN export \
     DEBIAN_FRONTEND=noninteractive \
     LANG=C \
@@ -40,7 +42,6 @@ RUN export \
                /var/lib/apt/lists/* \
                /var/cache/apt/*
 
-COPY ./run.sh /usr/local/bin/run.sh
 VOLUME ["/lib/modules"]
 VOLUME ["/opt/ipsec-vpn"]
 
