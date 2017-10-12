@@ -19,11 +19,19 @@
 mkdir -p /opt
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 export LC_ALL=C LANG=C
+export BASE=/opt/ipsec-vpn
 
 exit_err() { echo "Error: $@" >&2; exit 1; }
+no_spaces() { printf %s "$1" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//'; }
+no_quotes() { printf %s "$1" | sed -e 's/^"\(.*\)"$/\1/' -e "s/^'\(.*\)'$/\1/"; }
 
-if [ ! -f "/.dockerenv" ]; then
-  exit_err "This script ONLY runs in a Docker container."
+check_ip() {
+  IP_REGEX="^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$"
+  printf %s "$1" | tr -d '\n' | grep -Eq "$IP_REGEX"
+}
+
+if [[ ! -f "/.dockerenv" ]]; then
+  exiterr "This script ONLY runs in a Docker container."
 fi
 
 if ip link add dummy0 type dummy 2>&1 | grep -q "not permitted"; then
@@ -36,6 +44,64 @@ if ip link add dummy0 type dummy 2>&1 | grep -q "not permitted"; then
 fi
 ip link delete dummy0 >/dev/null 2>&1
 
+vpn_env="$BASE/vpn-gen.env"
+if [[ -z "$VPN_IPSEC_PSK" ]] && [[ -z "$VPN_USER" ]] && [[ -z "$VPN_PASSWORD" ]]; then
+  if [[ -f "$vpn_env" ]]; then
+    echo
+    echo "Retrieving previously generated VPN credentials..."
+    . "$vpn_env"
+  else
+    echo
+    echo "VPN credentials not set by user. Generating random PSK and password..."
+    VPN_IPSEC_PSK="$(tr -dc 'A-Za-z0-9-_' < /dev/urandom | head -c 16)"
+    VPN_USER=vpnuser
+    VPN_PASSWORD="$(tr -dc 'A-Za-z0-9-_' < /dev/urandom | head -c 16)"
+
+    echo "VPN_IPSEC_PSK=$VPN_IPSEC_PSK" > "$vpn_env"
+    echo "VPN_USER=$VPN_USER" >> "$vpn_env"
+    echo "VPN_PASSWORD=$VPN_PASSWORD" >> "$vpn_env"
+    chmod 600 "$vpn_env"
+  fi
+fi
+
+# Remove whitespace and quotes around VPN variables, if any
+VPN_IPSEC_PSK="$(no_spaces "$VPN_IPSEC_PSK")"
+VPN_IPSEC_PSK="$(no_quotes "$VPN_IPSEC_PSK")"
+VPN_USER="$(no_spaces "$VPN_USER")"
+VPN_USER="$(no_quotes "$VPN_USER")"
+VPN_PASSWORD="$(no_spaces "$VPN_PASSWORD")"
+VPN_PASSWORD="$(no_quotes "$VPN_PASSWORD")"
+
+if [ -z "$VPN_IPSEC_PSK" ] || [ -z "$VPN_USER" ] || [ -z "$VPN_PASSWORD" ]; then
+  exit_err "All VPN credentials must be specified. Edit your 'env' file and re-enter them."
+fi
+
+if printf %s "$VPN_IPSEC_PSK $VPN_USER $VPN_PASSWORD" | LC_ALL=C grep -q '[^ -~]\+'; then
+  exit_err "VPN credentials must not contain non-ASCII characters."
+fi
+
+case "$VPN_IPSEC_PSK $VPN_USER $VPN_PASSWORD" in
+  *[\\\"\']*)
+    exit_err "VPN credentials must not contain the following characters: \\ \" '"
+    ;;
+esac
+
+echo
+echo 'Trying to auto discover IP of this server...'
+
+# In case auto IP discovery fails, manually define the public IP
+# of this server in your 'env' file, as variable 'VPN_PUBLIC_IP'.
+PUBLIC_IP=${VPN_PUBLIC_IP:-''}
+
+# Try to auto discover IP of this server
+[[ -z "$PUBLIC_IP" ]] && PUBLIC_IP=$(dig -t A -4 +short @resolver1.opendns.com myip.opendns.com)
+
+# Check IP for correct format
+check_ip "$PUBLIC_IP" || PUBLIC_IP=$(wget -t 3 -T 15 -qO- https://ifconfig.co)
+check_ip "$PUBLIC_IP" || PUBLIC_IP=$(wget -t 3 -T 15 -qO- http://ipv4.icanhazip.com)
+check_ip "$PUBLIC_IP" || PUBLIC_IP=$(wget -t 3 -T 15 -qO- http://ifconfig.ca)
+check_ip "$PUBLIC_IP" || exiterr "Cannot find valid public IP. Define it in your 'env' file as 'VPN_PUBLIC_IP'."
+
 L2TP_NET=${VPN_L2TP_NET:-'192.168.42.0/24'}
 L2TP_LOCAL=${VPN_L2TP_LOCAL:-'192.168.42.1'}
 L2TP_POOL=${VPN_L2TP_POOL:-'192.168.42.10-192.168.42.250'}
@@ -45,10 +111,9 @@ DNS_SRV1=${VPN_DNS_SRV1:-'8.8.8.8'}
 DNS_SRV2=${VPN_DNS_SRV2:-'8.8.4.4'}
 VPN_NAME=${VPN_NAME:-'vpn.example.com'}
 
-
 # Create IPsec (Libreswan) config
-[[ -r /opt/ipsec-vpn/ipsec.conf ]] ||
-cat > /opt/ipsec-vpn/ipsec.conf <<EOF
+[[ -r $BASE/ipsec.conf ]] ||
+cat > $BASE/ipsec.conf <<EOF
 version 2.0
 
 config setup
@@ -57,12 +122,12 @@ config setup
   nhelpers=0
   interfaces=%defaultroute
   uniqueids=no
-  secretsfile=/opt/ipsec-vpn/ipsec.secrets
+  secretsfile=$BASE/ipsec.secrets
 
 conn shared
   left=%defaultroute
   leftid=@${VPN_NAME}
-  leftcert=/opt/ipsec-vpn/certs/${VPN_NAME}.pem
+  leftcert=$BASE/certs/${VPN_NAME}.pem
   right=%any
   rightca=%same
   rightrsasigkey=%cert
@@ -104,14 +169,14 @@ conn xauth-psk
 EOF
 
 # Specify IPsec PSK
-[[ -r /opt/ipsec-vpn/ipsec.secrets ]] ||
-cat > /opt/ipsec-vpn/ipsec.secrets <<EOF
+[[ -r $BASE/ipsec.secrets ]] ||
+cat > $BASE/ipsec.secrets <<EOF
 %any  %any  : PSK "$VPN_IPSEC_PSK"
 EOF
 
 # Create xl2tpd config
-[[ -r /opt/ipsec-vpn/xl2tpd.conf ]] ||
-cat > /opt/ipsec-vpn/xl2tpd.conf <<EOF
+[[ -r $BASE/xl2tpd.conf ]] ||
+cat > $BASE/xl2tpd.conf <<EOF
 [global]
 port = 1701
 
@@ -122,13 +187,13 @@ require chap = yes
 refuse pap = yes
 require authentication = yes
 name = l2tpd
-pppoptfile = /opt/ipsec-vpn/options.xl2tpd
+pppoptfile = $BASE/options.xl2tpd
 length bit = yes
 EOF
 
 # Set xl2tpd options
-[[ -r /opt/ipsec-vpn/options.xl2tpd ]] ||
-cat > /opt/ipsec-vpn/options.xl2tpd <<EOF
+[[ -r $BASE/options.xl2tpd ]] ||
+cat > $BASE/options.xl2tpd <<EOF
 +mschap-v2
 ipcp-accept-local
 ipcp-accept-remote
@@ -145,20 +210,24 @@ connect-delay 5000
 EOF
 
 # Create VPN credentials
-[[ -r /opt/ipsec-vpn/chap-secters ]] ||
-cat > /opt/ipsec-vpn/chap-secrets <<EOF
+[[ -r $BASE/chap-secrets ]] ||
+cat > $BASE/chap-secrets <<EOF
 # Secrets for authentication using CHAP
 # client  server  secret  IP addresses
 "$VPN_USER" l2tpd "$VPN_PASSWORD" *
 EOF
 
-[[ -r /opt/ipsec-vpn/ipsec.passwd ]] ||
-cat > /opt/ipsec-vpn/ipsec.passwd <<EOF
+ln -vfs $BASE/chap-secrets /etc/ppp/chap-secrets
+
+VPN_PASSWORD_ENC=$(openssl passwd -1 "$VPN_PASSWORD")
+[[ -r $BASE/ipsec.passwd ]] ||
+cat > $BASE/ipsec.passwd <<EOF
 $VPN_USER:$VPN_PASSWORD_ENC:xauth-psk
 EOF
 
 # Update sysctl settings
-cat > /etc/sysctl.d/99-ipsec.conf <<EOF
+[[ -r $BASE/ipsec.sysctl ]] ||
+cat > $BASE/ipsec.sysctl<<EOF
 kernel.msgmnb=65536
 kernel.msgmax=65536
 kernel.shmmax=68719476736
@@ -180,11 +249,11 @@ net.ipv4.icmp_echo_ignore_broadcasts=1
 net.ipv4.icmp_ignore_bogus_error_responses=1
 EOF
 
-sysctl -p /etc/sysctl.d/99-ipsec.conf
+sysctl -p $BASE/ipsec.sysctl
 
 # Create IPTables rules if no defaults
-[[ -r /opt/ipsec-vpn/iptables ]] ||
-cat > /opt/ipsec-vpn/iptables <<EOF
+[[ -r $BASE/iptables ]] ||
+cat > $BASE/iptables <<EOF
 *filter
 :INPUT ACCEPT [0:0]
 :FORWARD ACCEPT [0:0]
@@ -210,10 +279,7 @@ cat > /opt/ipsec-vpn/iptables <<EOF
 -A POSTROUTING -s "$L2TP_NET" -o eth+ -j MASQUERADE
 EOF
 
-iptables-restore /opt/ipsec-vpn/iptables
-
-# Update file attributes
-chmod 600 /etc/ipsec.secrets /etc/ppp/chap-secrets /etc/ipsec.d/passwd
+iptables-restore $BASE/iptables
 
 # Load IPsec NETKEY kernel module
 modprobe af_key af_alg
@@ -222,5 +288,5 @@ modprobe af_key af_alg
 mkdir -p /var/run/pluto /var/run/xl2tpd
 rm -f /var/run/pluto/pluto.pid /var/run/xl2tpd.pid
 
-ipsec start --config /etc/ipsec.conf
-exec /usr/sbin/xl2tpd -D -c /etc/xl2tpd/xl2tpd.conf
+ipsec start --config $BASE/ipsec.conf
+exec /usr/sbin/xl2tpd -D -c $BASE/xl2tpd.conf
