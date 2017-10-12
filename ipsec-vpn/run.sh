@@ -171,6 +171,8 @@ cat > $BASE/ipsec.secrets <<EOF
 %any  %any  : PSK "$VPN_IPSEC_PSK"
 EOF
 
+ln -vfs $BASE/ipsec.secrets /etc/ipsec.d/ipsec.secrets
+
 # Create xl2tpd config
 [[ -r $BASE/xl2tpd.conf ]] ||
 cat > $BASE/xl2tpd.conf <<EOF
@@ -268,12 +270,16 @@ cat > $BASE/iptables <<EOF
 -A FORWARD -i eth+ -d "$XAUTH_NET" -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 -A FORWARD -s "$XAUTH_NET" -o eth+ -j ACCEPT
 -A FORWARD -j DROP
+COMMIT
+
 *nat
-:INPUT ACCEPT [0:0]
-:FORWARD ACCEPT [0:0]
-:OUTPUT ACCEPT [0:0]
+:PREROUTING ACCEPT
+:INPUT ACCEPT
+:OUTPUT ACCEPT
+:POSTROUTING ACCEPT
 -A POSTROUTING -s "$XAUTH_NET" -o eth+ -m policy --dir out --pol none -j MASQUERADE
 -A POSTROUTING -s "$L2TP_NET" -o eth+ -j MASQUERADE
+COMMIT
 EOF
 
 iptables-restore $BASE/iptables

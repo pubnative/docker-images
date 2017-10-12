@@ -1,12 +1,10 @@
 FROM debian:stretch-slim
 MAINTAINER Ilya Esin <yesin.iv@gmail.com>
 
-ENV REFRESHED_AT 2017-10-10
+ENV REFRESHED_AT 2017-10-12
 ENV SWAN_VER 3.21
 
 WORKDIR /opt
-
-COPY ./run.sh /usr/local/bin/run.sh
 
 RUN export \
     DEBIAN_FRONTEND=noninteractive \
@@ -32,20 +30,20 @@ RUN export \
     && make -j -s base \
     && make -s install-base \
     && cd / \
-    && apt -yqq purge \
+    && apt -yqq --auto-remove purge \
          libnss3-dev libnspr4-dev pkg-config libpam0g-dev \
          libcap-ng-dev libcap-ng-utils libselinux1-dev \
          libcurl4-nss-dev flex bison gcc make \
          perl-modules perl \
-    && apt-get -yqq autoremove \
-    && apt-get -y clean \
+    && apt -y clean \
     && rm -rf "/opt/libreswan-${SWAN_VER}" \
-    && rm -rf /var/lib/apt/lists/* \
-    && rm -rf /var/cache/apt/*
+               /var/lib/apt/lists/* \
+               /var/cache/apt/*
 
-EXPOSE 500/udp 4500/udp
-
+COPY ./run.sh /usr/local/bin/run.sh
 VOLUME ["/lib/modules"]
 VOLUME ["/opt/ipsec-vpn"]
+
+EXPOSE 500/udp 4500/udp
 
 CMD ["/usr/local/bin/run.sh"]
