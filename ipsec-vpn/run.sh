@@ -118,7 +118,7 @@ version 2.0
 
 config setup
   virtual-private=%v4:10.0.0.0/8,%v4:192.168.0.0/16,%v4:172.16.0.0/12,%v4:!$L2TP_NET,%v4:!$XAUTH_NET
-  protostack=mast
+  protostack=netkey
   nhelpers=0
   interfaces=%defaultroute
   uniqueids=no
@@ -127,12 +127,9 @@ config setup
 conn shared
   left=%defaultroute
   leftid=@${VPN_NAME}
-  leftcert=$BASE/certs/${VPN_NAME}.pem
   right=%any
-  rightca=%same
-  rightrsasigkey=%cert
   encapsulation=yes
-  authby=rsasig
+  authby=file
   pfs=yes
   rekey=no
   keyingtries=5
