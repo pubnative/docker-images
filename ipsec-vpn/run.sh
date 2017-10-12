@@ -5,17 +5,12 @@
 # DO NOT RUN THIS SCRIPT ON YOUR PC OR MAC! THIS IS ONLY MEANT TO BE RUN
 # IN A DOCKER CONTAINER!
 #
-# This file is part of IPsec VPN Docker image, available at:
+# This file is based on work, available at:
 # https://github.com/hwdsl2/docker-ipsec-vpn-server
-#
-# Copyright (C) 2016-2017 Lin Song <linsongui@gmail.com>
-# Based on the work of Thomas Sarlandie (Copyright 2012)
 #
 # This work is licensed under the Creative Commons Attribution-ShareAlike 3.0
 # Unported License: http://creativecommons.org/licenses/by-sa/3.0/
-#
-# Attribution required: please include my name in any derivative and let me
-# know how you have improved it!
+
 mkdir -p /opt
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 export LC_ALL=C LANG=C

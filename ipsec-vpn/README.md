@@ -12,5 +12,5 @@ docker run \
     -v /lib/modules:/lib/modules:ro \
     -v ipsec-data:/opt/ipsec-vpn \
     -d --privileged \
-    pubnative/ipsec-vpn-server
+    pubnative/libreswan
 ```
