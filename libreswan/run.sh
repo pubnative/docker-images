@@ -11,14 +11,15 @@
 # This work is licensed under the Creative Commons Attribution-ShareAlike 3.0
 # Unported License: http://creativecommons.org/licenses/by-sa/3.0/
 
-mkdir -p /opt
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 export LC_ALL=C LANG=C
 export BASE=/opt/ipsec-vpn
 
+set -x
+
 exit_err() { echo "Error: $@" >&2; exit 1; }
-no_spaces() { printf %s "$1" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//'; }
-no_quotes() { printf %s "$1" | sed -e 's/^"\(.*\)"$/\1/' -e "s/^'\(.*\)'$/\1/"; }
+no_spaces() { echo -n "$@" | sed -e 's/^[[:space:]]*//;s/[[:space:]]*$//'; tr -d '\n'; }
+no_quotes() { echo -n "$@" | sed -e 's/^"\(.*\)"$/\1/' -e "s/^'\(.*\)'$/\1/"; tr -d '\n'; }
 
 check_ip() {
   IP_REGEX="^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$"
@@ -48,9 +49,9 @@ if [[ -z "$VPN_IPSEC_PSK" ]] && [[ -z "$VPN_USER" ]] && [[ -z "$VPN_PASSWORD" ]]
   else
     echo
     echo "VPN credentials not set by user. Generating random PSK and password..."
-    VPN_IPSEC_PSK="$(tr -dc 'A-Za-z0-9-_' < /dev/urandom | head -c 16)"
+    VPN_IPSEC_PSK="$(tr -dc 'A-Za-z0-9_-' < /dev/urandom | head -c 12)"
     VPN_USER=vpnuser
-    VPN_PASSWORD="$(tr -dc 'A-Za-z0-9-_' < /dev/urandom | head -c 16)"
+    VPN_PASSWORD="$(tr -dc 'A-Za-z0-9_-' < /dev/urandom | head -c 12)"
 
     echo "VPN_IPSEC_PSK=$VPN_IPSEC_PSK" > "$vpn_env"
     echo "VPN_USER=$VPN_USER" >> "$vpn_env"
@@ -82,7 +83,7 @@ case "$VPN_IPSEC_PSK $VPN_USER $VPN_PASSWORD" in
 esac
 
 echo
-echo 'Trying to auto discover IP of this server...'
+echo 'Trying discover external IP of this server...'
 
 # In case auto IP discovery fails, manually define the public IP
 # of this server in your 'env' file, as variable 'VPN_PUBLIC_IP'.
@@ -117,15 +118,18 @@ config setup
   nhelpers=0
   interfaces=%defaultroute
   uniqueids=no
-  secretsfile=$BASE/ipsec.secrets
+  plutostderrlog=/proc/1/fd/2
+  plutostderrlogtime=yes
+  klipsdebug=yes
+  plutodebug=yes
 
 conn shared
   left=%defaultroute
-  leftid=@${VPN_NAME}
+  leftid=$PUBLIC_IP
   right=%any
   encapsulation=yes
-  authby=file
-  pfs=yes
+  authby=secret
+  pfs=no
   rekey=no
   keyingtries=5
   dpddelay=30
@@ -154,8 +158,9 @@ conn xauth-psk
   leftmodecfgserver=yes
   rightmodecfgclient=yes
   modecfgpull=yes
+  xauthby=file
   ike-frag=yes
-  ikev2=insist
+  ikev2=never
   cisco-unity=yes
   also=shared
 EOF
@@ -166,7 +171,7 @@ cat > $BASE/ipsec.secrets <<EOF
 %any  %any  : PSK "$VPN_IPSEC_PSK"
 EOF
 
-ln -vfs $BASE/ipsec.secrets /etc/ipsec.d/ipsec.secrets
+ln -vfs $BASE/ipsec.secrets /etc/ipsec.secrets
 
 # Create xl2tpd config
 [[ -r $BASE/xl2tpd.conf ]] ||
@@ -218,6 +223,8 @@ VPN_PASSWORD_ENC=$(openssl passwd -1 "$VPN_PASSWORD")
 cat > $BASE/ipsec.passwd <<EOF
 $VPN_USER:$VPN_PASSWORD_ENC:xauth-psk
 EOF
+
+ln -vfs $BASE/ipsec.passwd /etc/ipsec.d/passwd
 
 # Update sysctl settings
 [[ -r $BASE/ipsec.sysctl ]] ||
@@ -280,7 +287,7 @@ EOF
 iptables-restore $BASE/iptables
 
 # Load IPsec NETKEY kernel module
-modprobe af_key af_alg
+modprobe --all af_key af_alg
 
 # Start services
 mkdir -p /var/run/pluto /var/run/xl2tpd

@@ -28,7 +28,7 @@ RUN export \
     && tar xzf "libreswan.tar.gz" \
     && rm -f "libreswan.tar.gz" \
     && cd "libreswan-${SWAN_VER}" \
-    && printf 'WERROR_CFLAGS =\nUSE_DNSSEC = false\nUSE_SYSTEMD_WATCHDOG = false\n' > Makefile.inc.local \
+    && printf 'WERROR_CFLAGS =\nUSE_DNSSEC = false\nUSE_SYSTEMD_WATCHDOG = false' > Makefile.inc.local \
     && make -j -s base \
     && make -s install-base \
     && cd / \
