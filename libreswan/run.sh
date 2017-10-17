@@ -165,6 +165,8 @@ conn xauth-psk
   also=shared
 EOF
 
+ln -vfs $BASE/ipsec.conf /etc/ipsec.conf
+
 # Specify IPsec PSK
 [[ -r $BASE/ipsec.secrets ]] ||
 cat > $BASE/ipsec.secrets <<EOF
