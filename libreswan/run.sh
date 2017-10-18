@@ -120,8 +120,8 @@ config setup
   uniqueids=no
   plutostderrlog=/proc/1/fd/2
   plutostderrlogtime=yes
-  klipsdebug=yes
-  plutodebug=yes
+  klipsdebug=all
+  plutodebug=all
 
 conn shared
   left=%defaultroute
