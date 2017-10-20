@@ -7,8 +7,7 @@ $ docker push pubnative/vpn:3.21
 
 ### Environment variables
 
-
-`DESTINATION_NETWORK` - traffic only to this network will be allowed while routing.
+`DESTINATION_NET` - traffic only to this network will be allowed while routing.
 Example: `10.0.0.0/16`
 
 `ALLOWED_SERVICES` - per-service filter tuning. Allows access to this services from vpn clients.
