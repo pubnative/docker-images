@@ -3,7 +3,7 @@
 FROM hwdsl2/ipsec-vpn-server
 MAINTAINER Pubnative Tech <team@pubnative.net>
 
-ENV DESTINATION_NETWORK ""
+ENV DESTINATION_NET ""
 ENV ALLOWED_SERVICES ""
 
 RUN apt update \
