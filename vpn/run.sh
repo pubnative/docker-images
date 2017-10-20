@@ -251,8 +251,14 @@ iptables -I FORWARD 6 -s "$XAUTH_NET" -o eth+ -j ACCEPT
 # iptables -I FORWARD 2 -i ppp+ -o ppp+ -s "$L2TP_NET" -d "$L2TP_NET" -j DROP
 # iptables -I FORWARD 3 -s "$XAUTH_NET" -d "$XAUTH_NET" -j DROP
 iptables -A FORWARD -j DROP
-iptables -t nat -I POSTROUTING -s "$XAUTH_NET" -o eth+ -m policy --dir out --pol none -j MASQUERADE
-iptables -t nat -I POSTROUTING -s "$L2TP_NET" -o eth+ -j MASQUERADE
+
+if [ -z "$DESTINATION_NET" ]; then
+  iptables -t nat -I POSTROUTING -s "$XAUTH_NET" -o eth+ -m policy --dir out --pol none -j MASQUERADE
+  iptables -t nat -I POSTROUTING -s "$L2TP_NET" -o eth+ -j MASQUERADE
+else
+  iptables -t nat -I POSTROUTING -s "$XAUTH_NET" -d "$DESTINATION_NET" -m policy --dir out --pol none -j MASQUERADE
+  iptables -t nat -I POSTROUTING -s "$L2TP_NET" -d "$DESTINATION_NET" -j MASQUERADE
+fi
 
 # Update file attributes
 chmod 600 /etc/ipsec.secrets /etc/ppp/chap-secrets /etc/ipsec.d/passwd
@@ -265,10 +271,11 @@ IPsec VPN server is now ready for use!
 
 Connect to your new VPN with these details:
 
-Server IP: $PUBLIC_IP
-IPsec PSK: $VPN_IPSEC_PSK
-Username: $VPN_USER
-Password: $VPN_PASSWORD
+Server IP:   $PUBLIC_IP
+IPsec PSK:   $VPN_IPSEC_PSK
+Username:    $VPN_USER
+Password:    $VPN_PASSWORD
+Destination: $DESTINATION_NET
 
 Write these down. You'll need them to connect!
 
