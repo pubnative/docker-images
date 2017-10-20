@@ -247,6 +247,15 @@ iptables -I FORWARD 3 -i ppp+ -o eth+ -j ACCEPT
 iptables -I FORWARD 4 -i ppp+ -o ppp+ -s "$L2TP_NET" -d "$L2TP_NET" -j ACCEPT
 iptables -I FORWARD 5 -i eth+ -d "$XAUTH_NET" -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 iptables -I FORWARD 6 -s "$XAUTH_NET" -o eth+ -j ACCEPT
+
+if [ -n "$ALLOWED_SERVICES" ]; then
+  ipset -exist flush allowed
+  ipset -exist create allowed hash:net,port
+  sed -Ee 's,\s+,\n,g' <<<$ALLOWED_SERVICES | sed -Ee 's|^|add allowed |g' | ipset restore
+  iptables -I FORWARD -s "$L2TP_NET" -m set ! --match-set allowed dst,dst -j DROP
+  iptables -I FORWARD -s "$XAUTH_NET" -m set ! --match-set allowed dst,dst -j DROP
+fi
+
 # Uncomment if you wish to disallow traffic between VPN clients themselves
 # iptables -I FORWARD 2 -i ppp+ -o ppp+ -s "$L2TP_NET" -d "$L2TP_NET" -j DROP
 # iptables -I FORWARD 3 -s "$XAUTH_NET" -d "$XAUTH_NET" -j DROP
@@ -271,11 +280,12 @@ IPsec VPN server is now ready for use!
 
 Connect to your new VPN with these details:
 
-Server IP:   $PUBLIC_IP
-IPsec PSK:   $VPN_IPSEC_PSK
-Username:    $VPN_USER
-Password:    $VPN_PASSWORD
-Destination: $DESTINATION_NET
+Server IP:        $PUBLIC_IP
+IPsec PSK:        $VPN_IPSEC_PSK
+Username:         $VPN_USER
+Password:         $VPN_PASSWORD
+Destination:      $DESTINATION_NET
+Allowed services: $ALLOWED_SERVICES
 
 Write these down. You'll need them to connect!
 
