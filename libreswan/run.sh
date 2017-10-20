@@ -95,7 +95,7 @@ PUBLIC_IP=${VPN_PUBLIC_IP:-''}
 # Check IP for correct format
 check_ip "$PUBLIC_IP" || PUBLIC_IP=$(wget -t 3 -T 15 -qO- https://ifconfig.co)
 check_ip "$PUBLIC_IP" || PUBLIC_IP=$(wget -t 3 -T 15 -qO- http://ipv4.icanhazip.com)
-check_ip "$PUBLIC_IP" || PUBLIC_IP=$(wget -t 3 -T 15 -qO- http://ifconfig.ca)
+check_ip "$PUBLIC_IP" || PUBLIC_IP=$(curl http://ifconfig.ca)
 check_ip "$PUBLIC_IP" || exiterr "Cannot find valid public IP. Define it in your 'env' file as 'VPN_PUBLIC_IP'."
 
 L2TP_NET=${VPN_L2TP_NET:-'192.168.42.0/24'}
@@ -188,9 +188,11 @@ require chap = yes
 refuse pap = yes
 require authentication = yes
 name = l2tpd
-pppoptfile = $BASE/options.xl2tpd
+pppoptfile = /etc/ppp/options.xl2tpd
 length bit = yes
 EOF
+
+ln -vfs $BASE/xl2tpd.conf /etc/xl2tpd/xl2tpd.conf
 
 # Set xl2tpd options
 [[ -r $BASE/options.xl2tpd ]] ||
@@ -209,6 +211,8 @@ lcp-echo-failure 4
 lcp-echo-interval 30
 connect-delay 5000
 EOF
+
+ln -vfs $BASE/options.xl2tpd /etc/ppp/options.xl2tpd
 
 # Create VPN credentials
 [[ -r $BASE/chap-secrets ]] ||
@@ -270,8 +274,8 @@ cat > $BASE/iptables <<EOF
 -A FORWARD -m conntrack --ctstate INVALID -j DROP
 -A FORWARD -i eth+ -o ppp+ -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 -A FORWARD -i ppp+ -o eth+ -j ACCEPT
--A FORWARD -i ppp+ -o ppp+ -s "$L2TP_NET" -d "$L2TP_NET" -j ACCEPT
--A FORWARD -i eth+ -d "$XAUTH_NET" -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+#-A FORWARD -i ppp+ -o ppp+ -s "$L2TP_NET" -d "$L2TP_NET" -j ACCEPT
+#-A FORWARD -i eth+ -d "$XAUTH_NET" -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 -A FORWARD -s "$XAUTH_NET" -o eth+ -j ACCEPT
 -A FORWARD -j DROP
 COMMIT
@@ -281,8 +285,8 @@ COMMIT
 :INPUT ACCEPT
 :OUTPUT ACCEPT
 :POSTROUTING ACCEPT
--A POSTROUTING -s "$XAUTH_NET" -o eth+ -m policy --dir out --pol none -j MASQUERADE
--A POSTROUTING -s "$L2TP_NET" -o eth+ -j MASQUERADE
+-A POSTROUTING -s "$XAUTH_NET" -o eth+ -d "10.0.8.0/24" -m policy --dir out --pol none -j MASQUERADE
+-A POSTROUTING -s "$L2TP_NET"  -o eth+ -d "10.0.8.0/24"                                -j MASQUERADE
 COMMIT
 EOF
 
