@@ -1,15 +1,15 @@
 FROM java:8-jdk
 MAINTAINER PubNative Team <team@pubnative.net>
 
-LABEL os="debian"
-LABEL app="presto"
-LABEL version="0.181"
-
 RUN apt-get update -y \
  && apt-get install -y python-pip python-dev python3-dev \
  && pip install envtpl
 
-ENV PRESTO_VERSION 0.181
+LABEL os="debian"
+LABEL app="presto"
+LABEL version="0.189"
+
+ENV PRESTO_VERSION 0.189
 ENV PRESTO_DIR /opt/presto
 ENV PRESTO_ETC_DIR /etc/presto
 ENV PRESTO_DATA_DIR /data
@@ -36,6 +36,7 @@ ENV NODE_catalog.config-dir ${PRESTO_ETC_DIR}/catalog
 ENV NODE_node.environment production
 
 ENV LOG_com.facebook.presto WARN
+ENV LOG_com.amazonaws.latency WARN
 
 ENV JAVA_OPTS "-server -XX:+UseG1GC -Xmx3G -Xms3G"
 
