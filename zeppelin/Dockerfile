@@ -1,6 +1,6 @@
 # Image: pubnative/zeppelin
 
-FROM dylanmei/zeppelin:0.7.2
+FROM dylanmei/zeppelin:0.7.3
 
 RUN echo "deb http://repos.mesosphere.io/debian/ jessie main" > /etc/apt/sources.list.d/mesosphere.list \
     && apt-key adv --keyserver keyserver.ubuntu.com --recv E56151BF \
