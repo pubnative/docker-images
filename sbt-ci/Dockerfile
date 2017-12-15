@@ -16,3 +16,7 @@ RUN curl -L -o /tmp/docker-$DOCKER_VER.tgz https://get.docker.com/builds/Linux/x
   && wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
   && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
   && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+
+RUN  apt-get install -y libappindicator1 fonts-liberation libgtk-3-0 libxss1 xdg-utils\
+  && curl -L -o /tmp/google-chrome-stable.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
+  && dpkg -i /tmp/google-chrome-stable.deb
