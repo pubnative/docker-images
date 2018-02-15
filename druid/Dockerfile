@@ -1,14 +1,17 @@
+# Image: pubnative/druid-base
+
 FROM centos:latest
 
-MAINTAINER denis@pubnative.net
+MAINTAINER Denis <denis@pubnative.net>
 
 ENV DRUID_VERSION 0.9.2
-ENV HADOOP_LOCAL_DIR_TTL ""
-RUN yum install -y java-1.8.0-openjdk java-1.8.0-openjdk-devel wget
+ENV HADOOP_LOCAL_DIR_TTL "2880"
 ENV DNS_TTL=300
 
+RUN yum install -y java-1.8.0-openjdk java-1.8.0-openjdk-devel wget
+
 ENV DRUID_URL http://static.druid.io/artifacts/releases/druid-$DRUID_VERSION-bin.tar.gz
-RUN wget -q -O -       $DRUID_URL | tar -xzf - -C /opt 
+RUN wget -q -O -       $DRUID_URL | tar -xzf - -C /opt
 RUN  ln -s /opt/druid-$DRUID_VERSION /opt/druid
 
 RUN cd /opt/druid && java -classpath "lib/*" io.druid.cli.Main tools pull-deps --clean \
@@ -37,7 +40,6 @@ RUN rm $HADOOP_EXT_PATH/parquet-*-1.8.1.jar && \
 
 ADD common.runtime.properties /opt/druid/conf/druid/_common/
 ADD start-node.sh hadoop-data-cleanup.sh /opt/druid/bin/
-
 ADD cron_hadoop-data-cleanup /etc/cron.d/cron_hadoop-data-cleanup
 
 RUN yum install -y  vixie-cron crontabs && \
@@ -47,3 +49,4 @@ RUN yum install -y  vixie-cron crontabs && \
 RUN export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:/bin/java::") && \
   echo "networkaddress.cache.ttl=$DNS_TTL" >> $JAVA_HOME/lib/security/java.security
 
+VOLUME /var/log/
