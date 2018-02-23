@@ -1,3 +1,4 @@
+# Image pubnative/sbt-ci
 FROM centos:7
 
 ENV DOCKER_VER="17.03.2.ce-1" 
