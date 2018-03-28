@@ -4,7 +4,7 @@ FROM centos:latest
 
 MAINTAINER Denis <denis@pubnative.net>
 
-ENV DRUID_VERSION 0.10.0
+ENV DRUID_VERSION 0.11.0
 ENV HADOOP_LOCAL_DIR_TTL "2880"
 ENV DNS_TTL=300
 
@@ -24,12 +24,12 @@ RUN cd /opt/druid && java -classpath "lib/*" io.druid.cli.Main tools pull-deps -
   -h org.apache.hadoop:hadoop-client:2.7.2 \
   -h org.apache.hadoop:hadoop-aws:2.7.2
 
-ENV HADOOP_EXT_PATH /opt/druid/extensions/druid-parquet-extensions/
+ENV HADOOP_EXT_PATH /opt/druid/extensions/druid-parquet-extensions
 ENV PARQUET_URI http://central.maven.org/maven2/org/apache/parquet
 
 # Temporary fix for warnings: `org.apache.parquet.CorruptStatistics: Ignoring statistics because created_by could not be parsed (see PARQUET-251): parquet-mr`
 # until writer be migrated to 1.8.1 version
-RUN rm $HADOOP_EXT_PATH/parquet-*-1.8.1.jar && \
+RUN rm $HADOOP_EXT_PATH/parquet-*-1.8.1.jar -f && \
   wget -P $HADOOP_EXT_PATH $PARQUET_URI/parquet-avro/1.7.0/parquet-avro-1.7.0.jar  && \
   wget -P $HADOOP_EXT_PATH $PARQUET_URI/parquet-column/1.7.0/parquet-column-1.7.0.jar && \
   wget -P $HADOOP_EXT_PATH $PARQUET_URI/parquet-common/1.7.0/parquet-common-1.7.0.jar && \
