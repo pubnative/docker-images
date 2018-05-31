@@ -7,6 +7,6 @@ RUN apt-get update && \
     echo resolvconf resolvconf/linkify-resolvconf boolean false | debconf-set-selections && \
     apt-get install -y iproute2 wireguard-dkms wireguard-tools curl resolvconf
 
-COPY startup.sh /.
+COPY entrypoint.sh /.
 
-ENTRYPOINT ["/startup.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
