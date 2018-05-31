@@ -59,7 +59,14 @@ echo "$(date -R) Starting the tunnel"
 /usr/bin/wg set $INTERFACE_NAME private-key $PRIVATE_KEY_FILE $LISTEN_ARGS
 /bin/ip link set $INTERFACE_NAME up
 
-if [ -f $PEERS_FILE ]; then
+if [ "yes" == "$ENABLE_FORWARDING" ]; then
+  #accept from the tunnel
+  iptables -A FORWARD -i wg+ -s $LOCAL_IP/$LOCAL_NETMASK -j ACCEPT
+  #accept to the tunnel but only from this machine
+  iptables -A FORWARD -i wg+ -s $LOCAL_IP -d $LOCAL_IP/$LOCAL_NETMASK -j ACCEPT
+fi
+
+if [ "" != "$PEERS_FILE" ] && [ -f $PEERS_FILE ]; then
   while read currentpeer; do
     PEER_PUB_KEY=$(echo $currentpeer | awk '{print $1}')
     PEER_HOST=$(echo $currentpeer | awk '{print $2}')
@@ -73,6 +80,21 @@ if [ -f $PEERS_FILE ]; then
     echo "$(date -R) Adding peer $PEER_HOST"
     /usr/bin/wg set $INTERFACE_NAME peer $PEER_PUB_KEY allowed-ips $ACTUAL_PEER_ALLOWED_IPS endpoint $PEER_HOST:$PEER_PORT
   done <$PEERS_FILE
+fi
+
+if [ "" != "$ROUTES_FILE" ] && [ -f $ROUTES_FILE ]; then
+  while read currentroute; do
+    ROUTE_CIDR=$(echo $currentroute | awk '{print $1}')
+    ROUTE_REMOTE=$(echo $currentroute | awk '{print $2}')
+    # remove any existing route for this cidr
+    ip route del $ROUTE_CIDR || true
+    echo "$(date -R) Adding route for $ROUTE_CIDR via gateway $ROUTE_REMOTE"
+    ip route add $ROUTE_CIDR via $ROUTE_REMOTE
+    if [ "yes" == "$ENABLE_FORWARDING" ]; then
+      iptables -A FORWARD -i wg+ -d $ROUTE_CIDR -j ACCEPT
+      iptables -A FORWARD -i wg+ -s $ROUTE_CIDR -j ACCEPT
+    fi
+  done <$ROUTES_FILE
 fi
 
 while true; do
