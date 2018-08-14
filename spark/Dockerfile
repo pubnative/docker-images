@@ -3,7 +3,7 @@ MAINTAINER PubNative Team <team@pubnative.net>
 
 LABEL os="centos"
 
-ENV SPARK_VERSION="2.3.0"
+ENV SPARK_VERSION="2.3.1"
 
 RUN rpm -Uvh http://repos.mesosphere.com/el/7/noarch/RPMS/mesosphere-el-repo-7-1.noarch.rpm \
   && yum update -y \
