@@ -18,8 +18,8 @@ RUN curl -SL http://ftp.halifax.rwth-aachen.de/apache/spark/spark-${SPARK_VERSIO
 RUN curl -O http://central.maven.org/maven2/com/amazonaws/aws-java-sdk/1.7.4/aws-java-sdk-1.7.4.jar \
   && mv aws-java-sdk-1.7.4.jar /opt/spark/lib/
 
-RUN curl -O http://central.maven.org/maven2/org/apache/hadoop/hadoop-aws/2.7.2/hadoop-aws-2.7.2.jar \
-  && mv hadoop-aws-2.7.2.jar /opt/spark/lib/
+RUN curl -O http://central.maven.org/maven2/org/apache/hadoop/hadoop-aws/2.7.3/hadoop-aws-2.7.3.jar \
+  && mv hadoop-aws-2.7.3.jar /opt/spark/lib/
 
 WORKDIR /opt/spark
 
