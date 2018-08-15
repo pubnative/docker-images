@@ -3,7 +3,7 @@ MAINTAINER PubNative Team <team@pubnative.net>
 
 LABEL os="centos"
 
-ENV SPARK_VERSION="2.3.0"
+ENV SPARK_VERSION="2.3.1"
 
 RUN rpm -Uvh http://repos.mesosphere.com/el/7/noarch/RPMS/mesosphere-el-repo-7-1.noarch.rpm \
   && yum update -y \
@@ -18,8 +18,8 @@ RUN curl -SL http://ftp.halifax.rwth-aachen.de/apache/spark/spark-${SPARK_VERSIO
 RUN curl -O http://central.maven.org/maven2/com/amazonaws/aws-java-sdk/1.7.4/aws-java-sdk-1.7.4.jar \
   && mv aws-java-sdk-1.7.4.jar /opt/spark/lib/
 
-RUN curl -O http://central.maven.org/maven2/org/apache/hadoop/hadoop-aws/2.7.2/hadoop-aws-2.7.2.jar \
-  && mv hadoop-aws-2.7.2.jar /opt/spark/lib/
+RUN curl -O http://central.maven.org/maven2/org/apache/hadoop/hadoop-aws/2.7.3/hadoop-aws-2.7.3.jar \
+  && mv hadoop-aws-2.7.3.jar /opt/spark/lib/
 
 WORKDIR /opt/spark
 
