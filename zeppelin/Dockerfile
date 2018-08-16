@@ -103,6 +103,7 @@ RUN set -ex \
     scipy \
   ' \
   && pip3 install $packages \
+  && pip install $packages \
   && rm -rf /root/.cache/pip \
   && apt-get purge -y --auto-remove $buildDeps \
   && apt-get clean \
