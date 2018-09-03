@@ -37,8 +37,8 @@ Run task from the other image
 
 # Spark with Python
 
-This image Dockerfile can be found in `python` directory. It's an image with spark, mesos and python.
+This image Dockerfile can be found in `python` directory. It's an image containing spark, mesos and python.
 
 ## Build
 
-For building and pushing the image look at the `python/Makefile'.
+For building and pushing the image please look at `python/Makefile`.
