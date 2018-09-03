@@ -34,3 +34,11 @@ docker run --net=host pubnative/spark:2.0.2 bin/spark-submit \
 ```
 
 Run task from the other image
+
+# Spark with Python
+
+This image Dockerfile can be found in `python` directory. It's an image with spark, mesos and python.
+
+## Build
+
+For building and pushing the image look at the `python/Makefile'.
