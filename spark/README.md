@@ -41,4 +41,4 @@ This image Dockerfile can be found in `python` directory. It's an image containi
 
 ## Build
 
-For building and pushing the image please look at `python/Makefile`.
+For building and pushing the image `pubnative/spark:python3.6.5_java1.8.131_hadoop2.7.3_mesos1.3.0` please look at `python/Makefile`.
