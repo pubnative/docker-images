@@ -2,30 +2,37 @@
 
 FROM centos:latest
 
-MAINTAINER Denis <denis@pubnative.net>
+LABEL maintainer Denis <denis@pubnative.net>
 
-ENV DRUID_VERSION 0.11.0
+ARG DRUID_VERSION="0.12.2"
+ARG HADOOP_VERSION="2.7.2"
 ENV HADOOP_LOCAL_DIR_TTL "2880"
 ENV DNS_TTL=300
-
-RUN yum install -y java-1.8.0-openjdk java-1.8.0-openjdk-devel wget
-
+ENV HADOOP_EXT_PATH /opt/druid/extensions/druid-parquet-extensions
+ENV PARQUET_URI http://central.maven.org/maven2/org/apache/parquet
 ENV DRUID_URL http://static.druid.io/artifacts/releases/druid-$DRUID_VERSION-bin.tar.gz
-RUN wget -q -O -       $DRUID_URL | tar -xzf - -C /opt
-RUN  ln -s /opt/druid-$DRUID_VERSION /opt/druid
 
-RUN cd /opt/druid && java -classpath "lib/*" io.druid.cli.Main tools pull-deps --clean \
+RUN yum install -y \
+  java-1.8.0-openjdk \
+  java-1.8.0-openjdk-devel \
+  curl
+
+
+RUN curl -s "$DRUID_URL" | tar -xzf - -C /opt \
+ && ln -s /opt/druid-$DRUID_VERSION /opt/druid
+
+WORKDIR /opt/druid
+
+RUN java -classpath "lib/*" io.druid.cli.Main tools pull-deps --clean \
+  -c io.druid.extensions:postgresql-metadata-storage:$DRUID_VERSION \
   -c io.druid.extensions:mysql-metadata-storage:$DRUID_VERSION \
   -c io.druid.extensions:druid-s3-extensions:$DRUID_VERSION \
   -c io.druid.extensions:druid-avro-extensions:$DRUID_VERSION \
   -c io.druid.extensions:druid-caffeine-cache:$DRUID_VERSION \
   -c io.druid.extensions.contrib:druid-parquet-extensions:$DRUID_VERSION \
   -c io.druid.extensions.contrib:graphite-emitter:$DRUID_VERSION \
-  -h org.apache.hadoop:hadoop-client:2.7.2 \
-  -h org.apache.hadoop:hadoop-aws:2.7.2
-
-ENV HADOOP_EXT_PATH /opt/druid/extensions/druid-parquet-extensions
-ENV PARQUET_URI http://central.maven.org/maven2/org/apache/parquet
+  -h org.apache.hadoop:hadoop-client:$HADOOP_VERSION \
+  -h org.apache.hadoop:hadoop-aws:$HADOOP_VERSION
 
 # Temporary fix for warnings: `org.apache.parquet.CorruptStatistics: Ignoring statistics because created_by could not be parsed (see PARQUET-251): parquet-mr`
 # until writer be migrated to 1.8.1 version
