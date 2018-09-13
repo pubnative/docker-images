@@ -1,4 +1,12 @@
-#!/bin/bash -eu
+#!/bin/bash
+
+set -e
+
+DEBUG=${DEBUG:-"false"}
+
+if [ "${DEBUG}" = "true" ]; then
+  set -o xtrace
+fi
 
 if [[ $# -lt 1 ]]; then
   echo "Usage: $0 node_type"
@@ -9,8 +17,8 @@ readonly node_type="$1"
 shift
 
 exec java \
-  `cat conf/druid/$node_type/jvm.config | xargs` \
   -cp conf/druid/_common:conf/druid/$node_type:lib/* \
+  $DRUID_JAVA_OPTS \
   "$@" \
   io.druid.cli.Main \
   server \
