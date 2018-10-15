@@ -10,6 +10,7 @@ ARG JAVA_BUILD_NUMBER=11
 ENV JAVA_HOME /usr/jdk1.${JAVA_MAJOR_VERSION}.0_${JAVA_UPDATE_VERSION}
 ENV SPARK_CLASSPATH='/opt/app/java_libs/aws-java-sdk-1.7.4.jar:/opt/app/java_libs/hadoop-aws-2.7.3.jar'
 ENV PATH $PATH:$JAVA_HOME/bin
+ENV SPARK_VERSION 2.3.2
 
 RUN curl -sL --retry 3 --insecure \
     --header "Cookie: oraclelicense=accept-securebackup-cookie;" \
@@ -33,3 +34,9 @@ RUN echo "deb http://ftp.debian.org/debian jessie-backports main" >> /etc/apt/so
     && apt-get -y install mesos=1.3.0-2.0.3 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
+#Spark
+
+RUN curl -SL http://ftp.halifax.rwth-aachen.de/apache/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-hadoop2.7.tgz \
+  | tar -xzC / \
+  && ln -s /spark-${SPARK_VERSION}-bin-hadoop2.7 /opt/spark && mkdir /opt/spark/lib
