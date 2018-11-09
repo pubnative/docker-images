@@ -11,6 +11,10 @@ RUN groupadd -g 999 druid \
  && mkdir -p $DRUID_HOME \
  && curl -sSL "http://static.druid.io/artifacts/releases/druid-$DRUID_VERSION-bin.tar.gz" \
   | tar zxf - --strip-components 1 -C $DRUID_HOME \
+ && curl "http://static.druid.io/artifacts/releases/druid-parquet-extensions-$DRUID_VERSION.tar.gz" \
+  | tar zxf - -C $DRUID_HOME/extensions \
+ && curl "http://static.druid.io/artifacts/releases/mysql-metadata-storage-$DRUID_VERSION.tar.gz" \
+  | tar zxf - -C $DRUID_HOME/extensions \
  && chown druid:druid -R $DRUID_HOME
 
 USER druid
