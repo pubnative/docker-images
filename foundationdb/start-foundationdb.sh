@@ -6,10 +6,21 @@ readonly fdb_cluster="${FDB_CLUSTER}"
 readonly data_dir="${DATA_DIR:-/var/lib/foundationdb/data}"
 readonly cluster_file="/etc/foundationdb/fdb.cluster"
 
-if [ -n "${FDB_COORDINATORS_FQDN:-}" ]; then
-    echo ">> Configuring $cluster_file"
+seed="${SEED_FILE:-/etc/fdb-seed/fdb.cluster}"
+if [ -s "$seed" ]; then
+    echo ">> Using seed $seed:"
+    cat $seed
 
-    for (( i = 0; i < 30; i++ )); do
+    sed -i "/\[fdbserver\]/a seed_cluster_file = $seed" \
+        /etc/foundationdb/foundationdb.conf
+
+    rm $cluster_file
+elif [ -n "${FDB_COORDINATORS_FQDN:-}" ]; then
+    echo ">> Bootstrapping $cluster_file"
+
+    # Wait 30 seconds till kubernetes endpoints and DNS are
+    # properly propagated
+    for (( i = 0; i < 10; i++ )); do
         ips=""
         for fqdn in $FDB_COORDINATORS_FQDN; do
             echo ">>> Resolving $fqdn"
@@ -29,10 +40,9 @@ if [ -n "${FDB_COORDINATORS_FQDN:-}" ]; then
     fi
 
     echo "${fdb_cluster}@${ips}" > $cluster_file
+    echo ">> Using cluster file:"
+    cat $cluster_file
 fi
-
-echo ">> $cluster_file:"
-cat "$cluster_file"
 
 if [ -n "${FDB_DATACENTER_ID:-}" ]; then
     echo ">> setting datacenter_id"
@@ -46,7 +56,7 @@ if [ -n "${FDB_MACHINE_ID:-}" ]; then
 fi
 
 set -x
-chown foundationdb:foundationdb "$data_dir" "$cluster_file"
+chown foundationdb:foundationdb "$data_dir" "$cluster_file" || :
 
 /usr/lib/foundationdb/fdbmonitor &
 
