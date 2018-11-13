@@ -16,6 +16,11 @@ fi
 readonly node_type="$1"
 shift
 
+mkdir -p "${DRUID_DATA_DIR}"
+chown druid:druid "${DRUID_DATA_DIR}"
+
+su - druid
+
 exec java \
   -cp conf/druid/_common:conf/druid/$node_type:lib/* \
   $DRUID_JAVA_OPTS \

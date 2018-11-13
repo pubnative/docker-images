@@ -5,6 +5,7 @@ FROM openjdk:8-jre
 ARG DRUID_VERSION="0.12.3"
 ENV DRUID_HOME=/druid
 ENV DRUID_JAVA_OPTS="-server -Xms0m -Xmx128m -Duser.timezone=UTC -Dfile.encoding=UTF-8 -Djava.util.logging.manager=org.apache.logging.log4j.jul.LogManager -XX:+PrintGC"
+ENV DRUID_DATA_DIR=/druid/var
 
 RUN groupadd -g 999 druid \
  && useradd -r -u 999 -g druid druid \
@@ -18,7 +19,6 @@ RUN groupadd -g 999 druid \
  && wget https://repo1.maven.org/maven2/io/druid/extensions/contrib/druid-parquet-extensions/$DRUID_VERSION/druid-parquet-extensions-$DRUID_VERSION.jar \
  && chown druid:druid -R $DRUID_HOME
 
-USER druid
 WORKDIR $DRUID_HOME
 
 COPY ./docker-entrypoint.sh /
