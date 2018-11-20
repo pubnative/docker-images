@@ -8,13 +8,8 @@ readonly cluster_file="/etc/foundationdb/fdb.cluster"
 
 seed="${SEED_FILE:-/etc/fdb-seed/fdb.cluster}"
 if [ -s "$seed" ]; then
-    echo ">> Using seed $seed:"
-    cat $seed
-
-    sed -i "/\[fdbserver\]/a seed_cluster_file = $seed" \
-        /etc/foundationdb/foundationdb.conf
-
-    rm $cluster_file
+    echo ">> Using seed from $seed"
+    cat $seed > $cluster_file
 elif [ -n "${FDB_COORDINATORS_FQDN:-}" ]; then
     echo ">> Bootstrapping $cluster_file"
 
@@ -40,9 +35,10 @@ elif [ -n "${FDB_COORDINATORS_FQDN:-}" ]; then
     fi
 
     echo "${fdb_cluster}@${ips}" > $cluster_file
-    echo ">> Using cluster file:"
-    cat $cluster_file
 fi
+
+echo ">> Using cluster file:"
+cat $cluster_file || :
 
 if [ -n "${FDB_DATACENTER_ID:-}" ]; then
     echo ">> setting datacenter_id"
