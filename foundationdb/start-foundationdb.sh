@@ -58,7 +58,7 @@ fi
 set -x
 chown foundationdb:foundationdb "$data_dir" "$cluster_file" || :
 
-/usr/lib/foundationdb/fdbmonitor &
+/usr/lib/foundationdb/fdbmonitor & pid=$!
 
-trap 'kill $!' SIGHUP SIGINT SIGQUIT SIGTERM
-wait
+trap "kill $pid" SIGHUP SIGINT SIGQUIT SIGTERM
+wait $pid
