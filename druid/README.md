@@ -1,7 +1,7 @@
 # Build
 
 ```shell
-$ make build
+$ make build DRUID_VERSION=<druid_version> DOCKER_REPO_DOCKERFILE_FOLDER=<child_folder_with_Dockerfile>
 ```
 
 # Usage
@@ -15,5 +15,5 @@ conf
     ├── jvm.config
     └── runtime.properties
 
-$ docker run -p 8090:8090 -v $(pwd)/conf:/druid/conf/druid/ -it pubnative/druid:v0.12.2 overlord
+$ docker run -p 8090:8090 -v $(pwd)/conf:/druid/conf/druid/ -it pubnative/druid:v0.12.3 /opt/druid/bin/start-node.sh coordinator
 ```

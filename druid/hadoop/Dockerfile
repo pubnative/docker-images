@@ -15,20 +15,23 @@ ENV DRUID_URL http://static.druid.io/artifacts/releases/druid-$DRUID_VERSION-bin
 RUN yum install -y \
   java-1.8.0-openjdk \
   java-1.8.0-openjdk-devel \
-  curl
-
+  curl \
+  wget
 
 RUN curl -s "$DRUID_URL" | tar -xzf - -C /opt \
  && ln -s /opt/druid-$DRUID_VERSION /opt/druid
 
 WORKDIR /opt/druid
 
+# Download extensions
+# using v0.11.0 for druid-caffeine-cache as it's the latest at the moment
 RUN java -classpath "lib/*" io.druid.cli.Main tools pull-deps --clean \
   -c io.druid.extensions:postgresql-metadata-storage:$DRUID_VERSION \
   -c io.druid.extensions:mysql-metadata-storage:$DRUID_VERSION \
   -c io.druid.extensions:druid-s3-extensions:$DRUID_VERSION \
   -c io.druid.extensions:druid-avro-extensions:$DRUID_VERSION \
-  -c io.druid.extensions:druid-caffeine-cache:$DRUID_VERSION \
+  -c io.druid.extensions:druid-caffeine-cache:0.11.0 \
+  -c io.druid.extensions:druid-datasketches:$DRUID_VERSION \
   -c io.druid.extensions.contrib:druid-parquet-extensions:$DRUID_VERSION \
   -c io.druid.extensions.contrib:graphite-emitter:$DRUID_VERSION \
   -h org.apache.hadoop:hadoop-client:$HADOOP_VERSION \
@@ -49,10 +52,10 @@ ADD common.runtime.properties /opt/druid/conf/druid/_common/
 ADD start-node.sh hadoop-data-cleanup.sh /opt/druid/bin/
 ADD cron_hadoop-data-cleanup /etc/cron.d/cron_hadoop-data-cleanup
 
-RUN yum install -y  vixie-cron crontabs && \
+RUN yum install -y vixie-cron crontabs && \
   crontab /etc/cron.d/cron_hadoop-data-cleanup
 
-# allow to refresh dns cache
+# Allow to refresh dns cache
 RUN export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:/bin/java::") && \
   echo "networkaddress.cache.ttl=$DNS_TTL" >> $JAVA_HOME/lib/security/java.security
 
