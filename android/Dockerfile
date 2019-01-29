@@ -47,8 +47,8 @@ RUN cd /usr/local/ && ls -la
 
 # Install Android tools
 RUN /usr/local/android-sdk/tools/bin/sdkmanager --update <<< 'y'
-RUN yes | /usr/local/android-sdk/tools/bin/sdkmanager "platforms;android-26" "build-tools;26.0.2" "extras;google;m2repository" "extras;android;m2repository"
-#RUN echo yes | /usr/local/android-sdk-linux/tools/android update sdk --filter android-26 --no-ui --force -a
+RUN yes | /usr/local/android-sdk/tools/bin/sdkmanager "platforms;android-28" "build-tools;28.0.3" "extras;google;m2repository" "extras;android;m2repository"
+#RUN echo yes | /usr/local/android-sdk-linux/tools/android update sdk --filter android-28 --no-ui --force -a
 #RUN echo yes | /usr/local/android-sdk-linux/tools/android update sdk --filter platform-tools --no-ui --force -a
 #RUN echo yes | /usr/local/android-sdk-linux/tools/android update sdk --filter tools --no-ui --force -a
 #RUN echo yes | /usr/local/android-sdk-linux/tools/android update sdk --filter extra --no-ui --force -a
