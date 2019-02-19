@@ -5,13 +5,13 @@ workflow "Release android docker" {
 
 action "Filter" {
   uses = "actions/bin/filter@master"
-  args = "branch master"
+  args = "tag android-*"
 }
 
 action "Build android image" {
   uses = "actions/docker/cli@master"
   needs = ["Filter"]
-  args = "build -f android/Dockerfile -t pubnative/android:$GITHUB_SHA android"
+  args = "build -f android/Dockerfile -t pubnative/android:$(echo $GITHUB_REF | cut -c11-) android"
 }
 
 action "Docker Registry" {
@@ -26,6 +26,6 @@ action "Docker Registry" {
 action "Push" {
   uses = "actions/docker/cli@master"
   needs = ["Docker Registry"]
-  args = "push -t pubnative/android:$GITHUB_SHA"
+  args = "push -t pubnative/android:$(echo $GITHUB_REF | cut -c11-)"
 }
 
