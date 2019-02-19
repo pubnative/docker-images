@@ -1,5 +1,5 @@
 workflow "Release android docker" {
-  on = "push"
+  on = "create"
   resolves = ["Release android docker image"]
 }
 
