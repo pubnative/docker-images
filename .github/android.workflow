@@ -1,26 +1,31 @@
 workflow "Release android docker" {
   on = "push"
-  resolves = ["Filters for GitHub Actions"]
+  resolves = ["Build android image"]
 }
 
-action "Master" {
+action "Filter" {
   uses = "actions/bin/filter@master"
   args = "branch master"
 }
 
+action "Build android image" {
+  uses = "actions/docker/cli@master"
+  needs = ["Filter"]
+  args = "build -f android/Dockerfile -t pubnative/android:$GITHUB_SHA android"
+}
+
 action "Docker Registry" {
-  needs = "Master"
   uses = "actions/docker/login@master"
+  needs = ["Filter"]
   env = {
     DOCKER_USERNAME = "deployments"
     DOCKER_PASSWORD = "DvrAyre#%!"
   }
 }
 
-action "Build android image" {
-  needs = "Docker Registry"
+action "Push" {
   uses = "actions/docker/cli@master"
   needs = ["Docker Registry"]
-  args = "build -f android/Dockerfile -t pubnative/android android"
+  args = "push -t pubnative/android:$GITHUB_SHA"
 }
 
