@@ -26,6 +26,5 @@ action "Docker registry login" {
 action "Release android docker image" {
   uses = "actions/docker/cli@master"
   needs = ["Docker registry login"]
-  args = "push -t pubnative/android:$(echo $GITHUB_REF | cut -c19-)"
+  args = "push pubnative/android:$(echo $GITHUB_REF | cut -c19-)"
 }
-
