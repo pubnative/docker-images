@@ -4,6 +4,7 @@ set -euo pipefail
 
 readonly fdb_cluster="${FDB_CLUSTER}"
 readonly data_dir="${DATA_DIR:-/var/lib/foundationdb/data}"
+readonly log_dir="${LOG_DIR:-/var/log/foundationdb}"
 readonly cluster_file="/etc/foundationdb/fdb.cluster"
 
 seed="${SEED_FILE:-/etc/fdb-seed/fdb.cluster}"
@@ -40,19 +41,45 @@ fi
 echo ">> Using cluster file:"
 cat $cluster_file || :
 
-if [ -n "${FDB_DATACENTER_ID:-}" ]; then
-    echo ">> setting datacenter_id"
-    sed -Ei "s/(# )?datacenter_id =.*/datacenter_id = $FDB_DATACENTER_ID/" \
-        /etc/foundationdb/foundationdb.conf
-fi
-if [ -n "${FDB_MACHINE_ID:-}" ]; then
-    echo ">> setting machine_id"
-    sed -Ei "s/(# )?machine_id =.*/machine_id = $FDB_MACHINE_ID/" \
-        /etc/foundationdb/foundationdb.conf
-fi
+cat > /etc/foundationdb/foundationdb.conf <<EOD
+[fdbmonitor]
+user = foundationdb
+group = foundationdb
+
+[general]
+restart_delay = 60
+cluster_file = $cluster_file
+
+[fdbserver]
+command = /usr/sbin/fdbserver
+public_address = auto:\$ID
+listen_address = public
+datadir = $data_dir/\$ID
+logdir = $log_dir
+
+memory = ${FDB_MEMORY:-8GiB}
+storage_memory = ${FDB_STORAGE_MEMORY:-1GiB}
+
+locality_zoneid = ${FDB_ZONE_ID:-$(hostname)}
+locality_dcid = ${FDB_DATACENTER_ID:-none}
+
+[backup_agent]
+command = /usr/lib/foundationdb/backup_agent/backup_agent
+logdir = /var/log/foundationdb
+
+[backup_agent.1]
+
+EOD
+
+for i in $(seq ${FDB_PROCESS_COUNT:-1}); do
+    cat >> /etc/foundationdb/foundationdb.conf <<EOD
+[fdbserver.$((4499 + i))]
+
+EOD
+done
 
 set -x
-chown foundationdb:foundationdb "$data_dir" "$cluster_file" || :
+chown foundationdb:foundationdb "$data_dir" "$log_dir" "$cluster_file" || :
 
 /usr/lib/foundationdb/fdbmonitor & pid=$!
 
