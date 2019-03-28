@@ -1,5 +1,7 @@
 FROM java:9-b147
-MAINTAINER PubNative Team <team@pubnative.net>
+LABEL maintainer="PubNative Team <team@pubnative.net>"
+
+ARG PRESTO_VERSION="0.217"
 
 RUN apt-get update -y \
  && apt-get install -y python-pip python-dev python3-dev \
@@ -7,9 +9,8 @@ RUN apt-get update -y \
 
 LABEL os="debian"
 LABEL app="presto"
-LABEL version="0.189"
+LABEL version="$PRESTO_VERSION"
 
-ENV PRESTO_VERSION 0.217
 ENV PRESTO_DIR /opt/presto
 ENV PRESTO_ETC_DIR /etc/presto
 ENV PRESTO_DATA_DIR /data
