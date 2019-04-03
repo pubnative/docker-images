@@ -1,7 +1,15 @@
 #!/bin/bash
 
-set -euo pipefail
-set -o nounset
+set -xeuo pipefail
+
+: ${RDS_PASSWORD?Need a value}
+: ${RDS_REPLICA_HOST?Need a value}
+: ${RDS_USER?Need a value}
+: ${MYSQL_HOST?Need a value}
+: ${MYSQL_USER?Need a value}
+: ${MYSQL_PORT?Need a value}
+: ${RDS_DATABASE?Need a value}
+: ${RDS_MASTER_HOST?Need a value}
 
 # Download the RDS CA pem in `/cert` dir which will be used to enable SSL/TLS
 # for interaction with RDS
@@ -15,9 +23,9 @@ function wait_for_rds_slave_ready() {
   # make sure that the RDS Read Replica has replicated everything from RDS Master
   while true; do
     # get the information on what the RDS Read Replica looks like
-    slave_status=$(mysql --host="${RDS_READ_REPLICA}" --user="${RDS_USER}" \
+    slave_status=$(mysql --host="${RDS_REPLICA_HOST}" --user="${RDS_USER}" \
       --password="${RDS_PASSWORD}" --ssl-ca=/cert/rds-combined-ca-bundle.pem \
-      --execute="SHOW SLAVE STATUS\G;")
+      --execute="SHOW SLAVE STATUS\G")
 
     # make sure that the `Seconds_Behind_Master` is 0 which means everything is replicated
     # if it is NULL means replication was stopped in previously failed iteration of this job
@@ -26,22 +34,21 @@ function wait_for_rds_slave_ready() {
       break
     fi
     echo "RDS Read Replica still replicating..."
-    sleep 1
+    sleep $((seconds_behind_master / 10 + 1))
   done
   echo "RDS Read Replica done replicating"
 }
 
 function stop_replication_on_rds_slave() {
-
-  readonly mysql_query="mysql \
-    --host='${RDS_READ_REPLICA}' \
-    --user='${RDS_USER}' \
-    --password='${RDS_PASSWORD}' \
+  readonly mysql_query=$(echo mysql \
+    --host="${RDS_REPLICA_HOST}" \
+    --user=${RDS_USER} \
+    --password=${RDS_PASSWORD} \
     --ssl-ca=/cert/rds-combined-ca-bundle.pem \
-    --execute "
+    --execute )
   $mysql_query "CALL mysql.rds_stop_replication;"
 
-  slave_status=$($mysql_query "SHOW SLAVE STATUS\G;")
+  slave_status=$($mysql_query "SHOW SLAVE STATUS\G")
 
   RDS_MASTER_HOST_LOG_FILE=$(grep "Relay_Master_Log_File" <<<"${slave_status}" | cut -f2 -d: | xargs)
   RDS_MASTER_HOST_LOG_POS=$(grep "Exec_Master_Log_Pos" <<<"${slave_status}" | cut -f2 -d: | xargs)
@@ -49,7 +56,7 @@ function stop_replication_on_rds_slave() {
 
 function start_replication_on_rds_slave() {
   mysql \
-    --host="${RDS_READ_REPLICA}" \
+    --host="${RDS_REPLICA_HOST}" \
     --user="${RDS_USER}" \
     --password="${RDS_PASSWORD}" \
     --ssl-ca=/cert/rds-combined-ca-bundle.pem \
@@ -58,7 +65,7 @@ function start_replication_on_rds_slave() {
 
 function dump_mysql_db() {
   mysqldump \
-    --host="${RDS_READ_REPLICA}" \
+    --host="${RDS_REPLICA_HOST}" \
     --user="${RDS_USER}" \
     --password="${RDS_PASSWORD}" \
     --databases mysql \
@@ -68,12 +75,12 @@ function dump_mysql_db() {
     mysql \
       --host="${MYSQL_HOST}" \
       --user=root \
-      --password="${MYSQL_ROOT_PASSWORD_LOCAL}" \
+      --password="${MYSQL_PASSWORD}" \
       --port="${MYSQL_PORT}"
 }
 
 function set_permissions() {
-  mysql --host="${MYSQL_HOST}" --user=root --password="${MYSQL_ROOT_PASSWORD_LOCAL}" \
+  mysql --host="${MYSQL_HOST}" --user=root --password="${MYSQL_PASSWORD}" \
     --port="${MYSQL_PORT}" --execute="FLUSH PRIVILEGES;"
 
   mysql --host="${MYSQL_HOST}" --user=root --password="${RDS_PASSWORD}" --port="${MYSQL_PORT}" <<EOF
@@ -84,7 +91,7 @@ EOF
 
 function dump_main_db() {
   mysqldump \
-    --host="${RDS_READ_REPLICA}" \
+    --host="${RDS_REPLICA_HOST}" \
     --user="${RDS_USER}" \
     --password="${RDS_PASSWORD}" \
     --databases "${RDS_DATABASE}" \
@@ -102,15 +109,19 @@ function dump_main_db() {
 }
 
 function start_active_replication() {
+  query = <<EOF
+    CHANGE MASTER TO MASTER_HOST="${RDS_MASTER_HOST}",MASTER_USER="${REPLICATION_USER}",MASTER_PASSWORD="${REPLICATION_PASSWORD}",MASTER_LOG_FILE="${RDS_MASTER_HOST_LOG_FILE}",MASTER_LOG_POS=${RDS_MASTER_HOST_LOG_POS};
+    START SLAVE;
+    SHOW SLAVE STATUS\G
+EOF
+  echo $query
+
   mysql \
     --host="${MYSQL_HOST}" \
     --user=root \
     --password="${RDS_PASSWORD}" \
-    --port="${MYSQL_PORT}" <<EOF
-    CHANGE MASTER TO MASTER_HOST="${RDS_MASTER_HOST}",MASTER_USER="${REPLICATION_USER}",MASTER_PASSWORD="${REPLICATION_USER_PASSWORD}",MASTER_LOG_FILE="${RDS_MASTER_HOST_LOG_FILE}",MASTER_LOG_POS=${RDS_MASTER_HOST_LOG_POS};
-    START SLAVE;
-    SHOW SLAVE STATUS\G;
-EOF
+    --port="${MYSQL_PORT}"
+    --execute "${query}"
 }
 
 download_rds_ca

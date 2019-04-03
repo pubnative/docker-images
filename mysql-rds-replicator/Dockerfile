@@ -17,6 +17,17 @@ RUN apt-get update \
            /var/cache/debconf \
            /usr/share/zsh
 
+ENV RDS_MASTER_HOST= \
+    REPLICATION_USER= \
+    REPLICATION_PASSWORD= \
+    RDS_REPLICA_HOST=example.com \
+    RDS_USER=root \
+    RDS_PASSWORD=<CHANGEME> \
+    RDS_DATABASE=<CHANGEME> \
+    MYSQL_HOST=localhost \
+    MYSQL_PORT=3306 \
+    MYSQL_PASSWORD=<CHANGEME>
+
 COPY docker-entrypoint.sh /
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
