@@ -10,6 +10,8 @@ set -xeuo pipefail
 : ${MYSQL_PORT?Need a value}
 : ${RDS_DATABASE?Need a value}
 : ${RDS_MASTER_HOST?Need a value}
+: ${REPLICATION_USER?Need a value}
+: ${REPLICATION_PASSWORD?Need a value}
 
 # Download the RDS CA pem in `/cert` dir which will be used to enable SSL/TLS
 # for interaction with RDS
@@ -45,13 +47,31 @@ function stop_replication_on_rds_slave() {
     --user=${RDS_USER} \
     --password=${RDS_PASSWORD} \
     --ssl-ca=/cert/rds-combined-ca-bundle.pem \
-    --execute )
+    --execute)
   $mysql_query "CALL mysql.rds_stop_replication;"
 
   slave_status=$($mysql_query "SHOW SLAVE STATUS\G")
 
   RDS_MASTER_HOST_LOG_FILE=$(grep "Relay_Master_Log_File" <<<"${slave_status}" | cut -f2 -d: | xargs)
   RDS_MASTER_HOST_LOG_POS=$(grep "Exec_Master_Log_Pos" <<<"${slave_status}" | cut -f2 -d: | xargs)
+}
+
+function create_replica_user_on_master() {
+  cat <<EOF
+    CREATE USER IF NOT EXISTS '${REPLICATION_USER}'@'%' IDENTIFIED BY '${REPLICATION_PASSWORD}';
+    GRANT REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO '${REPLICATION_USER}'@'%';
+    SHOW GRANTS FOR '${REPLICATION_USER}'@'%';
+EOF
+
+  mysql \
+    --host="${RDS_MASTER_HOST}" \
+    --user="${RDS_USER}" \
+    --password="${RDS_PASSWORD}" \
+    --ssl-ca=/cert/rds-combined-ca-bundle.pem <<EOF
+    CREATE USER IF NOT EXISTS '${REPLICATION_USER}'@'%' IDENTIFIED BY '${REPLICATION_PASSWORD}';
+    GRANT REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO '${REPLICATION_USER}'@'%';
+    SHOW GRANTS FOR '${REPLICATION_USER}'@'%';
+EOF
 }
 
 function start_replication_on_rds_slave() {
@@ -109,22 +129,25 @@ function dump_main_db() {
 }
 
 function start_active_replication() {
-  query = <<EOF
+  cat <<EOF
     CHANGE MASTER TO MASTER_HOST="${RDS_MASTER_HOST}",MASTER_USER="${REPLICATION_USER}",MASTER_PASSWORD="${REPLICATION_PASSWORD}",MASTER_LOG_FILE="${RDS_MASTER_HOST_LOG_FILE}",MASTER_LOG_POS=${RDS_MASTER_HOST_LOG_POS};
     START SLAVE;
     SHOW SLAVE STATUS\G
 EOF
-  echo $query
 
   mysql \
     --host="${MYSQL_HOST}" \
     --user=root \
     --password="${RDS_PASSWORD}" \
-    --port="${MYSQL_PORT}"
-    --execute "${query}"
+    --port="${MYSQL_PORT}" <<EOF
+    CHANGE MASTER TO MASTER_HOST="${RDS_MASTER_HOST}",MASTER_USER="${REPLICATION_USER}",MASTER_PASSWORD="${REPLICATION_PASSWORD}",MASTER_LOG_FILE="${RDS_MASTER_HOST_LOG_FILE}",MASTER_LOG_POS=${RDS_MASTER_HOST_LOG_POS};
+    START SLAVE;
+    SHOW SLAVE STATUS\G
+EOF
 }
 
 download_rds_ca
+create_replica_user_on_master
 wait_for_rds_slave_ready
 stop_replication_on_rds_slave
 dump_mysql_db
