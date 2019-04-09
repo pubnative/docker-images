@@ -29,3 +29,5 @@ RUN set -x \
     && mkdir -p $KAFKA_DATA_DIR \
     && chown -R "$KAFKA_USER:$KAFKA_USER"  /opt/$KAFKA_DIST \
     && chown -R "$KAFKA_USER:$KAFKA_USER" $KAFKA_DATA_DIR
+
+WORKDIR /opt/kafka
