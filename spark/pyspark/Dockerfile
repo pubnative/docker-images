@@ -32,3 +32,6 @@ RUN ["/bin/bash", "-c", "set -o pipefail \
 # Install PySpark.
 RUN pip3 install --upgrade pip \
     && pip3 install pyspark==2.4.2
+
+# Bazel needs python2 to be the default Python interpreter (binded on `python`).
+RUN update-alternatives --install /usr/local/bin/python python /usr/bin/python2.7 1
