@@ -1,7 +1,7 @@
 # PrestoDB docker image
 
-* [Presto Documentation](https://prestodb.io/docs/current/index.html)
-* [Deploying Presto](https://prestodb.io/docs/current/installation/deployment.html)
+* [Presto Documentation](https://prestosql.io/docs/current/index.html)
+* [Deploying Presto](https://prestosql.io/docs/current/installation/deployment.html)
 * [Configuration Management Tool to build templates](https://github.com/kelseyhightower/confd)
 
 ```
