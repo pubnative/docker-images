@@ -1,10 +1,10 @@
 FROM python:3.7.3-stretch
 
-ARG BAZEL_REPO="deb [arch=amd64] http://storage.googleapis.com/bazel-apt stable jdk1.8"
-ARG BAZEL_RELEASE_KEY_URL="https://bazel.build/bazel-release.pub.gpg"
+ENV BAZEL_REPO="deb [arch=amd64] http://storage.googleapis.com/bazel-apt stable jdk1.8"
+ENV BAZEL_RELEASE_KEY_URL="https://bazel.build/bazel-release.pub.gpg"
 
-ARG DOCKER_REPO="deb [arch=amd64] https://download.docker.com/linux/debian stretch stable"
-ARG DOCKER_RELEASE_KEY_URL="https://download.docker.com/linux/debian/gpg"
+ENV DOCKER_REPO="deb [arch=amd64] https://download.docker.com/linux/debian stretch stable"
+ENV DOCKER_RELEASE_KEY_URL="https://download.docker.com/linux/debian/gpg"
 
 RUN apt-get update && apt-get install -y apt-transport-https
 
