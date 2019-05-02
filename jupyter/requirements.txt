@@ -1,0 +1,10 @@
+numpy
+pandas
+matplotlib
+seaborn
+scikit-learn
+tensorflow
+tensorflow_probability
+keras
+tqdm
+petastorm[tf]

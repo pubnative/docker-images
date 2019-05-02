@@ -11,9 +11,9 @@ RUN jupyter labextension install @jupyterlab/git && \
 RUN pip install jupyter_contrib_nbextensions && \
   jupyter contrib nbextension install --user
 
-RUN pip install tensorflow && \
-  pip install keras && \
-  pip install petastorm[tf]
+COPY requirements.txt /tmp/requirements.txt
+
+RUN pip install --upgrade -r /tmp/requirements.txt
 
 # Install Black (formatting)
 # To use formatting in Notebooks, run %load_ext lab_black
