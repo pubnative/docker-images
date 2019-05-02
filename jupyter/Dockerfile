@@ -1,6 +1,6 @@
 # Image: pubnative/jupyter:0.7
 
-FROM jupyter/all-spark-notebook
+FROM jupyter/all-spark-notebook:f646d2b2a3af
 
 LABEL maintainer Denis <denis@pubnative.net>
 
