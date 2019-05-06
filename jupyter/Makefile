@@ -1,4 +1,4 @@
-NAME := pubnative/pyspark-ci
+NAME := pubnative/jupyter
 TAG := $$(git log -1 --pretty=%h)
 IMG := ${NAME}:${TAG}
 LATEST := ${NAME}:latest
