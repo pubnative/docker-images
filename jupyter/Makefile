@@ -5,10 +5,16 @@ LATEST := ${NAME}:latest
  
 all: build push
 
-build:
-	@./compile_dependencies.sh
+compile_dependencies:
+	@pip-compile \
+	  --generate-hashes \
+	  --output-file requirements.txt \
+	  requirements.in
+	@chmod +r requirements.txt
+
+build: compile_dependencies
 	@docker build . -t ${IMG}
 	@docker tag ${IMG} ${LATEST}
- 
+
 push:
 	@docker push ${NAME}
