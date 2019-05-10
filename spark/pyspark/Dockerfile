@@ -8,7 +8,6 @@ ENV DOCKER_RELEASE_KEY_URL="https://download.docker.com/linux/debian/gpg"
 
 RUN apt-get update && apt-get install -y apt-transport-https
 
-# Install Docker.
 RUN ["/bin/bash", "-c", "set -o pipefail \
     && curl -fsSL ${DOCKER_RELEASE_KEY_URL} \
     | apt-key add - \
@@ -20,7 +19,6 @@ RUN ["/bin/bash", "-c", "set -o pipefail \
       docker-ce-cli \
       containerd.io"]
 
-# Install Bazel.
 RUN ["/bin/bash", "-c", "set -o pipefail \
     && apt-get install -y \
       g++ \
@@ -35,9 +33,13 @@ RUN ["/bin/bash", "-c", "set -o pipefail \
     && chmod +x /lib/bazel_installer.sh \
     && /lib/bazel_installer.sh"]
 
-# Install PySpark.
+COPY requirements.txt /tmp/requirements.txt
+
 RUN pip3 install --upgrade pip \
-    && pip3 install pyspark==2.4.2
+    && pip3 install \
+      --upgrade \
+      --require-hashes \
+      -r /tmp/requirements.txt
 
 # Bazel needs python2 to be the default Python interpreter (binded on `python`).
 RUN update-alternatives --install /usr/local/bin/python python /usr/bin/python2.7 1
