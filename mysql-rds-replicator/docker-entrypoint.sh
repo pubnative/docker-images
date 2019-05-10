@@ -120,12 +120,12 @@ function dump_main_db() {
     --routines \
     --skip-triggers \
     --ssl-ca=/cert/rds-combined-ca-bundle.pem \
-    --set-gtid-purged=OFF |
+    --set-gtid-purged=OFF > dump.sql
     mysql \
       --host="${MYSQL_HOST}" \
       --user=root \
       --password="${RDS_PASSWORD}" \
-      --port="${MYSQL_PORT}"
+      --port="${MYSQL_PORT}" < dump.sql
 }
 
 function start_active_replication() {
