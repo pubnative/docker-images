@@ -1,7 +1,7 @@
 FROM python:3.7.3-stretch
 
-ENV BAZEL_REPO="deb [arch=amd64] http://storage.googleapis.com/bazel-apt stable jdk1.8"
-ENV BAZEL_RELEASE_KEY_URL="https://bazel.build/bazel-release.pub.gpg"
+ARG BAZEL_VERSION="0.25.1"
+ENV BAZEL_URL=https://github.com/bazelbuild/bazel/releases/download/${BAZEL_VERSION}/bazel-${BAZEL_VERSION}-installer-linux-x86_64.sh
 
 ENV DOCKER_REPO="deb [arch=amd64] https://download.docker.com/linux/debian stretch stable"
 ENV DOCKER_RELEASE_KEY_URL="https://download.docker.com/linux/debian/gpg"
@@ -16,18 +16,24 @@ RUN ["/bin/bash", "-c", "set -o pipefail \
     | tee /etc/apt/sources.list.d/docker.list \
     && apt-get update \
     && apt-get install -y \
-    docker-ce \
-    docker-ce-cli \
-    containerd.io"]
+      docker-ce \
+      docker-ce-cli \
+      containerd.io"]
 
 # Install Bazel.
 RUN ["/bin/bash", "-c", "set -o pipefail \
-    && echo ${BAZEL_REPO}  \
-    | tee /etc/apt/sources.list.d/bazel.list \
-    && curl ${BAZEL_RELEASE_KEY_URL} \
-    | apt-key add - \
-    && apt-get update \
-    && apt-get install -y openjdk-8-jdk bazel"]
+    && apt-get install -y \
+      g++ \
+      pkg-config \
+      python \
+      unzip \
+      zip \
+      zlib1g-dev \
+    && curl \
+      -fsSL ${BAZEL_URL} \
+      -o /lib/bazel_installer.sh \
+    && chmod +x /lib/bazel_installer.sh \
+    && /lib/bazel_installer.sh"]
 
 # Install PySpark.
 RUN pip3 install --upgrade pip \
