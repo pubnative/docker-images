@@ -1,14 +1,20 @@
-container_name=pubnative/pyspark-ci
-version=1.0.2
-tag=$(container_name):$(version)
-
+NAME 	:= pubnative/pyspark-ci
+TAG 	:= $$(git log -1 --pretty=%h)
+IMG 	:= ${NAME}:${TAG}
+LATEST 	:= ${NAME}:latest
+ 
 all: build push
 
-build:
-	docker build . -t $(tag)
+compile_dependencies:
+	@pip-compile \
+	  --generate-hashes \
+	  --output-file requirements.txt \
+	  requirements.in
+	@chmod +r requirements.txt
 
-run:
-	docker run $(tag)
+build: compile_dependencies
+	@docker build . -t ${IMG}
+	@docker tag ${IMG} ${LATEST}
 
 push:
-	docker push $(tag)
+	@docker push ${NAME}
