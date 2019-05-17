@@ -1,4 +1,5 @@
 FROM ubuntu:18.04
+ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install -y \
       kmod \
@@ -6,4 +7,5 @@ RUN apt-get update && apt-get install -y \
       strongswan \
       iptables \
       curl \
+      iputils-ping \
  && rm -rf /var/lib/apt/lists/*
