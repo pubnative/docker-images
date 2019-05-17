@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+function ping_host() {
+	ping -q -c 1 -W 10 $1 > /dev/null
+	return_code=$?
+	if [ "$return_code" -eq 0 ]; then
+		exit 0
+	fi
+}
+
+ping_host 10.0.8.11
+ping_host 10.0.8.13
+ping_host 10.0.8.15
+
+# If no instance was reachable, exit with error
+exit 1
