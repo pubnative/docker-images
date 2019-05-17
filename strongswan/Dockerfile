@@ -7,4 +7,5 @@ RUN apt-get update && apt-get install -y \
       strongswan \
       iptables \
       curl \
+      iputils-ping \
  && rm -rf /var/lib/apt/lists/*
