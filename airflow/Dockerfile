@@ -1,6 +1,6 @@
-# Image: pubnative/airflow:plugins-0.1
+# Image: pubnative/airflow:plugins-0.3
 
-FROM pubnative/airflow:base
+FROM pubnative/airflow:base-v2
 
 LABEL maintainer Denis <denis@pubnative.net>
 
