@@ -1,4 +1,4 @@
-FROM python:3.6.5-stretch
+FROM pubnative/pyspark-ci:base-e849b23
 
 ARG BAZEL_VERSION="0.25.1"
 ENV BAZEL_URL=https://github.com/bazelbuild/bazel/releases/download/${BAZEL_VERSION}/bazel-${BAZEL_VERSION}-installer-linux-x86_64.sh
