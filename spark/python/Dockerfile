@@ -25,16 +25,6 @@ RUN mkdir -p /opt/app/java_libs && cd /opt/app/java_libs \
     && wget http://central.maven.org/maven2/com/amazonaws/aws-java-sdk/1.7.4/aws-java-sdk-1.7.4.jar -O /opt/app/java_libs/aws-java-sdk-1.7.4.jar \
     && wget http://central.maven.org/maven2/org/apache/hadoop/hadoop-aws/2.7.3/hadoop-aws-2.7.3.jar -O /opt/app/java_libs/hadoop-aws-2.7.3.jar
 
-# Mesos
-RUN echo "deb http://ftp.debian.org/debian jessie-backports main" >> /etc/apt/sources.list \
-    && apt -q update && apt install -y libssl1.0.0 \
-    && echo 'deb http://repos.mesosphere.com/ubuntu xenial main' >> /etc/apt/sources.list.d/mesosphere.list \
-    && apt-get install dirmngr && apt-key adv --keyserver keyserver.ubuntu.com --recv E56151BF \
-    && apt-get -y update \
-    && apt-get -y install mesos=1.3.0-2.0.3 \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
-
 #Spark
 
 RUN curl -SL http://ftp.halifax.rwth-aachen.de/apache/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-hadoop2.7.tgz \
