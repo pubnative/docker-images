@@ -9,17 +9,6 @@ ENV DOCKER_RELEASE_KEY_URL="https://download.docker.com/linux/debian/gpg"
 RUN apt-get update && apt-get install -y apt-transport-https
 
 RUN ["/bin/bash", "-c", "set -o pipefail \
-    && curl -fsSL ${DOCKER_RELEASE_KEY_URL} \
-    | apt-key add - \
-    && echo ${DOCKER_REPO} \
-    | tee /etc/apt/sources.list.d/docker.list \
-    && apt-get update \
-    && apt-get install -y \
-      docker-ce \
-      docker-ce-cli \
-      containerd.io"]
-
-RUN ["/bin/bash", "-c", "set -o pipefail \
     && apt-get install -y \
       g++ \
       pkg-config \
