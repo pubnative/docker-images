@@ -10,4 +10,5 @@ build:
 	@docker tag ${IMG} ${LATEST}
 
 push:
-	@docker push ${NAME}
+	@docker push ${IMG}
+	@docker push ${LATEST}
