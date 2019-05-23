@@ -1,18 +1,11 @@
 NAME 	:= pubnative/pyspark-ci
 TAG 	:= $$(git log -1 --pretty=%h)
-IMG 	:= ${NAME}:${TAG}
-LATEST 	:= ${NAME}:latest
- 
+IMG 	:= ${NAME}:base-${TAG}
+LATEST 	:= ${NAME}:base-latest
+
 all: build push
 
-compile_dependencies:
-	@pip-compile \
-	  --generate-hashes \
-	  --output-file requirements.txt \
-	  requirements.in
-	@chmod +r requirements.txt
-
-build: compile_dependencies
+build:
 	@docker build . -t ${IMG}
 	@docker tag ${IMG} ${LATEST}
 
