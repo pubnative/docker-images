@@ -1,4 +1,4 @@
-FROM python:3.6.5
+FROM python:3.6.5-stretch
 
 LABEL maintainer="valentin.mouret@pubnative.net"
 
@@ -26,7 +26,6 @@ RUN mkdir -p /opt/app/java_libs && cd /opt/app/java_libs \
     && wget http://central.maven.org/maven2/org/apache/hadoop/hadoop-aws/2.7.3/hadoop-aws-2.7.3.jar -O /opt/app/java_libs/hadoop-aws-2.7.3.jar
 
 #Spark
-
 RUN curl -SL http://ftp.halifax.rwth-aachen.de/apache/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-hadoop2.7.tgz \
   | tar -xzC / \
   && ln -s /spark-${SPARK_VERSION}-bin-hadoop2.7 /opt/spark && mkdir /opt/spark/lib
