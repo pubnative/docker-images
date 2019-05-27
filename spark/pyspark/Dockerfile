@@ -1,3 +1,5 @@
+# pubnative/pyspark-ci:base-${COMMIT}
+
 FROM python:3.6.5-stretch
 
 LABEL maintainer="valentin.mouret@pubnative.net"
