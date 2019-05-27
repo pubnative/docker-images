@@ -1,3 +1,5 @@
+# pubnative/pyspark-ci:data-science-ci-${COMMIT}
+
 FROM pubnative/pyspark-ci:data-science-base-0eb4c1a
 
 ARG BAZEL_VERSION="0.25.1"
