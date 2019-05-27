@@ -4,10 +4,13 @@ Basic image with spark and mesos
 
 ## Build
 
+Once the changes to a Dockerfile are made and commited, run:
+
 ```bash
-$ docker build -t pubnative/spark:2.0.2 .
-$ docker push pubnative/spark:2.0.2
+make
 ```
+
+If `data-science-base` takes some time, it may be because it's building and veryfing the dependencies.
 
 ## Sample
 

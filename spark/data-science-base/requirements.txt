@@ -113,8 +113,7 @@ numpy==1.16.3 \
     --hash=sha256:b16d88da290334e33ea992c56492326ea3b06233a00a1855414360b77ca72f26 \
     --hash=sha256:b78a1defedb0e8f6ae1eb55fa6ac74ab42acc4569c3a2eacc2a407ee5d42ebcb \
     --hash=sha256:cfef82c43b8b29ca436560d51b2251d5117818a8d1fb74a8384a83c096745dad \
-    --hash=sha256:d160e57731fcdec2beda807ebcabf39823c47e9409485b5a3a1db3a8c6ce763e \
-    # via h5py, keras-applications, keras-preprocessing, tensorboard, tensorflow, tensorflow-probability
+    --hash=sha256:d160e57731fcdec2beda807ebcabf39823c47e9409485b5a3a1db3a8c6ce763e
 protobuf==3.7.1 \
     --hash=sha256:21e395d7959551e759d604940a115c51c6347d90a475c9baf471a1a86b5604a9 \
     --hash=sha256:57e05e16955aee9e6a0389fcbd58d8289dd2420e47df1a1096b3a232c26eb2dd \
@@ -139,8 +138,8 @@ py4j==0.10.7 \
     --hash=sha256:721189616b3a7d28212dfb2e7c6a1dd5147b03105f1fc37ff2432acd0e863fa5 \
     --hash=sha256:a950fe7de1bfd247a0a4dddb9118f332d22a89e01e0699135ea8038c15ee1293 \
     # via pyspark
-pyspark==2.4.2 \
-    --hash=sha256:5ab07ed12c3c9035bfaad93921887736abf89130130b38de7dfa985e50542438
+pyspark==2.4.3 \
+    --hash=sha256:6839718ce9f779e81153d8a14a843a5c4b2d5e6574f3c916aec241022d717cb2
 six==1.12.0 \
     --hash=sha256:3350809f0555b11f552448330d0b52d5f24c91a322ea4a15ef22629740f3761c \
     --hash=sha256:d16a0141ec1a18405cd4ce8b4613101da75da0e9a7aec5bdd4fa804d0e0eba73 \
