@@ -1,8 +1,8 @@
 NAME    := pubnative/pyspark-ci
 TAG     := $$(git log -1 --pretty=%h)
-IMG     := ${NAME}:base-${TAG}
-LATEST  := ${NAME}:base-latest
-
+IMG     := ${NAME}:data-science-ci-${TAG}
+LATEST  := ${NAME}:data-science-ci-latest
+ 
 all: build push
 
 build:
