@@ -10,6 +10,14 @@ ENV DOCKER_RELEASE_KEY_URL="https://download.docker.com/linux/debian/gpg"
 
 RUN apt-get update && apt-get install -y apt-transport-https
 
+# Bazel needs python2 to be the default Python interpreter (binded on `python`).
+RUN update-alternatives \
+  --install \
+  /usr/local/bin/python \
+  python \
+  /usr/bin/python2.7 \
+  1
+
 RUN ["/bin/bash", "-c", "set -o pipefail \
     && apt-get install -y \
       g++ \

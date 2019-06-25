@@ -11,6 +11,3 @@ RUN pip3 install --upgrade pip \
       --upgrade \
       --require-hashes \
       -r /tmp/requirements.txt
-
-# Bazel needs python2 to be the default Python interpreter (binded on `python`).
-RUN update-alternatives --install /usr/local/bin/python python /usr/bin/python2.7 1
