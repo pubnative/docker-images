@@ -1,16 +1,94 @@
 # Spark
 
-Basic image with spark and mesos
+Different Spark images.
+
+| Image name              | Versioning     | Source                                                                                                                          | Description                             |
+| ----------------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------- |
+| pubnative/spark:spark   | $SPARK_VERSION | [Apache Spark](https://github.com/apache/spark)                                                                                 | Base image for Spark.                   |
+| pubnative/spark:pyspark | $SPARK_VERSION | [Apache Spark](https://github.com/apache/spark)                                                                                 | Base image for PySpark.                 |
+| pubnative/pyspark-ci    | $GIT_HASH      | [Pyspark CI](https://github.com/pubnative/docker-images/blob/8fddc7003f9c8963abd40cdab2db5c706fb86d63/spark/pyspark/Dockerfile) | Handles the CI for data-science builds. |
 
 ## Build
 
-Once the changes to a Dockerfile are made and commited, run:
+No official images exist for Spark.
+So you will have to do everything yourself.
+
+### Workflow
+
+#### Clone the Spark repo (yes)
+
+To build the image, Spark needs to be built.
+To build Spark, you need the repo locally.
+
+If you have it locally, refresh it:
 
 ```bash
-make
+cd SPARK_REPO
+git fetch -p && git pull
 ```
 
-If `data-science-base` takes some time, it may be because it's building and veryfing the dependencies.
+Else, clone the repo somewhere:
+
+```bash
+git clone https://github.com/apache/spark
+```
+
+#### Build Spark
+
+You don't want to build master, so you need to checkout a specific verson.
+Usually, you need the last commit for a specific label, e.g. for `2.4.3` it is `c3e32bf06c35ba2580d46150923abfa795b4446a`.
+
+When you have the commit you want, e.g. `c3e32bf06c35ba2580d46150923abfa795b4446a`:
+
+```bash
+git checkout tags/v$SPARK_VERSION
+```
+
+Then to build Spark:
+
+```bash
+build/mvn \
+    -Pkubernetes \
+    -DskipTests \
+    clean package
+```
+
+This script is supposed to handle everything, including Spark and Scala versions.
+If it's the last commit of a release, it's supposed to lead  to a complete build.
+
+#### Build the images
+
+Now, you want to build the Docker image.
+If we continue the example building `2.4.3`, run:
+
+```bash
+./bin/docker-image-tool.sh -r docker.io/pubnative -t 2.4.3 build
+```
+
+#### Push the image(s)
+
+If you want to push the Spark image:
+
+```bash
+docker push pubnative/spark:2.4.3
+```
+
+If you want to push the PySpark image:
+
+```bash
+docker tag pubnative/spark-py:2.4.3 pubnative/spark:pyspark-2.4.3
+docker push pubnative/spark:pyspark-2.4.3
+```
+
+**Note**: Spark builds 3 images:
+
+- `spark`
+- `spark-py`
+- `spark-r`
+
+Right now, we don't care about `spark-r`, and we need to rename `spark-py` to map it to our registry names.
+
+≠== TODO ==≠
 
 ## Sample
 
@@ -37,11 +115,3 @@ docker run --net=host pubnative/spark:2.0.2 bin/spark-submit \
 ```
 
 Run task from the other image
-
-# Spark with Python
-
-This image Dockerfile can be found in `python` directory. It's an image containing spark, mesos and python.
-
-## Build
-
-For building and pushing the image `pubnative/spark:python3.6.5_java1.8.131_hadoop2.7.3_mesos1.3.0` please look at `python/Makefile`.
