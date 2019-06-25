@@ -1,12 +1,13 @@
 # Spark
 
-Different Spark images.
+## Available images
 
-| Image name              | Versioning     | Source                                                                                                                          | Description                             |
-| ----------------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------- |
-| pubnative/spark:spark   | $SPARK_VERSION | [Apache Spark](https://github.com/apache/spark)                                                                                 | Base image for Spark.                   |
-| pubnative/spark:pyspark | $SPARK_VERSION | [Apache Spark](https://github.com/apache/spark)                                                                                 | Base image for PySpark.                 |
-| pubnative/pyspark-ci    | $GIT_HASH      | [Pyspark CI](https://github.com/pubnative/docker-images/blob/8fddc7003f9c8963abd40cdab2db5c706fb86d63/spark/pyspark/Dockerfile) | Handles the CI for data-science builds. |
+| Image location                         | Versioning     | Source                                                                                                                                           | Description                                 |
+| -------------------------------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------- |
+| pubnative/spark:spark                  | $SPARK_VERSION | [Apache Spark](https://github.com/apache/spark)                                                                                                  | Base image for Spark.                       |
+| pubnative/spark:pyspark                | $SPARK_VERSION | [Apache Spark](https://github.com/apache/spark)                                                                                                  | Base image for PySpark.                     |
+| pubnative/pyspark-ci:data-science-base | $GIT_HASH      | [Data science base](https://github.com/pubnative/docker-images/blob/4e940e55cb25b6541607990733222d1800674170/spark/data-science-base/Dockerfile) | PySpark images with data science libraries. |
+| pubnative/pyspark-ci:data-science-ci   | $GIT_HASH      | [Pyspark CI](https://github.com/pubnative/docker-images/blob/8fddc7003f9c8963abd40cdab2db5c706fb86d63/spark/data-science-ci/Dockerfile)          | Handles the CI for data-science builds.     |
 
 ## Build
 
@@ -88,30 +89,50 @@ docker push pubnative/spark:pyspark-2.4.3
 
 Right now, we don't care about `spark-r`, and we need to rename `spark-py` to map it to our registry names.
 
-≠== TODO ==≠
+### Data science images
 
-## Sample
+Data science images add python libraries and other components.
 
-Run inside cluster example
+#### Data science base
+
+It adds a set of libraries that are to be shared between drivers and executors, e.g. numpy.
+
+##### Build
 
 ```bash
-docker run --net=host pubnative/spark:2.0.2 bin/spark-submit \
-           --executor-memory 1g \
-           --driver-memory 1g \
-           --total-executor-cores 1 \
-           --conf spark.mesos.executor.cores=1 \
-           --conf spark.mesos.executor.cores_per_task=1 \
-           --conf spark.mesos.executor.docker.volumes=./tmp:/tmp:rw \
-           --conf spark.ui.port=31695 \
-           --conf spark.mesos.executor.docker.image=pubnative/spark:2.0.2 \
-           --conf spark.mesos.executor.home=/spark \
-           --conf spark.mesos.constraints="role:spark-executer" \
-           --conf spark.mesos.coarse=true \
-           --conf spark.mesos.role=spark \
-           --conf spark.port.maxRetries=1 \
-           --conf spark.mesos.uris=file:///etc/docker.tar.gz \
-           --master "mesos://zk://zookeeper.service.consul:2181/mesos" \
-           /spark/examples/src/main/python/pi.py 1
+make build
 ```
 
-Run task from the other image
+##### Push
+
+```bash
+make push
+```
+
+##### All in one
+
+```bash
+make
+```
+
+#### Data science CI
+
+It build on top of `data-science-base` and adds Bazel and Docker, respectively to handle the CI and build image.
+
+##### Build
+
+```bash
+make build
+```
+
+##### Push
+
+```bash
+make push
+```
+
+##### All in one
+
+```bash
+make
+```
