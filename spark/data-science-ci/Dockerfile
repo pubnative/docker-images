@@ -1,6 +1,6 @@
-# pubnative/pyspark-ci:data-science-ci-${COMMIT}
+# pubnative/pyspark-ci:${COMMIT}
 
-FROM pubnative/pyspark-ci:data-science-base-0eb4c1a
+FROM pubnative/spark:data-science-e6ac4a5
 
 ARG BAZEL_VERSION="0.25.1"
 ENV BAZEL_URL=https://github.com/bazelbuild/bazel/releases/download/${BAZEL_VERSION}/bazel-${BAZEL_VERSION}-installer-linux-x86_64.sh
@@ -8,29 +8,34 @@ ENV BAZEL_URL=https://github.com/bazelbuild/bazel/releases/download/${BAZEL_VERS
 ENV DOCKER_REPO="deb [arch=amd64] https://download.docker.com/linux/debian stretch stable"
 ENV DOCKER_RELEASE_KEY_URL="https://download.docker.com/linux/debian/gpg"
 
-RUN apt-get update && apt-get install -y apt-transport-https
+RUN apt-get update \
+ && apt-get install -y \
+    apt-transport-https \
+    curl \
+    gpg
+
 
 RUN ["/bin/bash", "-c", "set -o pipefail \
     && apt-get install -y \
-      g++ \
-      pkg-config \
-      python \
-      unzip \
-      zip \
-      zlib1g-dev \
+       g++ \
+       pkg-config \
+       python \
+       unzip \
+       zip \
+       zlib1g-dev \
     && curl \
-      -fsSL ${BAZEL_URL} \
-      -o /lib/bazel_installer.sh \
+       -fsSL ${BAZEL_URL} \
+       -o /lib/bazel_installer.sh \
     && chmod +x /lib/bazel_installer.sh \
     && /lib/bazel_installer.sh"]
     
 RUN ["/bin/bash", "-c", "set -o pipefail \
     && curl -fsSL ${DOCKER_RELEASE_KEY_URL} \
-    | apt-key add - \
+     | apt-key add - \
     && echo ${DOCKER_REPO} \
-    | tee /etc/apt/sources.list.d/docker.list \
+     | tee /etc/apt/sources.list.d/docker.list \
     && apt-get update \
     && apt-get install -y \
-      docker-ce \
-      docker-ce-cli \
-      containerd.io"]
+       docker-ce \
+       docker-ce-cli \
+       containerd.io"]

@@ -1,15 +1,15 @@
-NAME    := pubnative/pyspark-ci
+NAME    := pubnative/spark
 TAG     := $$(git log -1 --pretty=%h)
-IMG     := ${NAME}:data-science-base-${TAG}
-LATEST  := ${NAME}:data-science-base-latest
+IMG     := ${NAME}:pyspark-executor-${TAG}
+LATEST  := ${NAME}:pyspark-executor-latest
  
 all: build push
 
 compile_dependencies:
 	@pip-compile \
-	  --generate-hashes \
-	  --output-file requirements.txt \
-	  requirements.in
+	 --generate-hashes \
+	 --output-file requirements.txt \
+	 requirements.in
 	@chmod +r requirements.txt
 
 build: compile_dependencies
