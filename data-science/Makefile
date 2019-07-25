@@ -1,7 +1,7 @@
-NAME    := pubnative/data-science
+NAME    := pubnative/data-science-ci
 TAG     := $$(git log -1 --pretty=%h)
-IMG     := ${NAME}:ci-${TAG}
-LATEST  := ${NAME}:ci-latest
+IMG     := ${NAME}:${TAG}
+LATEST  := ${NAME}:latest
  
 all: build push
 

@@ -1,4 +1,4 @@
-# pubnative/data-sciente:ci-${COMMIT}
+# pubnative/data-science-ci:${COMMIT}
 
 FROM python:3.7.4-slim-stretch@sha256:b5136440d5b2d61e96747f9859f4fccbd4fe7519bc64e73e7e0341e0e7a5405f
 
