@@ -2,13 +2,12 @@
 
 ## Available images
 
-| Image location                       | Versioning     | Source                                                                                                                                         | Description                                  |
-| ------------------------------------ | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------- |
-| pubnative/spark:spark                | $SPARK_VERSION | [Apache Spark](https://github.com/apache/spark)                                                                                                | Base image for Spark.                        |
-| pubnative/spark:pyspark              | $SPARK_VERSION | [Apache Spark](https://github.com/apache/spark)                                                                                                | Base image for PySpark.                      |
-| pubnative/spark:pyspark-executor     | $GIT_COMMIT    | [Pyspark executor](https://github.com/pubnative/docker-images/blob/4e940e55cb25b6541607990733222d1800674170/spark/pyspark-executor/Dockerfile) | Alpine image supporting Spark on Kubernetes. |
-| pubnative/pyspark-ci:data-science    | $GIT_COMMIT    | [Data science](https://github.com/pubnative/docker-images/blob/8fddc7003f9c8963abd40cdab2db5c706fb86d63/spark/data-science/Dockerfile)         | Image with data science libraries.           |
-| pubnative/pyspark-ci:data-science-ci | $GIT_COMMIT    | [Data science CI](https://github.com/pubnative/docker-images/blob/8fddc7003f9c8963abd40cdab2db5c706fb86d63/spark/data-science-ci/Dockerfile)   | Handles the CI for data-science builds.      |
+| Image location                   | Versioning     | Source                                                                                                                                         | Description                                  |
+| -------------------------------- | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------- |
+| pubnative/spark:spark            | $SPARK_VERSION | [Apache Spark](https://github.com/apache/spark)                                                                                                | Base image for Spark.                        |
+| pubnative/spark:pyspark          | $SPARK_VERSION | [Apache Spark](https://github.com/apache/spark)                                                                                                | Base image for PySpark.                      |
+| pubnative/spark:pyspark-executor | $GIT_COMMIT    | [Pyspark executor](https://github.com/pubnative/docker-images/blob/4e940e55cb25b6541607990733222d1800674170/spark/pyspark-executor/Dockerfile) | Alpine image supporting Spark on Kubernetes. |
+
 
 ## Build
 
