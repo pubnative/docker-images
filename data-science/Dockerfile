@@ -1,9 +1,6 @@
-# pubnative/pyspark-ci:${COMMIT}
+# pubnative/data-sciente:ci-${COMMIT}
 
-FROM pubnative/spark:data-science-e6ac4a5
-
-ARG BAZEL_VERSION="0.25.1"
-ENV BAZEL_URL=https://github.com/bazelbuild/bazel/releases/download/${BAZEL_VERSION}/bazel-${BAZEL_VERSION}-installer-linux-x86_64.sh
+FROM python:3.7.4-slim-stretch@sha256:b5136440d5b2d61e96747f9859f4fccbd4fe7519bc64e73e7e0341e0e7a5405f
 
 ENV DOCKER_REPO="deb [arch=amd64] https://download.docker.com/linux/debian stretch stable"
 ENV DOCKER_RELEASE_KEY_URL="https://download.docker.com/linux/debian/gpg"
@@ -14,21 +11,6 @@ RUN apt-get update \
     curl \
     gpg
 
-
-RUN ["/bin/bash", "-c", "set -o pipefail \
-    && apt-get install -y \
-       g++ \
-       pkg-config \
-       python \
-       unzip \
-       zip \
-       zlib1g-dev \
-    && curl \
-       -fsSL ${BAZEL_URL} \
-       -o /lib/bazel_installer.sh \
-    && chmod +x /lib/bazel_installer.sh \
-    && /lib/bazel_installer.sh"]
-    
 RUN ["/bin/bash", "-c", "set -o pipefail \
     && curl -fsSL ${DOCKER_RELEASE_KEY_URL} \
      | apt-key add - \
