@@ -6,13 +6,13 @@ readonly fdb_cluster="${FDB_CLUSTER}"
 readonly data_dir="${DATA_DIR:-/var/lib/foundationdb/data}"
 readonly log_dir="${LOG_DIR:-/var/log/foundationdb}"
 readonly cluster_file="/etc/foundationdb/fdb.cluster"
+readonly seed="${SEED_FILE:-/etc/fdb-seed/fdb.cluster}"
 
-seed="${SEED_FILE:-/etc/fdb-seed/fdb.cluster}"
 if [ -s "$seed" ]; then
     echo ">> Using seed from $seed"
     cat $seed > $cluster_file
 elif [ -n "${FDB_COORDINATORS_FQDN:-}" ]; then
-    echo ">> Bootstrapping $cluster_file"
+    echo ">> Bootstrapping $cluster_file from FQDN"
 
     # Wait 30 seconds till kubernetes endpoints and DNS are
     # properly propagated
