@@ -1,3 +1,5 @@
+# https://hub.docker.com/r/pubnative/foundationdb/
+# Use `make build push` to build and push
 FROM ubuntu:18.04
 ARG VSN
 
