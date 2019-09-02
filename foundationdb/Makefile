@@ -4,7 +4,7 @@ IMAGE = pubnative/$(NAME):$(TAG)
 IMAGE_TOP = pubnative/$(NAME):$(TAG)-fdbtop
 BUILD_PARAMS = --build-arg VSN=${FDB_VERSION}
 
-FDB_VERSION = 6.0.18
+FDB_VERSION = 6.1.12
 
 build:
 	docker build $(BUILD_PARAMS) -t $(IMAGE) .
