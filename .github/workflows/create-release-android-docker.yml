@@ -1,0 +1,23 @@
+on: create
+name: Release android docker
+jobs:
+  checkAndroidTag:
+    name: Check android tag
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Check android tag
+      uses: actions/bin/filter@master
+      with:
+        args: tag android-*
+    - name: Build android image
+      uses: actions/docker/cli@master
+      with:
+        args: build -f android/Dockerfile -t pubnative/android:$(echo ${{ github.ref
+          }} | cut -c19-) android
+    - name: Docker registry login
+      uses: actions/docker/login@master
+    - name: Release pubnative/android docker image
+      uses: actions/docker/cli@master
+      with:
+        args: push pubnative/android:$(echo ${{ github.ref }} | cut -c19-)

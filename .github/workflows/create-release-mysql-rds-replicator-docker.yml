@@ -1,0 +1,24 @@
+on: create
+name: Release mysql-rds-replicator docker
+jobs:
+  checkMysql-rds-replicatorTag:
+    name: Check mysql-rds-replicator tag
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Check mysql-rds-replicator tag
+      uses: actions/bin/filter@master
+      with:
+        args: tag mysql-rds-replicator-*
+    - name: Build pubnative/mysql-rds-replicator image
+      uses: actions/docker/cli@master
+      with:
+        args: build --build-arg MYSQL_VERION=$(echo ${{ github.ref }} | cut -c22-)
+          -f mysql-rds-replicator/Dockerfile -t pubnative/mysql-rds-replicator:$(echo
+          ${{ github.ref }} | cut -c22-) mysql-rds-replicator
+    - name: Docker registry login
+      uses: actions/docker/login@master
+    - name: Release pubnative/mysql-rds-replicator docker image
+      uses: actions/docker/cli@master
+      with:
+        args: push pubnative/mysql-rds-replicator:$(echo ${{ github.ref }} | cut -c22-)
