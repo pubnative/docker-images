@@ -1,3 +1,5 @@
+# https://hub.docker.com/r/pubnative/zookeeper/
+# Use `make` to build and push
 FROM ubuntu:16.04
 
 ENV ZK_USER=zookeeper \
@@ -6,8 +8,8 @@ ENV ZK_USER=zookeeper \
     ZK_LOG_DIR=/var/log/zookeeper \
     JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 
-ARG GPG_KEY=C823E3E5B12AF29C67F81976F5CECB3CB5E9BD2D
-ARG ZK_DIST=zookeeper-3.4.10
+ARG GPG_KEY
+ARG ZK_DIST
 
 RUN set -x \
     && apt-get update \
