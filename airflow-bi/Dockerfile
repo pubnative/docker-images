@@ -21,7 +21,6 @@ RUN pip install \
       xlsxwriter \
       slack \
       pydruid \
-      pendulum \
       django-smtp-ssl \
       send_email \
       pyathena \
