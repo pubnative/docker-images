@@ -4,6 +4,7 @@ FROM pubnative/airflow:python3.7
 
 RUN pip install \
       "pandas==0.24.1" \
+      pandas_explode \
       sqlalchemy \
       pyhive \
       gspread \
@@ -18,10 +19,17 @@ RUN pip install \
       matplotlib \
       lxml \
       xlsxwriter \
+      slack \
       pydruid \
+      pendulum \
+      django-smtp-ssl \
+      send_email \
+      pyathena \
       openpyxl \
+      python-dotenv \
       "websocket-client==0.55.0" \
-      "slackclient==1.3.0" \
+      slackclient \
+      ratelimiter \
       --upgrade pip \
       xlrd \
       fastparquet \
