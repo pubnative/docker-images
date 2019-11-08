@@ -8,3 +8,4 @@ Contains the following components:
 - docker
 - dockerize
 - mysql-client
+- clickhouse-client

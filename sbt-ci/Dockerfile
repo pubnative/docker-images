@@ -31,12 +31,10 @@ RUN curl -L -o dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
   && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
   && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
 
-RUN yum install -y epel-release && yum makecache && yum update -y epel-release && yum makecache \
-  && yum install -y make gcc gcc-c++ cmake3 git maven \
-  && yum clean all \
-  && ln /usr/bin/cmake3 /usr/bin/cmake 
-RUN git clone --recursive https://github.com/dmlc/xgboost && cd xgboost/jvm-packages \
-  && CC=gcc CXX=g++ mvn -DskipTests install && cd ../.. && rm -rf xgboost
-
 RUN curl -L -o /tmp/google-chrome-stable.rpm https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm \
   && yum install -y /tmp/google-chrome-stable.rpm
+
+RUN yum install -y yum-utils \
+  && rpm --import https://repo.yandex.ru/clickhouse/CLICKHOUSE-KEY.GPG \
+  && yum-config-manager --add-repo https://repo.yandex.ru/clickhouse/rpm/stable/x86_64 \
+  && yum install -y clickhouse-client
