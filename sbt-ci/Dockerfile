@@ -31,13 +31,6 @@ RUN curl -L -o dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
   && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
   && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
 
-RUN yum install -y epel-release && yum makecache && yum update -y epel-release && yum makecache \
-  && yum install -y make gcc gcc-c++ cmake3 git maven \
-  && yum clean all \
-  && ln /usr/bin/cmake3 /usr/bin/cmake
-
-RUN pip3 install xgboost
-
 RUN curl -L -o /tmp/google-chrome-stable.rpm https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm \
   && yum install -y /tmp/google-chrome-stable.rpm
 
