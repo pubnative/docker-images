@@ -1,4 +1,4 @@
-# Image: pubnative/airflow-bi:1.0
+# Image: pubnative/airflow-bi:1.1
 
 FROM pubnative/airflow:python3.7
 
@@ -8,6 +8,7 @@ RUN pip install \
       sqlalchemy \
       pyhive \
       gspread \
+      gspread_pandas \
       requests \
       pygsheets \
       oauth2client \
@@ -21,6 +22,7 @@ RUN pip install \
       xlsxwriter \
       slack \
       pydruid \
+      pendulum \
       django-smtp-ssl \
       send_email \
       pyathena \
@@ -32,7 +34,7 @@ RUN pip install \
       --upgrade pip \
       xlrd \
       fastparquet \
-      pyarrow \
+      "pyarrow==0.14.1" \
       s3fs
 
 LABEL maintainer Denis <denis@pubnative.net>
