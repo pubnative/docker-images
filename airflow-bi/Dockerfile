@@ -1,4 +1,4 @@
-# Image: pubnative/airflow-bi:1.0
+# Image: pubnative/airflow-bi:1.1
 
 FROM pubnative/airflow:python3.7
 
@@ -8,6 +8,7 @@ RUN pip install \
       sqlalchemy \
       pyhive \
       gspread \
+      gspread_pandas \
       requests \
       pygsheets \
       oauth2client \
