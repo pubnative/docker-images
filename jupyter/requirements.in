@@ -1,7 +1,7 @@
 keras==2.2.4
 matplotlib==3.0.3
 mysql-connector-python==8.0.16
-nb_black==1.0.4
+nb_black==1.0.6
 numpy==1.16.3
 pandas==0.24.2
 petastorm[tf]==0.7.3
