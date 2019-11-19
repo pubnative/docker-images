@@ -22,7 +22,6 @@ RUN pip install \
       xlsxwriter \
       slack \
       pydruid \
-      pendulum \
       django-smtp-ssl \
       send_email \
       pyathena \
@@ -34,7 +33,7 @@ RUN pip install \
       --upgrade pip \
       xlrd \
       fastparquet \
-      "pyarrow==0.14.1" \
+      pyarrow \
       s3fs
 
 LABEL maintainer Denis <denis@pubnative.net>
