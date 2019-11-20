@@ -1,8 +1,8 @@
-# Image pubnative/sbt-ci
+# Image pubnative/sbt-ci:0.14
 FROM centos:7
 
-ENV DOCKER_VER="17.03.2.ce-1" 
-ENV SBT_VER="1.1.0" 
+ENV DOCKER_VER="17.03.2.ce-1"
+ENV SBT_VER="1.3.3"
 ENV DOCKERIZE_VERSION="v0.5.0"
 
 RUN curl -L -o docker-selinux-${DOCKER_VER}.rpm https://download.docker.com/linux/centos/7/x86_64/stable/Packages/docker-ce-selinux-${DOCKER_VER}.el7.centos.noarch.rpm \
@@ -13,7 +13,9 @@ RUN curl -L -o docker-selinux-${DOCKER_VER}.rpm https://download.docker.com/linu
   && rm docker-${DOCKER_VER}.rpm
 
 RUN curl https://bintray.com/sbt/rpm/rpm | tee /etc/yum.repos.d/bintray-sbt-rpm.repo \
-  && yum install -y sbt-${SBT_VER} java-1.8.0-openjdk java-1.8.0-openjdk-devel
+  && yum install -y git sbt-${SBT_VER} java-1.8.0-openjdk java-1.8.0-openjdk-devel \
+  && sbt about
+# yum downloads a thin launcher, runnning sbt actually triggers the download of sbt files
 
 RUN curl -L -o /tmp/mysql57-community-release-el7-11.noarch.rpm https://dev.mysql.com/get/mysql57-community-release-el7-11.noarch.rpm \
   && yum localinstall -y /tmp/mysql57-community-release-el7-11.noarch.rpm \
