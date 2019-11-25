@@ -20,4 +20,5 @@ COPY requirements.txt /tmp/requirements.txt
 RUN pip install \
   --upgrade \
   --require-hashes \
+  --ignore-installed \
   -r /tmp/requirements.txt

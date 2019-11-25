@@ -9,6 +9,7 @@ compile_dependencies:
 	@pip-compile \
 	  --generate-hashes \
 	  --output-file requirements.txt \
+	  --allow-unsafe \
 	  requirements.in
 	@chmod +r requirements.txt
 
