@@ -1,10 +1,14 @@
 altair==2.4.1
+fbprophet==0.5
+jax==0.1.55
 keras==2.3.1
 matplotlib==3.1.2
 mysql-connector-python==8.0.18
 nb_black==1.0.6
 numpy==1.17.4
 pandas==0.25.3
+pyathena==1.9.0
+pystan==2.19.1.1
 scikit-learn==0.21.3
 seaborn==0.9.0
 setuptools==42.0.1

@@ -1,16 +1,9 @@
 # Image: pubnative/pyspark-ci
 # Cf: Makefile.
 
-FROM jupyter/all-spark-notebook:7d427e7a4dde
+FROM jupyter/all-spark-notebook:7a0c7325e470
 
 LABEL maintainer Denis <denis@pubnative.net>
-
-RUN jupyter labextension install @jupyterlab/git \
-  && pip install jupyterlab-git \
-  && jupyter serverextension enable \
-    --py \
-    --sys-prefix \
-    jupyterlab_git
 
 RUN pip install jupyter_contrib_nbextensions \
   && jupyter contrib nbextension install --user
