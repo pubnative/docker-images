@@ -8,7 +8,7 @@
 # This file is part of IPsec VPN Docker image, available at:
 # https://github.com/hwdsl2/docker-ipsec-vpn-server
 #
-# Copyright (C) 2016-2018 Lin Song <linsongui@gmail.com>
+# Copyright (C) 2016-2019 Lin Song <linsongui@gmail.com>
 # Based on the work of Thomas Sarlandie (Copyright 2012)
 #
 # This work is licensed under the Creative Commons Attribution-ShareAlike 3.0
@@ -21,7 +21,9 @@ export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
 exiterr()  { echo "Error: $1" >&2; exit 1; }
 nospaces() { printf '%s' "$1" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//'; }
+onespace() { printf '%s' "$1" | tr -s ' '; }
 noquotes() { printf '%s' "$1" | sed -e 's/^"\(.*\)"$/\1/' -e "s/^'\(.*\)'$/\1/"; }
+noquotes2() { printf '%s' "$1" | sed -e 's/" "/ /g' -e "s/' '/ /g"; }
 
 check_ip() {
   IP_REGEX='^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$'
@@ -46,46 +48,84 @@ ip link delete dummy0 >/dev/null 2>&1
 
 mkdir -p /opt/src
 vpn_env="/opt/src/vpn-gen.env"
+vpn_gen_env="/opt/src/vpn-gen.env"
 if [ -z "$VPN_IPSEC_PSK" ] && [ -z "$VPN_USER" ] && [ -z "$VPN_PASSWORD" ]; then
   if [ -f "$vpn_env" ]; then
     echo
-    echo "Retrieving previously generated VPN credentials..."
+    echo 'Retrieving VPN credentials...'
     . "$vpn_env"
+  elif [ -f "$vpn_gen_env" ]; then
+    echo
+    echo 'Retrieving previously generated VPN credentials...'
+    . "$vpn_gen_env"
   else
     echo
-    echo "VPN credentials not set by user. Generating random PSK and password..."
-    VPN_IPSEC_PSK="$(LC_CTYPE=C tr -dc 'A-HJ-NPR-Za-km-z2-9' < /dev/urandom | head -c 16)"
+    echo 'VPN credentials not set by user. Generating random PSK and password...'
+    VPN_IPSEC_PSK=$(LC_CTYPE=C tr -dc 'A-HJ-NPR-Za-km-z2-9' < /dev/urandom | head -c 20)
     VPN_USER=vpnuser
-    VPN_PASSWORD="$(LC_CTYPE=C tr -dc 'A-HJ-NPR-Za-km-z2-9' < /dev/urandom | head -c 16)"
+    VPN_PASSWORD=$(LC_CTYPE=C tr -dc 'A-HJ-NPR-Za-km-z2-9' < /dev/urandom | head -c 16)
 
-    echo "VPN_IPSEC_PSK=$VPN_IPSEC_PSK" > "$vpn_env"
-    echo "VPN_USER=$VPN_USER" >> "$vpn_env"
-    echo "VPN_PASSWORD=$VPN_PASSWORD" >> "$vpn_env"
-    chmod 600 "$vpn_env"
+    printf '%s\n' "VPN_IPSEC_PSK='$VPN_IPSEC_PSK'" > "$vpn_gen_env"
+    printf '%s\n' "VPN_USER='$VPN_USER'" >> "$vpn_gen_env"
+    printf '%s\n' "VPN_PASSWORD='$VPN_PASSWORD'" >> "$vpn_gen_env"
+    chmod 600 "$vpn_gen_env"
   fi
 fi
 
 # Remove whitespace and quotes around VPN variables, if any
-VPN_IPSEC_PSK="$(nospaces "$VPN_IPSEC_PSK")"
-VPN_IPSEC_PSK="$(noquotes "$VPN_IPSEC_PSK")"
-VPN_USER="$(nospaces "$VPN_USER")"
-VPN_USER="$(noquotes "$VPN_USER")"
-VPN_PASSWORD="$(nospaces "$VPN_PASSWORD")"
-VPN_PASSWORD="$(noquotes "$VPN_PASSWORD")"
+VPN_IPSEC_PSK=$(nospaces "$VPN_IPSEC_PSK")
+VPN_IPSEC_PSK=$(noquotes "$VPN_IPSEC_PSK")
+VPN_USER=$(nospaces "$VPN_USER")
+VPN_USER=$(noquotes "$VPN_USER")
+VPN_PASSWORD=$(nospaces "$VPN_PASSWORD")
+VPN_PASSWORD=$(noquotes "$VPN_PASSWORD")
+
+if [ -n "$VPN_ADDL_USERS" ] && [ -n "$VPN_ADDL_PASSWORDS" ]; then
+  VPN_ADDL_USERS=$(nospaces "$VPN_ADDL_USERS")
+  VPN_ADDL_USERS=$(noquotes "$VPN_ADDL_USERS")
+  VPN_ADDL_USERS=$(onespace "$VPN_ADDL_USERS")
+  VPN_ADDL_USERS=$(noquotes2 "$VPN_ADDL_USERS")
+  VPN_ADDL_PASSWORDS=$(nospaces "$VPN_ADDL_PASSWORDS")
+  VPN_ADDL_PASSWORDS=$(noquotes "$VPN_ADDL_PASSWORDS")
+  VPN_ADDL_PASSWORDS=$(onespace "$VPN_ADDL_PASSWORDS")
+  VPN_ADDL_PASSWORDS=$(noquotes2 "$VPN_ADDL_PASSWORDS")
+else
+  VPN_ADDL_USERS=""
+  VPN_ADDL_PASSWORDS=""
+fi
 
 if [ -z "$VPN_IPSEC_PSK" ] || [ -z "$VPN_USER" ] || [ -z "$VPN_PASSWORD" ]; then
   exiterr "All VPN credentials must be specified. Edit your 'env' file and re-enter them."
 fi
 
-if printf '%s' "$VPN_IPSEC_PSK $VPN_USER $VPN_PASSWORD" | LC_ALL=C grep -q '[^ -~]\+'; then
+if printf '%s' "$VPN_IPSEC_PSK $VPN_USER $VPN_PASSWORD $VPN_ADDL_USERS $VPN_ADDL_PASSWORDS" | LC_ALL=C grep -q '[^ -~]\+'; then
   exiterr "VPN credentials must not contain non-ASCII characters."
 fi
 
-case "$VPN_IPSEC_PSK $VPN_USER $VPN_PASSWORD" in
+case "$VPN_IPSEC_PSK $VPN_USER $VPN_PASSWORD $VPN_ADDL_USERS $VPN_ADDL_PASSWORDS" in
   *[\\\"\']*)
     exiterr "VPN credentials must not contain these special characters: \\ \" '"
     ;;
 esac
+
+if printf '%s' "$VPN_USER $VPN_ADDL_USERS" | tr ' ' '\n' | sort | uniq -c | grep -qv '^ *1 '; then
+  exiterr "VPN usernames must not contain duplicates."
+fi
+
+# Check DNS servers and try to resolve hostnames to IPs
+if [ -n "$VPN_DNS_SRV1" ]; then
+  VPN_DNS_SRV1=$(nospaces "$VPN_DNS_SRV1")
+  VPN_DNS_SRV1=$(noquotes "$VPN_DNS_SRV1")
+  check_ip "$VPN_DNS_SRV1" || VPN_DNS_SRV1=$(dig -t A -4 +short "$VPN_DNS_SRV1")
+  check_ip "$VPN_DNS_SRV1" || exiterr "Invalid DNS server 'VPN_DNS_SRV1'. Please check your 'env' file."
+fi
+
+if [ -n "$VPN_DNS_SRV2" ]; then
+  VPN_DNS_SRV2=$(nospaces "$VPN_DNS_SRV2")
+  VPN_DNS_SRV2=$(noquotes "$VPN_DNS_SRV2")
+  check_ip "$VPN_DNS_SRV2" || VPN_DNS_SRV2=$(dig -t A -4 +short "$VPN_DNS_SRV2")
+  check_ip "$VPN_DNS_SRV2" || exiterr "Invalid DNS server 'VPN_DNS_SRV2'. Please check your 'env' file."
+fi
 
 echo
 echo 'Trying to auto discover IP of this server...'
@@ -108,6 +148,17 @@ XAUTH_NET=${VPN_XAUTH_NET:-'192.168.43.0/24'}
 XAUTH_POOL=${VPN_XAUTH_POOL:-'192.168.43.10-192.168.43.250'}
 DNS_SRV1=${VPN_DNS_SRV1:-'8.8.8.8'}
 DNS_SRV2=${VPN_DNS_SRV2:-'8.8.4.4'}
+DNS_SRVS="\"$DNS_SRV1 $DNS_SRV2\""
+[ -n "$VPN_DNS_SRV1" ] && [ -z "$VPN_DNS_SRV2" ] && DNS_SRVS="$DNS_SRV1"
+
+case $VPN_SHA2_TRUNCBUG in
+  [yY][eE][sS])
+    SHA2_TRUNCBUG=yes
+    ;;
+  *)
+    SHA2_TRUNCBUG=no
+    ;;
+esac
 
 # Create IPsec (Libreswan) config
 cat > /etc/ipsec.conf <<EOF
@@ -131,9 +182,10 @@ conn shared
   dpddelay=30
   dpdtimeout=120
   dpdaction=clear
-  ike=3des-sha1,3des-sha2,aes-sha1,aes-sha1;modp1024,aes-sha2,aes-sha2;modp1024
-  phase2alg=3des-sha1,3des-sha2,aes-sha1,aes-sha2,aes256-sha2_512
-  sha2-truncbug=yes
+  ikev2=never
+  ike=aes256-sha2,aes128-sha2,aes256-sha1,aes128-sha1,aes256-sha2;modp1024,aes128-sha1;modp1024
+  phase2alg=aes_gcm-null,aes128-sha1,aes256-sha1,aes256-sha2_512,aes128-sha2,aes256-sha2
+  sha2-truncbug=$SHA2_TRUNCBUG
 
 conn l2tp-psk
   auto=add
@@ -147,8 +199,7 @@ conn xauth-psk
   auto=add
   leftsubnet=0.0.0.0/0
   rightaddresspool=$XAUTH_POOL
-  modecfgdns1=$DNS_SRV1
-  modecfgdns2=$DNS_SRV2
+  modecfgdns=$DNS_SRVS
   leftxauthserver=yes
   rightxauthclient=yes
   leftmodecfgserver=yes
@@ -160,6 +211,10 @@ conn xauth-psk
   cisco-unity=yes
   also=shared
 EOF
+
+if uname -r | grep -qi 'coreos'; then
+  sed -i '/phase2alg/s/,aes256-sha2_512//' /etc/ipsec.conf
+fi
 
 # Specify IPsec PSK
 cat > /etc/ipsec.secrets <<EOF
@@ -187,8 +242,6 @@ cat > /etc/ppp/options.xl2tpd <<EOF
 +mschap-v2
 ipcp-accept-local
 ipcp-accept-remote
-ms-dns $DNS_SRV1
-ms-dns $DNS_SRV2
 noccp
 auth
 mtu 1280
@@ -197,7 +250,14 @@ proxyarp
 lcp-echo-failure 4
 lcp-echo-interval 30
 connect-delay 5000
+ms-dns $DNS_SRV1
 EOF
+
+if [ -z "$VPN_DNS_SRV1" ] || [ -n "$VPN_DNS_SRV2" ]; then
+cat >> /etc/ppp/options.xl2tpd <<EOF
+ms-dns $DNS_SRV2
+EOF
+fi
 
 # Create VPN credentials
 cat > /etc/ppp/chap-secrets <<EOF
@@ -208,6 +268,24 @@ VPN_PASSWORD_ENC=$(openssl passwd -1 "$VPN_PASSWORD")
 cat > /etc/ipsec.d/passwd <<EOF
 $VPN_USER:$VPN_PASSWORD_ENC:xauth-psk
 EOF
+
+if [ -n "$VPN_ADDL_USERS" ] && [ -n "$VPN_ADDL_PASSWORDS" ]; then
+  count=1
+  addl_user=$(printf '%s' "$VPN_ADDL_USERS" | cut -d ' ' -f 1)
+  addl_password=$(printf '%s' "$VPN_ADDL_PASSWORDS" | cut -d ' ' -f 1)
+  while [ -n "$addl_user" ] && [ -n "$addl_password" ]; do
+    addl_password_enc=$(openssl passwd -1 "$addl_password")
+cat >> /etc/ppp/chap-secrets <<EOF
+"$addl_user" l2tpd "$addl_password" *
+EOF
+cat >> /etc/ipsec.d/passwd <<EOF
+$addl_user:$addl_password_enc:xauth-psk
+EOF
+    count=$((count+1))
+    addl_user=$(printf '%s' "$VPN_ADDL_USERS" | cut -s -d ' ' -f "$count")
+    addl_password=$(printf '%s' "$VPN_ADDL_PASSWORDS" | cut -s -d ' ' -f "$count")
+  done
+fi
 
 # Update sysctl settings
 SYST='/sbin/sysctl -e -q -w'
@@ -280,12 +358,33 @@ IPsec VPN server is now ready for use!
 
 Connect to your new VPN with these details:
 
-Server IP:        $PUBLIC_IP
-IPsec PSK:        $VPN_IPSEC_PSK
-Username:         $VPN_USER
-Password:         $VPN_PASSWORD
+Server IP: $PUBLIC_IP
+IPsec PSK: $VPN_IPSEC_PSK
+Username: $VPN_USER
+Password: $VPN_PASSWORD
 Destination:      $DESTINATION_NET
 Allowed services: $ALLOWED_SERVICES
+EOF
+
+if [ -n "$VPN_ADDL_USERS" ] && [ -n "$VPN_ADDL_PASSWORDS" ]; then
+  count=1
+  addl_user=$(printf '%s' "$VPN_ADDL_USERS" | cut -d ' ' -f 1)
+  addl_password=$(printf '%s' "$VPN_ADDL_PASSWORDS" | cut -d ' ' -f 1)
+cat <<'EOF'
+
+Additional VPN users (username | password):
+EOF
+  while [ -n "$addl_user" ] && [ -n "$addl_password" ]; do
+cat <<EOF
+$addl_user | $addl_password
+EOF
+    count=$((count+1))
+    addl_user=$(printf '%s' "$VPN_ADDL_USERS" | cut -s -d ' ' -f "$count")
+    addl_password=$(printf '%s' "$VPN_ADDL_PASSWORDS" | cut -s -d ' ' -f "$count")
+  done
+fi
+
+cat <<'EOF'
 
 Write these down. You'll need them to connect!
 
@@ -298,6 +397,18 @@ EOF
 
 # Load IPsec kernel module
 modprobe af_key
+
+if [ -n "$CHAP_SECRETS_SRC" ] && [ -f "$CHAP_SECRETS_SRC" ]; then
+    rm -f /etc/ppp/chap-secrets && ln -s "$CHAP_SECRETS_SRC" /etc/ppp/chap-secrets
+fi
+
+if [ -n "$IPSEC_PASSWD_SRC" ] && [ -f "$IPSEC_PASSWD_SRC" ]; then
+    rm -f /etc/ipsec.d/passwd && ln -s "$IPSEC_PASSWD_SRC" /etc/ipsec.d/passwd
+fi
+
+if [ -n "$IPSEC_SECRETS_SRC" ] && [ -f "$IPSEC_SECRETS_SRC" ]; then
+    rm -f /etc/ipsec.secrets && ln -s "$IPSEC_SECRETS_SRC" /etc/ipsec.secrets
+fi
 
 # Start services
 mkdir -p /run/pluto /var/run/pluto /var/run/xl2tpd
