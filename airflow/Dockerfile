@@ -1,8 +1,16 @@
-# Image: pubnative/airflow: -1.4
+# Images:
+#  - pubnative/airflow:latest
+#  - pubnative/airflow:${GIT_COMMIT}
+# 
+# C.f. Makefile
 
 FROM pubnative/airflow:python3.7
 
+ENV AIRFLOW_VERSION "1.10.7"
+ENV INFLUX_DB_VERSION "5.2.1"
+
 LABEL maintainer Denis <denis@pubnative.net>
 
-RUN pip3 install 'apache-airflow[statsd]'
-RUN pip3 install influxdb
+RUN pip3 install \
+  apache-airflow[statsd]==${AIRFLOW_VERSION} \
+  influxdb==${INFLUX_DB_VERSION}
