@@ -2,38 +2,50 @@
 
 FROM pubnative/airflow:python3.7
 
-RUN pip install \
-      "pandas==0.24.1" \
-      pandas_explode \
-      sqlalchemy \
-      pyhive \
-      gspread \
-      gspread_pandas \
-      requests \
-      pygsheets \
-      oauth2client \
-      twilio \
-      boto3 \
-      google-cloud-storage \
-      scipy \
-      bs4 \
-      matplotlib \
-      lxml \
-      xlsxwriter \
-      slack \
-      pydruid \
-      django-smtp-ssl \
-      send_email \
-      pyathena \
-      openpyxl \
-      python-dotenv \
-      "websocket-client==0.55.0" \
-      slackclient \
-      ratelimiter \
-      --upgrade pip \
-      xlrd \
-      fastparquet \
-      pyarrow \
-      s3fs
+LABEL maintainer Denis <denis@pubnative.net>
+
+ENV AIRFLOW_VERSION "1.10.7"
+ENV INFLUX_DB_VERSION "5.2.1"
+ENV WERKZEUG_VERSION "0.15.4"
 
 LABEL maintainer Denis <denis@pubnative.net>
+
+RUN pip3 install \
+  --upgrade \
+  apache-airflow[statsd]==${AIRFLOW_VERSION} \
+  influxdb==${INFLUX_DB_VERSION} \
+  werkzeug==${WERKZEUG_VERSION}
+
+RUN pip install \
+ --upgrade\
+ bs4 \
+ boto3 \
+ django-smtp-ssl \
+ fastparquet \
+ google-cloud-storage \
+ gspread \
+ gspread_pandas \
+ lxml \
+ matplotlib \
+ oauth2client \
+ openpyxl \
+ "pandas==0.24.1" \
+ pandas_explode \
+ pyarrow \
+ pyathena \
+ pydruid \
+ pygsheets \
+ pyhive \
+ python-dotenv \
+ ratelimiter \
+ requests \
+ s3fs \
+ send_email \
+ scipy \
+ slack \
+ slackclient \
+ sqlalchemy \
+ twilio \
+ "websocket-client==0.55.0" \
+ xlrd \
+ xlsxwriter
