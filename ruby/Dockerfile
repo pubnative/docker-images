@@ -1,6 +1,6 @@
 ## ref: https://hub.docker.com/r/pubnative/ruby
 
-ARG RUBY_VERSION="2.6.3"
+ARG RUBY_VERSION="2.6.5"
 FROM ruby:${RUBY_VERSION}
 
 LABEL maintainer="Michael Nikitochkin <miry.sof@gmail.com>"
@@ -32,19 +32,16 @@ deb http://deb.debian.org/debian buster-updates main contrib non-free' \
       time \
  && curl -L https://github.com/rbspy/rbspy/releases/download/v0.3.7/rbspy-v0.3.7-x86_64-unknown-linux-musl.tar.gz \
   | tar xz -C /usr/local/bin \
- && curl -sL https://deb.nodesource.com/setup_8.x -o nodesource_setup.sh \
- && bash nodesource_setup.sh \
- && rm -f nodesource_setup.sh \
+ && curl -sL https://deb.nodesource.com/setup_13.x | bash \
  && apt-get install -y nodejs \
- && rm -rf /var/lib/apt/lists/* \
- && rm -rf /usr/share/{doc,info,man} \
- && mkdir /usr/local/share/yarn/ \
- && curl -L https://yarnpkg.com/${YARN_VERSION}.tar.gz \
-  | tar -xz -C /usr/local/share/yarn --strip 1 \
- && ln -s /usr/local/share/yarn/bin/yarn /usr/local/bin \
- && ln -s /usr/local/share/yarn/bin/yarnpkg /usr/local/bin \
+ && curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add \
+ && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
+ && apt-get update && apt-get install -y yarn \
+ && node --version \
  && yarn --version \
  && echo 'gem: --no-document' >> /etc/gemrc \
- && gem install --no-document bundler:2.0.2 puma \
+ && gem install --no-document bundler puma rake \
  && apt-get purge -y --auto-remove \
+ && rm -rf /var/lib/apt/lists/* \
+ && rm -rf /usr/share/{doc,info,man} \
  && rm -fr /tmp/*
