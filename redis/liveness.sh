@@ -2,9 +2,9 @@
 
 set -euxo pipefail
 
-NODE_STATE="$(redis-cli ping)x"
+NODE_STATE="$(redis-cli ping)"
 
-if [ "${NODE_STATE}" == "PONGx" ]; then
+if [ "${NODE_STATE}" == "PONG" ]; then
         exit 0
 fi
 
