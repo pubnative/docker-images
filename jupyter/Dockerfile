@@ -15,3 +15,11 @@ RUN pip install \
   --require-hashes \
   --ignore-installed \
   -r /tmp/requirements.txt
+
+# install almond kernel
+ENV SCALA_VERSION=2.11.12
+ENV ALMOND_VERSION=0.6.0
+RUN curl -Lo coursier https://git.io/coursier-cli
+RUN chmod +x coursier
+RUN ./coursier bootstrap -r jitpack -i user -I user:sh.almond:scala-kernel-api_$SCALA_VERSION:$ALMOND_VERSION sh.almond:scala-kernel_$SCALA_VERSION:$ALMOND_VERSION -o almond-scala-2.11
+RUN ./almond-scala-2.11 --install --id scala211 --display-name "Scala (2.11)"
