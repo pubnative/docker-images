@@ -9,7 +9,8 @@ RUN pip install jupyter_contrib_nbextensions \
   && jupyter contrib nbextension install --user
 
 COPY requirements.txt /tmp/requirements.txt
-
+RUN pip uninstall numpy -y
+RUN pip uninstall numpy -y
 RUN pip install \
   --upgrade \
   --require-hashes \
