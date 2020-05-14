@@ -9,7 +9,8 @@ absl-py==0.7.1 \
     # via jax, tensorboard, tensorflow
 altair==2.4.1 \
     --hash=sha256:1fffa057bada5474d733641043edb64182beff71faa2a1b0e68f07f575ebed7c \
-    --hash=sha256:ec62eb75df5adb619b9651dbefbdc130e37004508c7ca48da21863100ab114d3
+    --hash=sha256:ec62eb75df5adb619b9651dbefbdc130e37004508c7ca48da21863100ab114d3 \
+    # via -r requirements.in
 appdirs==1.4.3 \
     --hash=sha256:9e5896d1372858f8dd3344faf4e5014d21849c756c8d5701f78f8a103b372d92 \
     --hash=sha256:d8b24664561d0d34ddfaec54636d502d7cea6e29c3eaf68f3df6180863e2166e \
@@ -121,7 +122,8 @@ fastcache==1.1.0 \
     --hash=sha256:6de1b16e70335b7bde266707eb401a3aaec220fb66c5d13b02abf0eab8be782b \
     # via jax
 fbprophet==0.5 \
-    --hash=sha256:c67fde2845db52dbdb4becd312b271575ce1c804be666ed1eee94339c5a35127
+    --hash=sha256:c67fde2845db52dbdb4becd312b271575ce1c804be666ed1eee94339c5a35127 \
+    # via -r requirements.in
 future==0.18.2 \
     --hash=sha256:b1bead90b70cf6ec3f0710ae53a525360fa360d306a86583adc6bf83a4db537d \
     # via pyathena
@@ -241,7 +243,8 @@ ipython==7.5.0 \
     --hash=sha256:e840810029224b56cd0d9e7719dc3b39cf84d577f8ac686547c8ba7a06eeab26 \
     # via nb-black
 jax==0.1.55 \
-    --hash=sha256:5531d5bea2936ac9098e8057ff0e9ed9ddba3e72a3a7813a09f8bfa84ba90f5a
+    --hash=sha256:5531d5bea2936ac9098e8057ff0e9ed9ddba3e72a3a7813a09f8bfa84ba90f5a \
+    # via -r requirements.in
 jedi==0.13.3 \
     --hash=sha256:2bb0603e3506f708e792c7f4ad8fc2a7a9d9c2d292a358fbbd58da531695595b \
     --hash=sha256:2c6bcd9545c7d6440951b12b44d373479bf18123a401a52025cf98563fbd826c \
@@ -272,7 +275,8 @@ keras-preprocessing==1.0.9 \
     # via keras, tensorflow
 keras==2.3.1 \
     --hash=sha256:321d43772006a25a1d58eea17401ef2a34d388b588c9f7646c34796151ebc8cc \
-    --hash=sha256:d08a57bd63546175f8f19232ba05906514d419da3e0af8ef7437fa1c11442e20
+    --hash=sha256:d08a57bd63546175f8f19232ba05906514d419da3e0af8ef7437fa1c11442e20 \
+    # via -r requirements.in
 kiwisolver==1.1.0 \
     --hash=sha256:05b5b061e09f60f56244adc885c4a7867da25ca387376b02c1efc29cc16bcd0f \
     --hash=sha256:210d8c39d01758d76c2b9a693567e1657ec661229bc32eac30761fa79b2474b0 \
@@ -364,7 +368,8 @@ matplotlib==3.1.2 \
     --hash=sha256:8e8e2c2fe3d873108735c6ee9884e6f36f467df4a143136209cff303b183bada \
     --hash=sha256:98c2ffeab8b79a4e3a0af5dd9939f92980eb6e3fec10f7f313df5f35a84dacab \
     --hash=sha256:d59bb0e82002ac49f4152963f8a1079e66794a4f454457fd2f0dcc7bf0797d30 \
-    --hash=sha256:ee59b7bb9eb75932fe3787e54e61c99b628155b0cedc907864f24723ba55b309
+    --hash=sha256:ee59b7bb9eb75932fe3787e54e61c99b628155b0cedc907864f24723ba55b309 \
+    # via -r requirements.in, fbprophet, seaborn
 more-itertools==7.2.0 \
     --hash=sha256:409cd48d4db7052af495b09dec721011634af3753ae1ef92d2b32f73a745f832 \
     --hash=sha256:92b8c4b06dac4f0611c0729b2f2ede52b2e1bac1ab48f089c7ddc12e26bb60c4 \
@@ -392,9 +397,11 @@ mysql-connector-python==8.0.18 \
     --hash=sha256:a956b77c9c73bff6e17f068fbd8d03c3631a2ef974703f784f8dbfa348c983ec \
     --hash=sha256:ac4474bf836be6696e4930884725b9de33df4d246fb433255126fb007cb8a59e \
     --hash=sha256:acbaf0c87b1398d238f0fe77af18feefc8b6c3569e7fe96307bca3ed3f0eb240 \
-    --hash=sha256:c3d2dbd81e78d8d2cd1504483daf930219e623b3b9f269a2c2b3bad79a031fa5
+    --hash=sha256:c3d2dbd81e78d8d2cd1504483daf930219e623b3b9f269a2c2b3bad79a031fa5 \
+    # via -r requirements.in
 nb_black==1.0.6 \
-    --hash=sha256:c6dadc150e216758e4d017614c733f0f56ff99e3a64bcd0335494ecf5ee7580b
+    --hash=sha256:c6dadc150e216758e4d017614c733f0f56ff99e3a64bcd0335494ecf5ee7580b \
+    # via -r requirements.in
 numpy==1.17.4 \
     --hash=sha256:0a7a1dd123aecc9f0076934288ceed7fd9a81ba3919f11a855a7887cbe82a02f \
     --hash=sha256:0c0763787133dfeec19904c22c7e358b231c87ba3206b211652f8cbe1241deb6 \
@@ -416,7 +423,8 @@ numpy==1.17.4 \
     --hash=sha256:e467c57121fe1b78a8f68dd9255fbb3bb3f4f7547c6b9e109f31d14569f490c3 \
     --hash=sha256:ede47b98de79565fcd7f2decb475e2dcc85ee4097743e551fe26cfc7eb3ff143 \
     --hash=sha256:f58913e9227400f1395c7b800503ebfdb0772f1c33ff8cb4d6451c06cabdf316 \
-    --hash=sha256:fe39f5fd4103ec4ca3cb8600b19216cd1ff316b4990f4c0b6057ad982c0a34d5
+    --hash=sha256:fe39f5fd4103ec4ca3cb8600b19216cd1ff316b4990f4c0b6057ad982c0a34d5 \
+    # via -r requirements.in, altair, fbprophet, h5py, jax, keras, keras-applications, keras-preprocessing, matplotlib, opt-einsum, pandas, pystan, scikit-learn, scipy, seaborn, tensorboard, tensorflow, tensorflow-probability
 oauthlib==3.1.0 \
     --hash=sha256:bee41cc35fcca6e988463cacc3bcb8a96224f470ca547e697b604cc697b2f889 \
     --hash=sha256:df884cd6cbe20e32633f1db1072e9356f53638e4361bef4e8b03c9127c9328ea \
@@ -443,7 +451,8 @@ pandas==0.25.3 \
     --hash=sha256:bbe3eb765a0b1e578833d243e2814b60c825b7fdbf4cdfe8e8aae8a08ed56ecf \
     --hash=sha256:df8864824b1fe488cf778c3650ee59c3a0d8f42e53707de167ba6b4f7d35f133 \
     --hash=sha256:e45055c30a608076e31a9fcd780a956ed3b1fa20db61561b8d88b79259f526f7 \
-    --hash=sha256:ee50c2142cdcf41995655d499a157d0a812fce55c97d9aad13bc1eef837ed36c
+    --hash=sha256:ee50c2142cdcf41995655d499a157d0a812fce55c97d9aad13bc1eef837ed36c \
+    # via -r requirements.in, altair, fbprophet, seaborn
 parso==0.4.0 \
     --hash=sha256:17cc2d7a945eb42c3569d4564cdf49bde221bc2b552af3eca9c1aad517dcdd33 \
     --hash=sha256:2e9574cb12e7112a87253e14e2c380ce312060269d04bd018478a3c92ea9a376 \
@@ -497,7 +506,8 @@ pyasn1==0.4.8 \
     --hash=sha256:aef77c9fb94a3ac588e87841208bdec464471d9871bd5050a287cc9a475cd0ba \
     # via pyasn1-modules, rsa
 pyathena==1.9.0 \
-    --hash=sha256:7298161243d2c99f1110c8c3dc34c5e6aa25b96fc9a4a6889d4773ee7871d44e
+    --hash=sha256:7298161243d2c99f1110c8c3dc34c5e6aa25b96fc9a4a6889d4773ee7871d44e \
+    # via -r requirements.in
 pygments==2.3.1 \
     --hash=sha256:5ffada19f6203563680669ee7f53b64dabbeb100eb51b61996085e99c03b284a \
     --hash=sha256:e8218dd399a61674745138520d0d4cf2621d7e032439341bc3f647bff125818d \
@@ -528,7 +538,8 @@ pystan==2.19.1.1 \
     --hash=sha256:c87bd98db2b5c67fa08177de04c98b46d1fcd68ae53dbe55ffc5187868068002 \
     --hash=sha256:e6580cec2f5ed1bdb44eab83d54fe87b11e673ed65d6c2064d8d9f76265ce049 \
     --hash=sha256:e9fbbf10dfc0ef8e7343ee4a3e17fd5c214fb12fc42615673e14908949b410e4 \
-    --hash=sha256:fa8bad8dbc0da22bbe6f36af56c9abbfcf10f92df8ce627d59a36bd8d25eb038
+    --hash=sha256:fa8bad8dbc0da22bbe6f36af56c9abbfcf10f92df8ce627d59a36bd8d25eb038 \
+    # via -r requirements.in, fbprophet
 python-dateutil==2.8.0 \
     --hash=sha256:7e6584c74aeed623791615e26efd690f29817a27c73085b78e4bad02493df2fb \
     --hash=sha256:c89805f6f4d64db21ed966fda138f8a5ed7a4fdbc1a8ee329ce1b74e3c74da9e \
@@ -597,7 +608,8 @@ scikit-learn==0.21.3 \
     --hash=sha256:d07fcb0c0acbc043faa0e7cf4d2037f71193de3fb04fb8ed5c259b089af1cf5c \
     --hash=sha256:d146d5443cda0a41f74276e42faf8c7f283fef49e8a853b832885239ef544e05 \
     --hash=sha256:eb2b7bed0a26ba5ce3700e15938b28a4f4513578d3e54a2156c29df19ac5fd01 \
-    --hash=sha256:eb9b8ebf59eddd8b96366428238ab27d05a19e89c5516ce294abc35cea75d003
+    --hash=sha256:eb9b8ebf59eddd8b96366428238ab27d05a19e89c5516ce294abc35cea75d003 \
+    # via -r requirements.in
 scipy==1.2.1 \
     --hash=sha256:014cb900c003b5ac81a53f2403294e8ecf37aedc315b59a6b9370dce0aa7627a \
     --hash=sha256:281a34da34a5e0de42d26aed692ab710141cad9d5d218b20643a9cb538ace976 \
@@ -630,7 +642,8 @@ scipy==1.2.1 \
     # via keras, scikit-learn, seaborn
 seaborn==0.9.0 \
     --hash=sha256:42e627b24e849c2d3bbfd059e00005f6afbc4a76e4895baf44ae23fe8a4b09a5 \
-    --hash=sha256:76c83f794ca320fb6b23a7c6192d5e185a5fcf4758966a0c0a54baee46d41e2f
+    --hash=sha256:76c83f794ca320fb6b23a7c6192d5e185a5fcf4758966a0c0a54baee46d41e2f \
+    # via -r requirements.in
 setuptools-git==1.2 \
     --hash=sha256:e7764dccce7d97b4b5a330d7b966aac6f9ac026385743fd6cedad553f2494cfa \
     --hash=sha256:ff64136da01aabba76ae88b050e7197918d8b2139ccbf6144e14d472b9c40445 \
@@ -661,9 +674,11 @@ tensorflow==2.0.0 \
     --hash=sha256:e7f1c217852facad332e59025d4f872df0ba8fef0322249af4db98ffe09e9f41 \
     --hash=sha256:f132935755472b77c1bf6d638f32c3101e5d6c04c5d6725dff8b6e27c5f9e15a \
     --hash=sha256:f31357637ae6dcdf135b4fd108f325bd6399d250cc2eefefd65140d5313fdd3a \
-    --hash=sha256:fca6a935bb96f947c28a4bebba7ca1d8b9686fb4c02a06d24b11a2f66ca20b81
+    --hash=sha256:fca6a935bb96f947c28a4bebba7ca1d8b9686fb4c02a06d24b11a2f66ca20b81 \
+    # via -r requirements.in
 tensorflow_probability==0.8.0 \
-    --hash=sha256:91502b41753a48bc28f8ded2b25d1931135be87c343d93da47cb446ee05ad468
+    --hash=sha256:91502b41753a48bc28f8ded2b25d1931135be87c343d93da47cb446ee05ad468 \
+    # via -r requirements.in
 termcolor==1.1.0 \
     --hash=sha256:1d6d69ce66211143803fbc56652b41d73b4a400a2891d7bf7a1cdf4c02de613b \
     # via tensorflow
@@ -676,7 +691,8 @@ toolz==0.10.0 \
     # via altair
 tqdm==4.39.0 \
     --hash=sha256:5a1f3d58f3eb53264387394387fe23df469d2a3fab98c9e7f99d5c146c119873 \
-    --hash=sha256:f1a1613fee07cc30a253051617f2a219a785c58877f9f6bfa129446cbaf8b4c1
+    --hash=sha256:f1a1613fee07cc30a253051617f2a219a785c58877f9f6bfa129446cbaf8b4c1 \
+    # via -r requirements.in
 traitlets==4.3.2 \
     --hash=sha256:9c4bd2d267b7153df9152698efb1050a5d84982d3384a37b2c1f7723ba3e7835 \
     --hash=sha256:c6cb5e6f57c5a9bdaa40fa71ce7b4af30298fbab9ece9815b5d995ab6217c7d9 \
@@ -713,7 +729,8 @@ wcwidth==0.1.7 \
     # via prompt-toolkit
 werkzeug==0.16.0 \
     --hash=sha256:7280924747b5733b246fe23972186c6b348f9ae29724135a6dfc1e53cea433e7 \
-    --hash=sha256:e5f4a1f98b52b18a93da705a7458e55afb26f32bff83ff5d19189f92462d65c4
+    --hash=sha256:e5f4a1f98b52b18a93da705a7458e55afb26f32bff83ff5d19189f92462d65c4 \
+    # via -r requirements.in, tensorboard
 wheel==0.33.1 \
     --hash=sha256:66a8fd76f28977bb664b098372daef2b27f60dc4d1688cfab7b37a09448f0e9d \
     --hash=sha256:8eb4a788b3aec8abf5ff68d4165441bc57420c9f64ca5f471f58c3969fe08668 \
@@ -729,4 +746,5 @@ zipp==0.6.0 \
 # The following packages are considered to be unsafe in a requirements file:
 setuptools==42.0.1 \
     --hash=sha256:409547a87530bd8a20582a2f0996c2a6651c5855b3a614af05020b35c3867dcb \
-    --hash=sha256:be5c1ea910cd1f37d1dd79b5f74b68b359348f558fbe4866b15f54a052d61ee1
+    --hash=sha256:be5c1ea910cd1f37d1dd79b5f74b68b359348f558fbe4866b15f54a052d61ee1 \
+    # via -r requirements.in, google-auth, ipython, jsonschema, kiwisolver, markdown, protobuf, tensorboard
