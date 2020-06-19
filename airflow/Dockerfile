@@ -18,6 +18,6 @@ RUN pip3 install \
   werkzeug==${WERKZEUG_VERSION}
 
 RUN pip install \
- --force-reinstall
+ --force-reinstall \
  boto3==1.10.40 \
  pyathena==1.9.0
