@@ -1,6 +1,6 @@
 # Images:
 #  - pubnative/airflow:latest
-#  - pubnative/airflow:${GIT_COMMIT}
+#  - pubnative/airflow:plugins-${GIT_COMMIT}
 # 
 # C.f. Makefile
 
