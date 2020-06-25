@@ -20,4 +20,6 @@ RUN pip3 install \
 RUN pip install \
  --force-reinstall \
  boto3==1.10.40 \
- pyathena==1.9.0
+ pyathena==1.9.0 \
+ pyyaml==5.3
+
