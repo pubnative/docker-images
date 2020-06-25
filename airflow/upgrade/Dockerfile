@@ -16,3 +16,10 @@ RUN pip3 install \
   apache-airflow[statsd]==${AIRFLOW_VERSION} \
   influxdb==${INFLUX_DB_VERSION} \
   werkzeug==${WERKZEUG_VERSION}
+
+RUN pip install \
+ --force-reinstall \
+ boto3==1.10.40 \
+ pyathena==1.9.0 \
+ pyyaml==5.3
+
