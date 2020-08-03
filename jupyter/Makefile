@@ -13,7 +13,7 @@ compile_dependencies:
 	  requirements.in
 	chmod +r requirements.txt
 
-build:
+build: compile_dependencies
 	docker build --rm . -t ${IMG}
 	docker tag ${IMG} ${LATEST}
 
