@@ -10,19 +10,24 @@ RUN pip install jupyter_contrib_nbextensions \
 
 COPY requirements.txt /tmp/requirements.txt
 RUN pip uninstall numpy -y
-RUN pip uninstall numpy -y
 RUN pip install \
   --upgrade \
-  --require-hashes \
   --ignore-installed \
+  --require-hashes \
   -r /tmp/requirements.txt
 
-# install almond kernel
-ENV SCALA_VERSION=2.11.12
-ENV ALMOND_VERSION=0.6.0
+# Install almond kernel
 RUN curl -Lo coursier https://git.io/coursier-cli
 RUN chmod +x coursier
+# Scala 2.11
+ENV SCALA_VERSION=2.11.12
+ENV ALMOND_VERSION=0.6.0
 RUN ./coursier bootstrap -r jitpack -i user -I user:sh.almond:scala-kernel-api_$SCALA_VERSION:$ALMOND_VERSION sh.almond:scala-kernel_$SCALA_VERSION:$ALMOND_VERSION -o almond-scala-2.11
-# RUN jupyter --paths
-# install almond kernel globally because jupyter home directory will be un-mounted
+# Install almond kernel globally because jupyter home directory will be un-mounted
 RUN ./almond-scala-2.11 --install --id scala211 --display-name "Scala (2.11)" --jupyter-path /opt/conda/share/jupyter/kernels
+
+# Scala 2.12
+ENV SCALA_VERSION=2.12.12
+ENV ALMOND_VERSION=0.10.3
+RUN ./coursier bootstrap -r jitpack -i user -I user:sh.almond:scala-kernel-api_$SCALA_VERSION:$ALMOND_VERSION sh.almond:scala-kernel_$SCALA_VERSION:$ALMOND_VERSION -o almond-scala-2.12
+RUN ./almond-scala-2.12 --install --id scala212 --display-name "Scala (2.12)" --jupyter-path /opt/conda/share/jupyter/kernels
