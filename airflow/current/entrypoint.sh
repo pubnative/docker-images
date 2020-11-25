@@ -1,10 +1,27 @@
-while getopts ":hwsi" opt; do
+#!/usr/bin/env bash
+
+function init_gcloud {
+  EMAIL=${GCP_AIRFLOW_ACCOUNT_EMAIL:?"Need to be set and non-empty"}
+  FILE=${GCP_AIRFLOW_SA_FILE_PATH:?"Need to be set and non-empty"}
+  LOCATION=${GCP_K8S_LOCATION:?"Need to be set and non-empty"}
+  ZONE=${GCP_K8S_ZONE:?"Need to be set and non-empty"}
+  PROJECT=${GCP_K8S_PROJECT:?"Need to be set and non-empty"}
+  
+  #Start gcloud auth
+  gcloud auth activate-service-account $EMAIL --key-file $FILE
+  #Create the kubeconfig
+  gcloud container clusters get-credentials $LOCATION  --zone $ZONE  --project $PROJECT
+} 
+
+while getopts ":hwsig" opt; do
   case ${opt} in
     h )
       echo "Usage:"
-      echo "    ./entrypoint.sh -h          Display this help message."
-      echo "    ./entrypoint.sh -w          Start airflow as a webserver"
-      echo "    ./entrypoint.sh -s          Start airflow as a scheduler"
+      echo "    docker run <image> -h          Display this help message."
+      echo "    docker run <image> -w          Start airflow as a webserver"
+      echo "    docker run <image> -s          Start airflow as a scheduler"
+      echo "    docker run <image> -w -g       Start airflow as a webserver with gcloud creadentials"
+      echo "    docker run <image> -s -g       Start airflow as a scheduler with gcloud creadentials"
       exit 0
       ;;
     w )
@@ -19,6 +36,10 @@ while getopts ":hwsi" opt; do
       echo "Start as a initdb"
       OPERATOR="initdb"
       ;;
+    g )
+      echo "Gcloud auth and creates kubeconfig"
+      init_gcloud
+      ;;
     \? )
       echo "Invalid Option: -$OPTARG" 1>&2
       exit 1
@@ -26,38 +47,5 @@ while getopts ":hwsi" opt; do
   esac
 done
 
-if [ -z "$GCP_AIRFLOW_ACCOUNT_EMAIL" ]
-then
-      echo "\$GCP_AIRFLOW_ACCOUNT_EMAIL is empty. It is required."
-      exit 1
-fi
-
-if [ -z "$GCP_AIRFLOW_SA_FILE_PATH" ]
-then
-      echo "\$GCP_AIRFLOW_SA_FILE_PATH is empty. It is required."
-      exit 1
-fi
-
-if [ -z "$GCP_K8S_LOCATION" ]
-then
-      echo "\$GCP_K8S_LOCATION is empty. It is required."
-      exit 1
-fi
-
-if [ -z "$GCP_K8S_ZONE" ]
-then
-      echo "\$GCP_K8S_ZONE is empty. It is required."
-      exit 1
-fi
-
-if [ -z "$GCP_K8S_PROJECT" ]
-then
-      echo "\$GCP_K8S_PROJECT is empty. It is required."
-      exit 1
-fi
-
-gcloud auth activate-service-account $GCP_AIRFLOW_ACCOUNT_EMAIL --key-file $GCP_AIRFLOW_SA_FILE_PATH
-
-gcloud container clusters get-credentials $GCP_K8S_LOCATION  --zone $GCP_K8S_ZONE --project $GCP_K8S_PROJECT
-
+echo "Starting airflow as $OPERATOR"
 airflow $OPERATOR
