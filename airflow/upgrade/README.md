@@ -30,10 +30,13 @@ Where `${GIT_COMMIT}` is the first seven characters of the git commit.
 
 ## Environment Variables
 
+If you want to run this image with gcloud authentication you should define the following environment variables 
 
 
-  EMAIL=${GCP_AIRFLOW_ACCOUNT_EMAIL:?"Need to be set and non-empty"}
-  FILE=${GCP_AIRFLOW_SA_FILE_PATH:?"Need to be set and non-empty"}
-  LOCATION=${GCP_K8S_LOCATION:?"Need to be set and non-empty"}
-  ZONE=${GCP_K8S_ZONE:?"Need to be set and non-empty"}
-  PROJECT=${GCP_K8S_PROJECT:?"Need to be set and non-empty"}
+|         ENV Var           |                    Description                   | Require | 
+|---------------------------|--------------------------------------------------|---------|
+| GCP_AIRFLOW_ACCOUNT_EMAIL | Service account email                            |    y    |
+| GCP_AIRFLOW_SA_FILE_PATH  | Service account json file's path                 |    y    |
+| GCP_K8S_LOCATION          | GCP kubernetes location (ex: "us-east4gcpcore0") |    y    |
+| GCP_K8S_ZONE              | GCP kubernetes zone (ex: "us-east")              |    y    |
+| GCP_K8S_PROJECT           | GCP Project that contains the cluster            |    y    |
