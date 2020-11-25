@@ -37,7 +37,7 @@ while getopts ":hwsig" opt; do
       OPERATOR="initdb"
       ;;
     g )
-      echo "Gcloud auth and creates kubeconfig"
+      echo "Authenticates Gcloud and creates a kube config file"
       init_gcloud
       ;;
     \? )
