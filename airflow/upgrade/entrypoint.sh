@@ -20,8 +20,8 @@ while getopts ":hwsig" opt; do
       echo "    docker run <image> -h          Display this help message."
       echo "    docker run <image> -w          Start airflow as a webserver"
       echo "    docker run <image> -s          Start airflow as a scheduler"
-      echo "    docker run <image> -w -g       Start airflow as a webserver with gcloud creadentials"
-      echo "    docker run <image> -s -g       Start airflow as a scheduler with gcloud creadentials"
+      echo "    docker run <image> -w -g       Start airflow as a webserver with gcloud credentials"
+      echo "    docker run <image> -s -g       Start airflow as a scheduler with gcloud credentials"
       exit 0
       ;;
     w )
