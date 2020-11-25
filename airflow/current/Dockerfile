@@ -12,7 +12,7 @@ RUN pip install \
  pyathena==1.9.0 \
  pyyaml==5.3
 
-#Intall gcloud
+# Install gcloud
 ENV CLOUDSDK_INSTALL_DIR /usr/local/gcloud/
 RUN curl -sSL https://sdk.cloud.google.com | bash
 ENV PATH $PATH:/usr/local/gcloud/google-cloud-sdk/bin
