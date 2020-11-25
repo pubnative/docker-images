@@ -38,5 +38,5 @@ If you want to run this image with gcloud authentication you should define the f
 | GCP_AIRFLOW_ACCOUNT_EMAIL | Service account email                            |    y    |
 | GCP_AIRFLOW_SA_FILE_PATH  | Service account json file's path                 |    y    |
 | GCP_K8S_LOCATION          | GCP kubernetes location (ex: "us-east4gcpcore0") |    y    |
-| GCP_K8S_ZONE              | GCP kubernetes zone (ex: "us-east")              |    y    |
+| GCP_K8S_ZONE              | GCP kubernetes zone (ex: "us-east4")              |    y    |
 | GCP_K8S_PROJECT           | GCP Project that contains the cluster            |    y    |

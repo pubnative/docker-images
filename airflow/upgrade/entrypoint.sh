@@ -7,9 +7,9 @@ function init_gcloud {
   ZONE=${GCP_K8S_ZONE:?"Need to be set and non-empty"}
   PROJECT=${GCP_K8S_PROJECT:?"Need to be set and non-empty"}
   
-  #Start gcloud auth
+  # Start gcloud auth
   gcloud auth activate-service-account $EMAIL --key-file $FILE
-  #Create the kubeconfig
+  # Create the kubeconfig
   gcloud container clusters get-credentials $LOCATION  --zone $ZONE  --project $PROJECT
 } 
 
