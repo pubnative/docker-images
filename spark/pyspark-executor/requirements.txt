@@ -27,5 +27,9 @@ numpy==1.16.3 \
     --hash=sha256:b16d88da290334e33ea992c56492326ea3b06233a00a1855414360b77ca72f26 \
     --hash=sha256:b78a1defedb0e8f6ae1eb55fa6ac74ab42acc4569c3a2eacc2a407ee5d42ebcb \
     --hash=sha256:cfef82c43b8b29ca436560d51b2251d5117818a8d1fb74a8384a83c096745dad \
-    --hash=sha256:d160e57731fcdec2beda807ebcabf39823c47e9409485b5a3a1db3a8c6ce763e \
+    --hash=sha256:d160e57731fcdec2beda807ebcabf39823c47e9409485b5a3a1db3a8c6ce763e
+    # via -r requirements.in
+py-geohex3==1.0.0 \
+    --hash=sha256:121a58eaa657b3b8e92a7768768c67614ee9f9b95c8a27ded490e7c0242f3f91 \
+    --hash=sha256:8beb163bff5e48417307b6fbdb44b032e00bb4684bdf0651069fce28e59cbe0c
     # via -r requirements.in
