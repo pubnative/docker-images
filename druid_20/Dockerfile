@@ -21,10 +21,17 @@ RUN set -exu \
  && curl -o druid.tgz.asc https://downloads.apache.org/druid/${DRUID_VSN}/apache-druid-${DRUID_VSN}-bin.tar.gz.asc \
  && gpg --verify druid.tgz.asc druid.tgz \
  \
+ && : Create user and group \
+ && groupadd -g 1000 druid \
+ && useradd -d /opt/druid -M -g druid -u 1000 druid \
+ \
  && : Install druid \
  && tar -xzf druid.tgz -C /opt \
  && rm -f druid.tgz druid.tgz.asc KEYS \
- && mv /opt/apache-druid-${DRUID_VSN} /opt/druid 
+ && mv /opt/apache-druid-${DRUID_VSN} /opt/druid \
+ && mkdir /opt/druid/var \
+ && chown -R druid:druid /opt/druid
 
 WORKDIR /opt/druid
+ENTRYPOINT ["runuser", "-u", "druid"]
 
