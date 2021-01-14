@@ -3,7 +3,7 @@
 
 FROM jupyter/all-spark-notebook:703d8b2dcb88
 
-LABEL maintainer Denis <denis@pubnative.net>
+LABEL "Maintainer"="datascience@verve.com"
 
 RUN pip install jupyter_contrib_nbextensions \
   && jupyter contrib nbextension install --user
