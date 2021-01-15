@@ -6,6 +6,7 @@ LATEST := ${NAME}:latest
 all: build push
 
 compile_dependencies:
+	poetry export > requirements.in
 	pip-compile \
 	  --generate-hashes \
 	  --output-file requirements.txt \
