@@ -7,7 +7,6 @@ authors = ["Data Science <datascience@verve.com>"]
 [tool.poetry.dependencies]
 python = "^3.8"
 altair = "^4.1.0"
-fbprophet = "^0.7.1"
 jax = "^0.2.8"
 Keras = "^2.4.3"
 matplotlib = "^3.3.3"
@@ -27,6 +26,7 @@ pyarrow = "^2.0.0"
 awscli = "^1.18.215"
 s3fs = "0.4.*"
 category-encoders = "^2.2.2"
+fbprophet = "^0.7.1"
 
 [tool.poetry.dev-dependencies]
 
