@@ -9,7 +9,7 @@ LABEL version.jupyter-core=4.7.0
 LABEL version.jupyter-notebook=6.1.6
 LABEL version.jupyter-lab=2.2.9
 
-RUN pip install jupyter_contrib_nbextensions \
+RUN pip install jupyter-contrib-nbextensions \
   && jupyter contrib nbextension install --user
 
 COPY requirements.txt /tmp/requirements.txt
