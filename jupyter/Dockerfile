@@ -12,8 +12,8 @@ LABEL version.jupyter-lab=2.2.9
 RUN pip install --upgrade pip
 RUN pip install jupyter-contrib-nbextensions \
   && jupyter contrib nbextension install --user \
-  && jupyter labextension install @jupyterlab/toc --user \
-  && jupyter labextension install jupyterlab-execute-time --user
+  && jupyter-labextension install @jupyterlab/toc \
+  && jupyter-labextension install jupyterlab-execute-time
 
 COPY requirements.txt /tmp/requirements.txt
 RUN pip uninstall numpy -y
