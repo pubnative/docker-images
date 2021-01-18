@@ -36,3 +36,7 @@ ENV SCALA_VERSION=2.12.12
 ENV ALMOND_VERSION=0.10.3
 RUN ./coursier bootstrap -r jitpack -i user -I user:sh.almond:scala-kernel-api_$SCALA_VERSION:$ALMOND_VERSION sh.almond:scala-kernel_$SCALA_VERSION:$ALMOND_VERSION -o almond-scala-2.12
 RUN ./almond-scala-2.12 --install --id scala212 --display-name "Scala (2.12)" --jupyter-path /opt/conda/share/jupyter/kernels
+
+# install extensions
+jupyter labextension install @jupyterlab/toc
+jupyter labextension install jupyterlab-execute-time

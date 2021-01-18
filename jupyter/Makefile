@@ -3,16 +3,10 @@ TAG := $$(git log -1 --pretty=%h)
 IMG := ${NAME}:${TAG}
 LATEST := ${NAME}:latest
  
-all: compile_dependencies build push
+all: compile build push
 
-compile_dependencies:
-	poetry export > requirements.in
-	pip-compile \
-	  --generate-hashes \
-	  --output-file requirements.txt \
-	  --allow-unsafe \
-	  requirements.in
-	chmod +r requirements.txt
+compile:
+	poetry export > requirements.txt
 
 build:
 	docker build --rm . -t ${IMG}

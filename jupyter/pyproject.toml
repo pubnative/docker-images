@@ -27,6 +27,7 @@ awscli = "^1.18.215"
 s3fs = "0.4.*"
 category-encoders = "^2.2.2"
 fbprophet = "^0.7.1"
+nb-black = "^1.0.7"
 
 [tool.poetry.dev-dependencies]
 
