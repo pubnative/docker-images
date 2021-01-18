@@ -2,8 +2,17 @@
 
 Image for Jupyter Lab.
 
-## User poetry to resolve dependencies
-```shell
+## Pip tools
+
+We use pip tools to get the sha of dependencies.
+To install the tools, run:
+
+```sh
+pip install pip-tools
+```
+
+## poetry depencency resolution
+```sh
 # install poetry
 pip install poetry
 # initialize poetry, this will create pyproject.toml file
@@ -18,14 +27,20 @@ poetry add pandas
 ## compile dependencies
 ```sh
 # export resolved packages from .lock, this will create requirements.txt with fixed hashes
-poetry export > requirements.txt
+make compile
 
-
-## All in one
+## build image
 To build the image, and push it to Docker Hub:
 
 ```sh
 make build
+```
+
+## do all
+To build the image, and push it to Docker Hub:
+
+```sh
+make
 ```
 ## Note
 - Special exception was made for s3fs as poetry could not figure out the right version and newer version of this 

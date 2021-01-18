@@ -6,7 +6,13 @@ LATEST := ${NAME}:latest
 all: compile build push
 
 compile:
-	poetry export > requirements.txt
+	poetry export > requirements.in
+	pip-compile \
+	  --generate-hashes \
+	  --output-file requirements.txt \
+	  --allow-unsafe \
+	  requirements.in
+	chmod +r requirements.txt
 
 build:
 	docker build --rm . -t ${IMG}
