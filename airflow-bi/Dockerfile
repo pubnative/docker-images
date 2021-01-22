@@ -2,7 +2,7 @@
 
 FROM pubnative/airflow:python3.7
 
-LABEL maintainer Denis <denis@pubnative.net>
+LABEL maintainer Data Team <data@pubnative.net>
 
 ENV AIRFLOW_VERSION "1.10.7"
 ENV INFLUX_DB_VERSION "5.2.1"
@@ -48,4 +48,5 @@ RUN pip install \
  twilio \
  "websocket-client==0.55.0" \
  xlrd \
- xlsxwriter
+ xlsxwriter \
+ "gcsfs==0.7.1"
