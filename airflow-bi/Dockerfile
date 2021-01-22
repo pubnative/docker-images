@@ -31,7 +31,7 @@ RUN pip install \
  openpyxl \
  "pandas==0.24.1" \
  pandas_explode \
- pyarrow \
+ "pyarrow==0.14.1" \
  pyathena \
  pydruid \
  pygsheets \
@@ -44,7 +44,7 @@ RUN pip install \
  scipy \
  slack \
  slackclient \
- sqlalchemy \
+ "sqlalchemy==1.3.15" \
  twilio \
  "websocket-client==0.55.0" \
  xlrd \
