@@ -6,11 +6,12 @@ authors = []
 
 [tool.poetry.dependencies]
 python = "^3.7"
-boto3 = "^1.16.59"
 gcsfs = "^0.7.1"
 gspread-pandas = "^2.2.3"
 pyarrow = "^3.0.0"
 requests = "^2.25.1"
+boto3 = ">=1.0.0"
+s3fs = "^0.5.2"
 
 [tool.poetry.dev-dependencies]
 

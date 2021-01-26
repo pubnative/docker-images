@@ -3,7 +3,7 @@ COMMIT := $$(git log -1 --pretty=%h)
 VERSIONED := ${NAME}:${COMMIT}
 LATEST := ${NAME}:latest
  
-all: compile build push
+all: build push
 
 .PHONY: build
 build:
