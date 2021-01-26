@@ -3,10 +3,11 @@ COMMIT := $$(git log -1 --pretty=%h)
 VERSIONED := ${NAME}:${COMMIT}
 LATEST := ${NAME}:latest
  
-all: build push
+all: compile build push
 
 .PHONY: build
 build:
+	poetry export -f requirements.txt --output requirements.txt
 	docker build --rm . -t ${VERSIONED}
 	docker tag ${VERSIONED} ${LATEST}
 

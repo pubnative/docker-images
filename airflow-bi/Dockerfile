@@ -4,49 +4,49 @@ FROM pubnative/airflow:python3.7
 
 LABEL maintainer Data Team <data@pubnative.net>
 
-ENV AIRFLOW_VERSION "1.10.7"
-ENV INFLUX_DB_VERSION "5.2.1"
-ENV WERKZEUG_VERSION "0.15.4"
+# ENV AIRFLOW_VERSION "1.10.7"
+# ENV INFLUX_DB_VERSION "5.2.1"
+# ENV WERKZEUG_VERSION "0.15.4"
 
-LABEL maintainer Denis <denis@pubnative.net>
+LABEL maintainer Data team <data@pubnative.net>
 
-RUN pip3 install \
-  --upgrade \
-  apache-airflow[statsd]==${AIRFLOW_VERSION} \
-  influxdb==${INFLUX_DB_VERSION} \
-  werkzeug==${WERKZEUG_VERSION}
+COPY requirements.txt /tmp/requirements.txt
+RUN pip install -r /tmp/requirements.txt
 
-RUN pip install \
- --upgrade\
- bs4 \
- boto3 \
- django-smtp-ssl \
- fastparquet \
- google-cloud-storage \
- gspread \
- gspread_pandas \
- lxml \
- matplotlib \
- oauth2client \
- openpyxl \
- "pandas==0.24.1" \
- pandas_explode \
- "pyarrow==0.14.1" \
- pyathena \
- pydruid \
- pygsheets \
- pyhive \
- python-dotenv \
- ratelimiter \
- requests \
- s3fs \
- send_email \
- scipy \
- slack \
- slackclient \
- "sqlalchemy==1.3.15" \
- twilio \
- "websocket-client==0.55.0" \
- xlrd \
- xlsxwriter \
- "gcsfs==0.7.1"
+# RUN pip3 install \
+#   --upgrade \
+#   apache-airflow[statsd]==${AIRFLOW_VERSION} \
+#   influxdb==${INFLUX_DB_VERSION} \
+#   werkzeug==${WERKZEUG_VERSION} \
+#   bs4 \
+#   boto3 \
+#   django-smtp-ssl \
+#   fastparquet \
+#   google-cloud-storage \
+#   gspread \
+#   gspread_pandas \
+#   lxml \
+#   matplotlib \
+#   oauth2client \
+#   openpyxl \
+#   "pandas==0.24.1" \
+#   pandas_explode \
+#   "pyarrow==0.14.1" \
+#   pyathena \
+#   pydruid \
+#   pygsheets \
+#   pyhive \
+#   python-dotenv \
+#   ratelimiter \
+#   requests \
+#   s3fs \
+#   send_email \
+#   scipy \
+#   slack \
+#   slackclient \
+#   "sqlalchemy==1.3.15" \
+#   twilio \
+#   "websocket-client==0.55.0" \
+#   xlrd \
+#   xlsxwriter \
+#   "gcsfs==0.7.1"

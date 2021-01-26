@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "airflow-bi"
+version = "0.1.0"
+description = ""
+authors = []
+
+[tool.poetry.dependencies]
+python = "^3.7"
+boto3 = "^1.16.59"
+gcsfs = "^0.7.1"
+gspread-pandas = "^2.2.3"
+pyarrow = "^3.0.0"
+requests = "^2.25.1"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
