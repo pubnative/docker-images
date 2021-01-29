@@ -7,6 +7,7 @@ all: build push
 
 .PHONY: build
 build:
+	poetry export --output requirements.txt
 	docker build --rm . -t ${VERSIONED}
 	docker tag ${VERSIONED} ${LATEST}
 
