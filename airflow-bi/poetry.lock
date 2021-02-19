@@ -110,17 +110,6 @@ jmespath = ">=0.7.1,<1.0.0"
 urllib3 = {version = ">=1.25.4,<1.27", markers = "python_version != \"3.4\""}
 
 [[package]]
-name = "bs4"
-version = "0.0.1"
-description = "Dummy package for Beautiful Soup"
-category = "main"
-optional = false
-python-versions = "*"
-
-[package.dependencies]
-beautifulsoup4 = "*"
-
-[[package]]
 name = "cachetools"
 version = "4.2.1"
 description = "Extensible memoizing collections and decorators"
@@ -528,7 +517,7 @@ idna = ">=2.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "dd7830ad3027cd9adea3337af3e5ea85e7831be5b41920406a8965e7d5b67481"
+content-hash = "62244bac3399960811a0b73768b54ccbaa2fc5bc6ae2a6086160c95114443eae"
 
 [metadata.files]
 aiobotocore = [
@@ -597,9 +586,6 @@ boto3 = [
 botocore = [
     {file = "botocore-1.19.52-py2.py3-none-any.whl", hash = "sha256:d8f50e4162012ccfab64c2db4fcc99313d46d57789072251bab56013d66546e2"},
     {file = "botocore-1.19.52.tar.gz", hash = "sha256:dc5ec23deadbe9327d3c81d03fddf80805c549059baabd80dea605941fe6a221"},
-]
-bs4 = [
-    {file = "bs4-0.0.1.tar.gz", hash = "sha256:36ecea1fd7cc5c0c6e4a1ff075df26d50da647b75376626cc186e2212886dd3a"},
 ]
 cachetools = [
     {file = "cachetools-4.2.1-py3-none-any.whl", hash = "sha256:1d9d5f567be80f7c07d765e21b814326d78c61eb0c3a637dffc0e5d1796cb2e2"},
