@@ -9,6 +9,7 @@ python = "^3.7"
 boto3 = "^1.10.40"
 pyathena = "^1.9.0"
 pyyaml = "^5.3"
+google-api-python-client = "^1.12.8"
 
 [tool.poetry.dev-dependencies]
 
