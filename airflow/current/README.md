@@ -20,6 +20,10 @@ Where `${GIT_COMMIT}` is the first seven characters of the git commit.
 
 `make -C airflow`
 
+## Update requirements.txt
+
+`make -C airflow update_req`
+
 ## Docker image locally
 
 ``` bash

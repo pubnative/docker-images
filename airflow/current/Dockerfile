@@ -6,11 +6,8 @@
 
 FROM pubnative/airflow:plugins-1.4
 
-RUN pip install \
- --force-reinstall \
- boto3==1.10.40 \
- pyathena==1.9.0 \
- pyyaml==5.3
+COPY requirements.txt /tmp/requirements.txt
+RUN pip install -r /tmp/requirements.txt
 
 # Install gcloud
 ENV CLOUDSDK_INSTALL_DIR /usr/local/gcloud/
