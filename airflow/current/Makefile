@@ -6,8 +6,7 @@ LATEST := ${NAME}:latest
 all: build push
 
 .PHONY: build
-build:
-	poetry export --output requirements.txt
+build: update_req
 	docker build --rm . -t ${VERSIONED}
 	docker tag ${VERSIONED} ${LATEST}
 
