@@ -7,14 +7,14 @@ optional = false
 python-versions = ">=3.6"
 
 [package.dependencies]
-botocore = ">=1.19.52,<1.19.53"
-aioitertools = ">=0.5.1"
-wrapt = ">=1.10.10"
 aiohttp = ">=3.3.1"
+aioitertools = ">=0.5.1"
+botocore = ">=1.19.52,<1.19.53"
+wrapt = ">=1.10.10"
 
 [package.extras]
-boto3 = ["boto3 (==1.16.52)"]
 awscli = ["awscli (==1.18.212)"]
+boto3 = ["boto3 (==1.16.52)"]
 
 [[package]]
 name = "aiohttp"
@@ -25,12 +25,12 @@ optional = false
 python-versions = ">=3.6"
 
 [package.dependencies]
+async-timeout = ">=3.0,<4.0"
+attrs = ">=17.3.0"
+chardet = ">=2.0,<4.0"
+multidict = ">=4.5,<7.0"
 typing-extensions = ">=3.6.5"
 yarl = ">=1.0,<2.0"
-async-timeout = ">=3.0,<4.0"
-chardet = ">=2.0,<4.0"
-attrs = ">=17.3.0"
-multidict = ">=4.5,<7.0"
 
 [package.extras]
 speedups = ["aiodns", "brotlipy", "cchardet"]
@@ -63,10 +63,10 @@ optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
 [package.extras]
+dev = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)", "six", "zope.interface", "furo", "sphinx", "pre-commit"]
 docs = ["furo", "sphinx", "zope.interface"]
 tests = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)", "six", "zope.interface"]
 tests_no_zope = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)", "six"]
-dev = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)", "six", "zope.interface", "furo", "sphinx", "pre-commit"]
 
 [[package]]
 name = "beautifulsoup4"
@@ -80,8 +80,8 @@ python-versions = "*"
 soupsieve = {version = ">1.2", markers = "python_version >= \"3.0\""}
 
 [package.extras]
-lxml = ["lxml"]
 html5lib = ["html5lib"]
+lxml = ["lxml"]
 
 [[package]]
 name = "boto3"
@@ -92,8 +92,8 @@ optional = false
 python-versions = "*"
 
 [package.dependencies]
-jmespath = ">=0.7.1,<1.0.0"
 botocore = ">=1.19.52,<1.20.0"
+jmespath = ">=0.7.1,<1.0.0"
 s3transfer = ">=0.3.0,<0.4.0"
 
 [[package]]
@@ -105,8 +105,8 @@ optional = false
 python-versions = "*"
 
 [package.dependencies]
-python-dateutil = ">=2.1,<3.0.0"
 jmespath = ">=0.7.1,<1.0.0"
+python-dateutil = ">=2.1,<3.0.0"
 urllib3 = {version = ">=1.25.4,<1.27", markers = "python_version != \"3.4\""}
 
 [[package]]
@@ -150,20 +150,20 @@ optional = false
 python-versions = ">3.6"
 
 [package.extras]
-hdfs = ["pyarrow"]
-git = ["pygit2"]
-gs = ["gcsfs"]
-s3 = ["s3fs"]
-sftp = ["paramiko"]
-gcs = ["gcsfs"]
-github = ["requests"]
-ssh = ["paramiko"]
-dropbox = ["dropboxdrivefs", "requests", "dropbox"]
 abfs = ["adlfs"]
-http = ["requests", "aiohttp"]
 adl = ["adlfs"]
 dask = ["dask", "distributed"]
+dropbox = ["dropboxdrivefs", "requests", "dropbox"]
+gcs = ["gcsfs"]
+git = ["pygit2"]
+github = ["requests"]
+gs = ["gcsfs"]
+hdfs = ["pyarrow"]
+http = ["requests", "aiohttp"]
+s3 = ["s3fs"]
+sftp = ["paramiko"]
 smb = ["smbprotocol"]
+ssh = ["paramiko"]
 
 [[package]]
 name = "future"
@@ -183,11 +183,11 @@ python-versions = ">=3.6"
 
 [package.dependencies]
 aiohttp = "*"
-fsspec = ">=0.8.0"
-requests = "*"
-google-auth = ">=1.2"
 decorator = "*"
+fsspec = ">=0.8.0"
+google-auth = ">=1.2"
 google-auth-oauthlib = "*"
+requests = "*"
 
 [package.extras]
 gcsfuse = ["fusepy"]
@@ -201,10 +201,10 @@ optional = false
 python-versions = ">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*"
 
 [package.dependencies]
-six = ">=1.9.0"
-pyasn1-modules = ">=0.2.1"
 cachetools = ">=2.0.0,<5.0"
+pyasn1-modules = ">=0.2.1"
 rsa = {version = ">=3.1.4,<5", markers = "python_version >= \"3.6\""}
+six = ">=1.9.0"
 
 [package.extras]
 aiohttp = ["aiohttp (>=3.6.2,<4.0.0dev)"]
@@ -218,8 +218,8 @@ optional = false
 python-versions = ">=3.6"
 
 [package.dependencies]
-requests-oauthlib = ">=0.7.0"
 google-auth = "*"
+requests-oauthlib = ">=0.7.0"
 
 [package.extras]
 tool = ["click"]
@@ -233,9 +233,9 @@ optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
 [package.dependencies]
-requests = ">=2.2.1"
-google-auth-oauthlib = ">=0.4.1"
 google-auth = ">=1.12.0"
+google-auth-oauthlib = ">=0.4.1"
+requests = ">=2.2.1"
 
 [[package]]
 name = "gspread-pandas"
@@ -246,12 +246,12 @@ optional = false
 python-versions = "*"
 
 [package.dependencies]
-gspread = ">=3.0.0"
+decorator = "*"
 future = "*"
 google-auth = "*"
-pandas = ">=0.20.0"
-decorator = "*"
 google-auth-oauthlib = "*"
+gspread = ">=3.0.0"
+pandas = ">=0.20.0"
 
 [package.extras]
 dev = ["pip", "sphinx", "sphinx-rtd-theme", "coverage", "twine", "bump2version", "tox", "flake8", "pytest", "pre-commit", "isort", "pycrypto", "betamax", "betamax-serializers", "pytest-mock", "oauth2client", "black"]
@@ -305,11 +305,11 @@ optional = false
 python-versions = "*"
 
 [package.dependencies]
-pyasn1-modules = ">=0.0.5"
-six = ">=1.6.1"
-pyasn1 = ">=0.1.7"
 httplib2 = ">=0.9.1"
+pyasn1 = ">=0.1.7"
+pyasn1-modules = ">=0.0.5"
 rsa = ">=3.1.4"
+six = ">=1.6.1"
 
 [[package]]
 name = "oauthlib"
@@ -320,9 +320,9 @@ optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
 [package.extras]
+rsa = ["cryptography"]
 signals = ["blinker"]
 signedtoken = ["cryptography", "pyjwt (>=1.0.0)"]
-rsa = ["cryptography"]
 
 [[package]]
 name = "pandas"
@@ -333,9 +333,9 @@ optional = false
 python-versions = ">=3.6.1"
 
 [package.dependencies]
+numpy = ">=1.15.4"
 python-dateutil = ">=2.7.3"
 pytz = ">=2017.2"
-numpy = ">=1.15.4"
 
 [package.extras]
 test = ["pytest (>=4.0.2)", "pytest-xdist", "hypothesis (>=3.58)"]
@@ -398,9 +398,9 @@ optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
 [package.dependencies]
-idna = ">=2.5,<3"
 certifi = ">=2017.4.17"
 chardet = ">=3.0.2,<5"
+idna = ">=2.5,<3"
 urllib3 = ">=1.21.1,<1.27"
 
 [package.extras]
@@ -482,7 +482,7 @@ python-versions = "*"
 
 [[package]]
 name = "urllib3"
-version = "1.26.2"
+version = "1.26.3"
 description = "HTTP library with thread-safe connection pooling, file post, and more."
 category = "main"
 optional = false
@@ -510,9 +510,9 @@ optional = false
 python-versions = ">=3.6"
 
 [package.dependencies]
-typing-extensions = {version = ">=3.7.4", markers = "python_version < \"3.8\""}
-multidict = ">=4.0"
 idna = ">=2.0"
+multidict = ">=4.0"
+typing-extensions = {version = ">=3.7.4", markers = "python_version < \"3.8\""}
 
 [metadata]
 lock-version = "1.1"
@@ -847,8 +847,8 @@ typing-extensions = [
     {file = "typing_extensions-3.7.4.3.tar.gz", hash = "sha256:99d4073b617d30288f569d3f13d2bd7548c3a7e4c8de87db09a9d29bb3a4a60c"},
 ]
 urllib3 = [
-    {file = "urllib3-1.26.2-py2.py3-none-any.whl", hash = "sha256:d8ff90d979214d7b4f8ce956e80f4028fc6860e4431f731ea4a8c08f23f99473"},
-    {file = "urllib3-1.26.2.tar.gz", hash = "sha256:19188f96923873c92ccb987120ec4acaa12f0461fa9ce5d3d0772bc965a39e08"},
+    {file = "urllib3-1.26.3-py2.py3-none-any.whl", hash = "sha256:1b465e494e3e0d8939b50680403e3aedaa2bc434b7d5af64dfd3c958d7f5ae80"},
+    {file = "urllib3-1.26.3.tar.gz", hash = "sha256:de3eedaad74a2683334e282005cd8d7f22f4d55fa690a2a1020a416cb0a47e73"},
 ]
 wrapt = [
     {file = "wrapt-1.12.1.tar.gz", hash = "sha256:b62ffa81fb85f4332a4f609cab4ac40709470da05643a082ec1eb88e6d9b97d7"},
