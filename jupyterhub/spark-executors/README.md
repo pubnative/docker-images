@@ -29,6 +29,11 @@ export SPARK_HOME=`pwd`/spark-3.1.1-bin-hadoop2.7
 
 3. call one of the make targets to build and push image
 ```shell
+# copy requirements to your spark home
+# since build context is in your SPARK_HOME you have to copy requirements.txt 
+# there so build tool can copy it to the docker file
+make requirements
+
 # build 
 make build
 

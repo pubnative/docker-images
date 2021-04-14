@@ -1,3 +1,6 @@
+requirements:
+	cp ../dependencies/requirements.txt ${SPARK_HOME}/requirements.txt
+
 build:
 	docker-image-tool.sh  -r annoyingllama -t 3.1.1-hadoop2.7-python3.8 -p Dockerfile build
 

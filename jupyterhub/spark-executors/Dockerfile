@@ -42,7 +42,7 @@ RUN pip install --upgrade pip setuptools && \
 COPY python/pyspark ${SPARK_HOME}/python/pyspark
 COPY python/lib ${SPARK_HOME}/python/lib
 
-COPY jupyterhub/dependencies/requirements.txt requirements.txt
+COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 
 WORKDIR /opt/spark/work-dir
