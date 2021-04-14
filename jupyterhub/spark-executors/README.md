@@ -14,6 +14,10 @@ Eventually we get spark image with
 - python 3.8
 - hadoop 2.7
 
+It pushes two images 
+- spark to target `annoyingllama/spark`
+- spark with python bindings (pyspark) `annoyingllama/spark-py`
+
 ###Instructions:
 1. Get Spark 3.1.1
 ```shell
