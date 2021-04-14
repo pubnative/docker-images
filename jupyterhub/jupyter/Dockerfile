@@ -4,5 +4,7 @@ LABEL maintainer=DataScience<datascience@verve.com>
 RUN pip install jupyter_contrib_nbextensions \
   && jupyter contrib nbextension install --user
 
-COPY jupyterhub/dependencies/requirements.txt requirements.txt
+COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
+
+COPY spark-defaults.conf /usr/local/spark/conf/spark-defaults.conf
