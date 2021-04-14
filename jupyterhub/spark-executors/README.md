@@ -14,7 +14,7 @@ Eventually we get spark image with
 - python 3.8
 - hadoop 2.7
 
-Instructions:
+###Instructions:
 1. Get Spark 3.1.1
 ```shell
 curl -O https://downloads.apache.org/spark/spark-3.1.1/spark-3.1.1-bin-hadoop2.7.tgz
