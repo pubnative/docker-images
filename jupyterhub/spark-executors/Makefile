@@ -13,3 +13,5 @@ push:
 build-push:
 	docker-image-tool.sh  -r ${NAME} -t ${TAG} -X -p Dockerfile build
 
+clean:
+	rm ${SPARK_HOME}/requirements.txt
