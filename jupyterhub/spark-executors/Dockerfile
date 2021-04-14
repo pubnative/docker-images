@@ -25,8 +25,8 @@ USER 0
 
 RUN mkdir ${SPARK_HOME}/python
 RUN apt update
-RUN apt install -y build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libsqlite3-dev li
-breadline-dev libffi-dev curl libbz2-dev
+RUN apt install -y build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libsqlite3-dev \
+ libreadline-dev libffi-dev curl libbz2-dev
 RUN curl -O https://www.python.org/ftp/python/3.8.2/Python-3.8.2.tgz
 RUN tar -xvzf Python-3.8.2.tgz
 WORKDIR Python-3.8.2
@@ -42,9 +42,13 @@ RUN pip install --upgrade pip setuptools && \
 COPY python/pyspark ${SPARK_HOME}/python/pyspark
 COPY python/lib ${SPARK_HOME}/python/lib
 
+COPY jupyterhub/dependencies/requirements.txt requirements.txt
+RUN pip install -r requirements.txt
+
 WORKDIR /opt/spark/work-dir
 ENTRYPOINT [ "/opt/entrypoint.sh" ]
 
 # Specify the User that the actual main process will run as
 ARG spark_uid=185
 USER ${spark_uid}
+
