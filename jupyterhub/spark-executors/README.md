@@ -12,7 +12,7 @@ Hence, we build python3.8 from source in our Dockerfile and pass it to the docke
 Eventually we get spark image with
 - spark 3.1.1
 - python 3.8
-- hadoop 2.7
+- hadoop 3.2
 
 It pushes two images 
 - spark to target `annoyingllama/spark`
@@ -21,9 +21,9 @@ It pushes two images
 ###Instructions:
 1. Get Spark 3.1.1
 ```shell
-curl -O https://downloads.apache.org/spark/spark-3.1.1/spark-3.1.1-bin-hadoop2.7.tgz
-tar -xvzf spark-3.1.1-bin-hadoop2.7.tgz 
-export SPARK_HOME=`pwd`/spark-3.1.1-bin-hadoop2.7
+curl -O https://downloads.apache.org/spark/spark-3.1.1/spark-3.1.1-bin-hadoop3.2.tgz
+tar -xvzf spark-3.1.1-bin-hadoop3.2.tgz 
+export SPARK_HOME=`pwd`/spark-3.1.1-bin-hadoop3.2.tgz
 ```
 
 2. We use docker-image-tool.sh provided by spark to build this image.
