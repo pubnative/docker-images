@@ -1,4 +1,4 @@
-NAME	:= annoyingllama/jupyter
+NAME	:= pubnative/jupyterhub-all-spark-notebook
 TAG		:= $(shell git log -1 --format='%cd.%h' --date=format:%Y%m%d-%H%M)
 IMG		:= ${NAME}:${TAG}
 
