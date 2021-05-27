@@ -15,7 +15,6 @@ compile_dependencies:
 
 build: compile_dependencies
 	docker build --rm . -t ${IMG}
-	docker tag ${IMG} ${LATEST}
 
 push:
-	docker push ${NAME}
+	docker push ${IMG}
