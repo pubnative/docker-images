@@ -3,4 +3,4 @@ resolve-dependencies:
 	poetry install
 
 requirements:
-	poetry export > requirements.txt
+	poetry export --without-hashes > requirements.txt
