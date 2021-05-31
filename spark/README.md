@@ -74,6 +74,7 @@ When pushing images, we need to rename them, to specify:
 
 - Spark version
 - Scala binary version
+- JDK version
 - Whether or not it's a Kubernetes build
 - Hadoop version
 
