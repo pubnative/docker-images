@@ -9,9 +9,10 @@ RUN pip install -r requirements.txt
 
 COPY spark-defaults.conf /usr/local/spark/conf/spark-defaults.conf
 
-RUN curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-336.0.0-linux-x86_64.tar.gz
-RUN tar -xvzf google-cloud-sdk-336.0.0-linux-x86_64.tar
-RUN /google-cloud-sdk/install.sh -q
+# instructions from https://cloud.google.com/sdk/docs/downloads-versioned-archives
+RUN curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-342.0.0-linux-x86_64.tar.gz
+RUN tar -xvzf google-cloud-sdk-342.0.0-linux-x86_64.tar.gz
+RUN ./google-cloud-sdk/install.sh -q
 
 # Install almond kernel
 # Check version matrix at: https://almond.sh/docs/install-versions
