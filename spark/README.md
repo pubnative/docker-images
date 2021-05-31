@@ -2,83 +2,62 @@
 
 ## Available images
 
-| Image location                   | Versioning     | Source                                                                                                                                         | Description                                  |
-| -------------------------------- | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------- |
-| pubnative/spark:spark            | $SPARK_VERSION | [Apache Spark](https://github.com/apache/spark)                                                                                                | Base image for Spark.                        |
-| pubnative/spark:pyspark          | $SPARK_VERSION | [Apache Spark](https://github.com/apache/spark)                                                                                                | Base image for PySpark.                      |
-| pubnative/spark:pyspark-executor | $GIT_COMMIT    | [Pyspark executor](https://github.com/pubnative/docker-images/blob/4e940e55cb25b6541607990733222d1800674170/spark/pyspark-executor/Dockerfile) | Alpine image supporting Spark on Kubernetes. |
-
+| Image location                   | Versioning                                                                      | Source                                                                                                                                         | Description                                  |
+| -------------------------------- | ------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------- |
+| pubnative/spark:spark            | <spark_version>-<scala_version>-java<java_version>[-k8s]-hadoop<hadoop_version> | [Apache Spark](https://github.com/apache/spark)                                                                                                | Base image for Spark.                        |
+| pubnative/spark:pyspark          | <spark_version>-<scala_version>-java<java_version>[-k8s]-hadoop<hadoop_version> | [Apache Spark](https://github.com/apache/spark)                                                                                                | Base image for PySpark.                      |
+| pubnative/spark:pyspark-executor | $GIT_COMMIT                                                                     | [Pyspark executor](https://github.com/pubnative/docker-images/blob/4e940e55cb25b6541607990733222d1800674170/spark/pyspark-executor/Dockerfile) | Alpine image supporting Spark on Kubernetes. |
 
 ## Build
 
-No official images exist for Spark.
-So you will have to do everything yourself.
+No official images exist for Spark. So you will have to do everything yourself.
 
 ### Workflow
 
-#### Clone the Spark repo (yes)
+#### Build Spark
 
-To build the image, Spark needs to be built.
-To build Spark, you need the repo locally.
-
-If you have it locally, refresh it:
-
-```bash
-cd SPARK_REPO
-git fetch -p && git pull
-```
-
-Else, clone the repo somewhere:
+To build the image, Spark needs to be built. To build Spark, clone the repository and checkout the
+version to build.
 
 ```bash
 git clone https://github.com/apache/spark
+cd spark
+git checkout v3.1.1
 ```
 
-#### Build Spark
-
-You don't want to build master, so you need to checkout a specific verson.
-Usually, you need the last commit for a specific label, e.g. for `2.4.3` it is `c3e32bf06c35ba2580d46150923abfa795b4446a`.
-
-When you have the commit you want, e.g. `c3e32bf06c35ba2580d46150923abfa795b4446a`:
-
-```bash
-git checkout tags/v$SPARK_VERSION
-```
-
-Then to build Spark:
+Then build it with:
 
 ```bash
 build/mvn \
+    -Pscala-2.12 \
+    -Dscala.version=2.12.10 \
     -Pkubernetes \
+    -Phadoop-3.2 \
+    -Dhadoop.version=3.2.0 \
     -DskipTests \
     clean package
 ```
 
-This script is supposed to handle everything, including Spark and Scala versions.
-If it's the last commit of a release, it's supposed to lead  to a complete build.
+When building, take into account the profiles:
+
+- `-Pscala-2.12` will prepare the build for the 2.12 major version of Scala. Similar parameters exist for other
+  versions.
+- `-Dscala.version` will set the Scala minor version. For Jupuyter (or any Spark on client
+  mode), this should usually match.
+- `-Pkubernetes` adds Kubernetes code, if the image is thought to be executed in a Kubernetes
+  cluster. You cannot run a Spark on Kubernetes without it.
+- `-Phadoop-3.2`: can be used to use a different version Hadoop of Hadoop
+- `-Dhadoop.version` sets the minor version for the Hadoop distribution.
+
+To check all available profiles, check the `pom.xml` build file, inside `<profiles>`.
 
 #### Build the images
 
-Now, you want to build the Docker image.
-If we continue the example building `2.4.3`, run:
+Now, you want to build the Docker image. For the image, we will need to specify the JRE to include.
+If we continue the example building `3.1.1`, run:
 
 ```bash
-./bin/docker-image-tool.sh -r docker.io/pubnative -t 2.4.3 build
-```
-
-#### Push the image(s)
-
-If you want to push the Spark image:
-
-```bash
-docker push pubnative/spark:2.4.3
-```
-
-If you want to push the PySpark image:
-
-```bash
-docker tag pubnative/spark-py:2.4.3 pubnative/spark:pyspark-2.4.3
-docker push pubnative/spark:pyspark-2.4.3
+./bin/docker-image-tool.sh -r docker.io/pubnative -t 3.1.1 -b java_image_tag=8-jre-slim build
 ```
 
 **Note**: Spark builds 3 images:
@@ -87,7 +66,31 @@ docker push pubnative/spark:pyspark-2.4.3
 - `spark-py`
 - `spark-r`
 
-Right now, we don't care about `spark-r`, and we need to rename `spark-py` to map it to our registry names.
+Right now, we don't care about `spark-r`.
+
+#### Push the image(s)
+
+When pushing images, we need to rename them, to specify:
+
+- Spark version
+- Scala binary version
+- JDK version
+- Whether or not it's a Kubernetes build
+- Hadoop version
+
+Example:
+
+```bash
+docker tag pubnative/spark:3.1.1 pubnative/spark:3.1.1-2.12.10-java8-k8s-hadoop3.2.0
+docker push pubnative/spark:3.1.1-2.12.10-java8-k8s-hadoop3.2.0
+```
+
+Example for PySpark:
+
+```bash
+docker tag pubnative/spark-py:3.1.1 pubnative/spark:pyspark-3.1.1-2.12.10-java80java8-k8s-hadoop3.2.0
+docker push pubnative/spark:pyspark-3.1.1-2.12.10-java8-k8s-hadoop3.2.0
+```
 
 ### Data science images
 
