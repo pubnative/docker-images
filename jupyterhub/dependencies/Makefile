@@ -1,5 +1,7 @@
-resolve-dependencies:
+env:
 	poetry shell
+
+resolve-dependencies:
 	poetry install
 
 requirements:
