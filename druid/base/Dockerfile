@@ -17,6 +17,8 @@ RUN groupadd -g 999 druid \
  && mkdir $DRUID_HOME/extensions/druid-parquet-extensions \
  && cd $DRUID_HOME/extensions/druid-parquet-extensions \
  && wget https://repo1.maven.org/maven2/io/druid/extensions/contrib/druid-parquet-extensions/$DRUID_VERSION/druid-parquet-extensions-$DRUID_VERSION.jar \
+ && cd $DRUID_HOME/lib \
+ && wget https://repo1.maven.org/maven2/mysql/mysql-connector-java/5.1.48/mysql-connector-java-5.1.48.jar \
  && chown druid:druid -R $DRUID_HOME
 
 WORKDIR $DRUID_HOME
