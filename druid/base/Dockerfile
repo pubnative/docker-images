@@ -1,27 +1,16 @@
 # Image: pubnative/druid
 
-FROM openjdk:8-jre
+ARG DRUID_VERSION
+FROM apache/druid:$DRUID_VERSION
 
-ARG DRUID_VERSION="0.12.3"
-ENV DRUID_HOME=/druid
-ENV DRUID_JAVA_OPTS="-server -Xms0m -Xmx128m -Duser.timezone=UTC -Dfile.encoding=UTF-8 -Djava.util.logging.manager=org.apache.logging.log4j.jul.LogManager -XX:+PrintGC"
-ENV DRUID_DATA_DIR=/druid/var
+WORKDIR /opt/druid/extensions/mysql-metadata-storage
 
-RUN groupadd -g 999 druid \
- && useradd -r -u 999 -g druid druid \
- && mkdir -p $DRUID_HOME \
- && curl -sSL "http://static.druid.io/artifacts/releases/druid-$DRUID_VERSION-bin.tar.gz" \
-  | tar zxf - --strip-components 1 -C $DRUID_HOME \
- && curl -sSL "http://static.druid.io/artifacts/releases/mysql-metadata-storage-$DRUID_VERSION.tar.gz" \
-  | tar zxf - -C $DRUID_HOME/extensions \
- && mkdir $DRUID_HOME/extensions/druid-parquet-extensions \
- && cd $DRUID_HOME/extensions/druid-parquet-extensions \
- && wget https://repo1.maven.org/maven2/io/druid/extensions/contrib/druid-parquet-extensions/$DRUID_VERSION/druid-parquet-extensions-$DRUID_VERSION.jar \
- && cd $DRUID_HOME/lib \
- && wget https://repo1.maven.org/maven2/mysql/mysql-connector-java/5.1.48/mysql-connector-java-5.1.48.jar \
- && chown druid:druid -R $DRUID_HOME
+ARG MYSQL_URL=https://repo1.maven.org/maven2/mysql/mysql-connector-java/5.1.48/mysql-connector-java-5.1.48.jar
+ARG MYSQL_JAR=mysql-connector-java-5.1.48.jar
+ARG MYSQL_SHA=9140be77aafa5050bf4bb936d560cbacb5a6b5c1
 
-WORKDIR $DRUID_HOME
+RUN wget -q ${MYSQL_URL} \
+ && echo "${MYSQL_SHA}  ${MYSQL_JAR}" | sha1sum -c \
+ && ln -s ../extensions/mysql-metadata-storage/${MYSQL_JAR} /opt/druid/lib
 
-COPY ./docker-entrypoint.sh /
-ENTRYPOINT ["/docker-entrypoint.sh"]
+WORKDIR /opt/druid
