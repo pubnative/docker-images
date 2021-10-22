@@ -2,25 +2,26 @@
 # Use `make` to build and push
 FROM ubuntu:16.04
 
+ARG GPG_KEY
+ARG ZK_DIST
+
 ENV ZK_USER=zookeeper \
     ZK_DATA_DIR=/var/lib/zookeeper/data \
     ZK_DATA_LOG_DIR=/var/lib/zookeeper/log \
     ZK_LOG_DIR=/var/log/zookeeper \
-    JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
-
-ARG GPG_KEY
-ARG ZK_DIST
+    JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64 \
+    ZK_NAME=apache-$ZK_DIST
 
 RUN set -x \
     && apt-get update \
     && apt-get install -y openjdk-8-jre-headless wget netcat-openbsd \
-    && wget -q "http://archive.apache.org/dist/zookeeper/$ZK_DIST/$ZK_DIST.tar.gz" \
-    && wget -q "http://archive.apache.org/dist/zookeeper/$ZK_DIST/$ZK_DIST.tar.gz.asc" \
+    && wget -q "http://archive.apache.org/dist/zookeeper/$ZK_DIST/$ZK_NAME.tar.gz" \
+    && wget -q "http://archive.apache.org/dist/zookeeper/$ZK_DIST/$ZK_NAME.tar.gz.asc" \
     && export GNUPGHOME="$(mktemp -d)" \
     && gpg --keyserver pgpkeys.mit.edu --recv-key "$GPG_KEY" \
-    && gpg --batch --verify "$ZK_DIST.tar.gz.asc" "$ZK_DIST.tar.gz" \
-    && tar -xzf "$ZK_DIST.tar.gz" -C /opt \
-    && rm -r "$GNUPGHOME" "$ZK_DIST.tar.gz" "$ZK_DIST.tar.gz.asc" \
+    && gpg --batch --verify "$ZK_NAME.tar.gz.asc" "$ZK_NAME.tar.gz" \
+    && tar -xzf "apache-$ZK_DIST.tar.gz" -C /opt \
+    && rm -r "$GNUPGHOME" "$ZK_NAME.tar.gz" "$ZK_NAME.tar.gz.asc" \
     && ln -s /opt/$ZK_DIST /opt/zookeeper \
     && rm -rf /opt/zookeeper/CHANGES.txt \
     /opt/zookeeper/README.txt \
@@ -36,9 +37,9 @@ RUN set -x \
     /opt/zookeeper/ivysettings.xml \
     /opt/zookeeper/recipes \
     /opt/zookeeper/src \
-    /opt/zookeeper/$ZK_DIST.jar.asc \
-    /opt/zookeeper/$ZK_DIST.jar.md5 \
-    /opt/zookeeper/$ZK_DIST.jar.sha1 \
+    /opt/zookeeper/$ZK_NAME.jar.asc \
+    /opt/zookeeper/$ZK_NAME.jar.md5 \
+    /opt/zookeeper/$ZK_NAME.jar.sha1 \
     && apt-get autoremove -y wget \
     && rm -rf /var/lib/apt/lists/*
 
@@ -52,8 +53,8 @@ RUN set -x \
     && [ `id -u $ZK_USER` -eq 1000 ] \
     && [ `id -g $ZK_USER` -eq 1000 ] \
     && mkdir -p $ZK_DATA_DIR $ZK_DATA_LOG_DIR $ZK_LOG_DIR /usr/share/zookeeper /tmp/zookeeper /usr/etc/ \
-    && chown -R "$ZK_USER:$ZK_USER" /opt/$ZK_DIST $ZK_DATA_DIR $ZK_LOG_DIR $ZK_DATA_LOG_DIR /tmp/zookeeper \
+    && chown -R "$ZK_USER:$ZK_USER" /opt/$ZK_NAME $ZK_DATA_DIR $ZK_LOG_DIR $ZK_DATA_LOG_DIR /tmp/zookeeper \
     && ln -s /opt/zookeeper/conf/ /usr/etc/zookeeper \
     && ln -s /opt/zookeeper/bin/* /usr/bin \
-    && ln -s /opt/zookeeper/$ZK_DIST.jar /usr/share/zookeeper/ \
+    && ln -s /opt/zookeeper/$ZK_NAME.jar /usr/share/zookeeper/ \
     && ln -s /opt/zookeeper/lib/* /usr/share/zookeeper
