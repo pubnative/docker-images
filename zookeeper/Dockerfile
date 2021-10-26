@@ -10,7 +10,7 @@ ENV ZK_USER=zookeeper \
     ZK_DATA_LOG_DIR=/var/lib/zookeeper/log \
     ZK_LOG_DIR=/var/log/zookeeper \
     JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64 \
-    ZK_NAME=apache-$ZK_DIST
+    ZK_NAME=apache-$ZK_DIST-bin
 
 RUN set -x \
     && apt-get update \
@@ -20,9 +20,9 @@ RUN set -x \
     && export GNUPGHOME="$(mktemp -d)" \
     && gpg --keyserver pgpkeys.mit.edu --recv-key "$GPG_KEY" \
     && gpg --batch --verify "$ZK_NAME.tar.gz.asc" "$ZK_NAME.tar.gz" \
-    && tar -xzf "apache-$ZK_DIST.tar.gz" -C /opt \
+    && tar -xzf "$ZK_NAME.tar.gz" -C /opt \
     && rm -r "$GNUPGHOME" "$ZK_NAME.tar.gz" "$ZK_NAME.tar.gz.asc" \
-    && ln -s /opt/$ZK_DIST /opt/zookeeper \
+    && ln -s /opt/$ZK_NAME /opt/zookeeper \
     && rm -rf /opt/zookeeper/CHANGES.txt \
     /opt/zookeeper/README.txt \
     /opt/zookeeper/NOTICE.txt \
