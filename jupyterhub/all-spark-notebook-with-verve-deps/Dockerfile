@@ -1,8 +1,8 @@
-FROM jupyter/all-spark-notebook:8d32a5208ca1
+FROM pubnative/all-spark-notebook:1.0
 LABEL maintainer=DataScience<datascience@verve.com>
 
 RUN pip install jupyter_contrib_nbextensions \
-  && jupyter contrib nbextension install --user
+  && all-spark-notebook-with-verve-deps contrib nbextension install --user
 
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
