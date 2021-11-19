@@ -1,7 +1,3 @@
-# This image is taken from https://github.com/jupyter/docker-stacks/blob/92ce0af9989fb5ca8997f744c0718ba20dc70cd8/pyspark-notebook/Dockerfile
-# we change openjdk version from 11 to 8 because gcs-connector only works with java8
-
-
 # Copyright (c) Jupyter Development Team.
 # Distributed under the terms of the Modified BSD License.
 ARG OWNER=jupyter
@@ -21,7 +17,7 @@ USER root
 ARG spark_version="3.2.0"
 ARG hadoop_version="3.2"
 ARG spark_checksum="EBE51A449EBD070BE7D3570931044070E53C23076ABAD233B3C51D45A7C99326CF55805EE0D573E6EB7D6A67CFEF1963CD77D6DC07DD2FD70FD60DA9D1F79E5E"
-ARG openjdk_version="8"
+ARG openjdk_version="11"
 
 ENV APACHE_SPARK_VERSION="${spark_version}" \
     HADOOP_VERSION="${hadoop_version}"

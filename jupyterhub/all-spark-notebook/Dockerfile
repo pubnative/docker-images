@@ -1,11 +1,7 @@
-# We update the base image from all-spark-notebook-with-verve-deps/pyspark-notebook to verve/pyspark-notebook as our notebook is build with java 8 instead of java 11
-
 # Copyright (c) Jupyter Development Team.
 # Distributed under the terms of the Modified BSD License.
-ARG OWNER=pubnative
-ARG IMAGE=pyspark-notebook
-ARG BUILD_TAG=1.0
-ARG BASE_CONTAINER=$OWNER/$IMAGE:$TAG
+ARG OWNER=jupyter
+ARG BASE_CONTAINER=$OWNER/pyspark-notebook
 FROM $BASE_CONTAINER
 
 LABEL maintainer="Jupyter Project <jupyter@googlegroups.com>"
