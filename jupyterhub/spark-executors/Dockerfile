@@ -36,8 +36,7 @@ WORKDIR /usr/local
 
 # Configure Spark
 ENV SPARK_HOME=/usr/local/spark
-ENV SPARK_OPTS="--driver-java-options=-Xms1024M --driver-java-options=-Xmx4096M --driver-java-options=-Dlog4j.logLevel=info" \
-    PATH="${PATH}:${SPARK_HOME}/bin"
+ENV PATH="${PATH}:${SPARK_HOME}/bin"
 
 RUN ln -s "spark-${APACHE_SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}" spark && \
     # Add a link in the before_notebook hook in order to source automatically PYTHONPATH
