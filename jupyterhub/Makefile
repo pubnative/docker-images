@@ -32,7 +32,7 @@ jupyterhub: all_spark dependencies
 	cp ${curr_dir}/package-dependencies/requirements.txt ${curr_dir}/verve-all-spark-notebook/.
 	docker build \
  		--build-arg BASE_CONTAINER=${ALL_SPARK} \
- 		${curr_dir}/verve-all-spark-notebook -t ${JUPYTERHUB}
+ 		${curr_dir}/data-science-notebook -t ${JUPYTERHUB}
 
 executors: dependencies
 	cp ${curr_dir}/package-dependencies/requirements.txt ${SPARK_HOME}/requirements.txt
