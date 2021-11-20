@@ -28,7 +28,7 @@ RUN ./coursier bootstrap \
     -r jitpack \
     -i user -I user:sh.almond:scala-kernel-api_2.12.11:0.10.0 \
     sh.almond:scala-kernel_2.12.11:0.10.0 \
-    -o almond \
+    -o almond
 
 RUN ./almond --install --id scala_2_12_11  --display-name "Scala 2.12.11"
 
