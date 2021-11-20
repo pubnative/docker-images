@@ -39,8 +39,10 @@ executors: dependencies
 	docker-image-tool.sh  -r ${OWNER} -t ${SPARK_EXEC_VER} -p ${curr_dir}/spark-executors/Dockerfile  \
 		-b java_image_tag=8-jre-slim build
 
-push: jupyterhub executors
+push-hub: jupyterhub
 	docker push ${JUPYTERHUB}
 	@echo pushed ${JUPYTERHUB} to DockerHub
-	docker push ${SPARK_EXECUTORS}
-	@echo pushed ${JUPYTERHUB} to DockerHub
+
+push-exec: executors
+	docker push ${OWNER}/spark-py:${SPARK_EXEC_VER}
+	@echo pushed ${OWNER}/spark-py:${SPARK_EXEC_VER} to DockerHub

@@ -42,6 +42,7 @@ RUN pip install --upgrade pip setuptools && \
 COPY python/pyspark ${SPARK_HOME}/python/pyspark
 COPY python/lib ${SPARK_HOME}/python/lib
 
+WORKDIR /tmp
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 
