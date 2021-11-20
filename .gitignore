@@ -3,3 +3,6 @@ log/*.log
 .idea
 .vscode/
 .DS_Store
+jupyterhub/data-science-notebook/requirements.txt
+jupyterhub/package-dependencies/requirements.txt
+jupyterhub/spark-executors/requirements.txt
