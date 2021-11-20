@@ -19,6 +19,19 @@ RUN google-cloud-sdk/install.sh -q
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 
+# Install scala kernels
+RUN pip install --upgrade toree
+RUN jupyter toree install --user --spark_home=/usr/local/spark
+
+RUN curl -Lo coursier https://git.io/coursier-cli && chmod +x coursier
+RUN ./coursier bootstrap \
+    -r jitpack \
+    -i user -I user:sh.almond:scala-kernel-api_2.12.11:0.10.0 \
+    sh.almond:scala-kernel_2.12.11:0.10.0 \
+    -o almond \
+
+RUN ./almond --install --id scala_2_12_11  --display-name "Scala 2.12.11"
+
 WORKDIR "${HOME}"
 
 

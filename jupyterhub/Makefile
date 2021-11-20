@@ -1,4 +1,4 @@
-OWNER			:= annoyingllama
+OWNER			:= pubnative
 
 PYSPARK			:= ${OWNER}/pyspark-notebook
 
