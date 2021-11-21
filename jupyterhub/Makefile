@@ -13,6 +13,8 @@ SPARK_EXEC_VER	:= 3.2-hadoop3.2-py3.9-java8
 openjdk_version	:= 8
 curr_dir		:= $$(pwd)
 
+SPARK_VERSION 	:= $(shell head -c11 $(SPARK_HOME)/RELEASE)
+
 dependencies:
 	cd ${curr_dir}/package-dependencies && poetry export --output requirements.txt --without-hashes
 
@@ -34,15 +36,19 @@ jupyterhub: all_spark dependencies
  		--build-arg BASE_CONTAINER=${ALL_SPARK} \
  		${curr_dir}/data-science-notebook -t ${JUPYTERHUB}
 
-executors: dependencies
+spark_executors: dependencies
+ifeq (${SPARK_VERSION}, "Spark 3.2.0")
 	cp ${curr_dir}/package-dependencies/requirements.txt ${SPARK_HOME}/requirements.txt
-	docker-image-tool.sh  -r ${OWNER} -t ${SPARK_EXEC_VER} -p ${curr_dir}/spark-executors/Dockerfile  \
+	docker-image-tool.sh  -r ${OWNER} -t ${SPARK_EXEC_VER} -p ${curr_dir}/spark-executors/Dockerfile \
 		-b java_image_tag=8-jre-slim build
+else
+	@echo spark_version is ${SPARK_VERSION}. Please set SPARK_HOME to spark 3.2.0.
+endif
 
-push-hub: jupyterhub
+push_jupyterhub: jupyterhub
 	docker push ${JUPYTERHUB}
 	@echo pushed ${JUPYTERHUB} to DockerHub
 
-push-exec: executors
+push_executors: spark_executors
 	docker push ${OWNER}/spark-py:${SPARK_EXEC_VER}
 	@echo pushed ${OWNER}/spark-py:${SPARK_EXEC_VER} to DockerHub
