@@ -20,9 +20,6 @@ COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 
 # Install scala kernels
-RUN pip install --upgrade toree
-RUN jupyter toree install --user --spark_home=/usr/local/spark
-
 RUN curl -Lo coursier https://git.io/coursier-cli && chmod +x coursier
 RUN ./coursier bootstrap \
     -r jitpack \
