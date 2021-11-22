@@ -4,5 +4,6 @@ log/*.log
 .vscode/
 .DS_Store
 jupyterhub/data-science-notebook/requirements.txt
+jupyterhub/data-science-notebook/spark-defaults.conf
 jupyterhub/package-dependencies/requirements.txt
 jupyterhub/spark-executors/requirements.txt
