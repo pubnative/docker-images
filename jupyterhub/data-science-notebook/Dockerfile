@@ -12,6 +12,9 @@ USER ${NB_UID}
 RUN pip install jupyter_contrib_nbextensions && jupyter contrib nbextension install --user
 RUN pip install jupyterlab_execute_time
 
+# to fix template paths issue mentioned here https://github.com/ipython-contrib/jupyter_contrib_nbextensions/issues/1529
+RUN pip install "nbconvert<6"
+
 WORKDIR /tmp
 RUN wget -O google-cloud-sdk-336.0.0-linux-x86_64.tar.gz https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-336.0.0-linux-x86_64.tar.gz -L
 RUN tar -xvzf google-cloud-sdk-336.0.0-linux-x86_64.tar.gz
