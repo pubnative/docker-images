@@ -30,11 +30,11 @@ pyspark:
 		${curr_dir}/pyspark-notebook -t ${PYSPARK}
 
 spark_executors: pyspark
-	docker build --build-arg base_img=${PYSPARK} ${curr_dir}/spark-executors -t ${SPARK_EXEC}
+	docker build --build-arg base_img=${PYSPARK} ${curr_dir}/spark-executors -t ${SPARK_EXEC_IMG}
 
 push_executors: spark_executors
-	docker push ${SPARK_EXEC}
-	@echo pushed ${SPARK_EXEC} to DockerHub
+	docker push ${SPARK_EXEC_IMG}
+	@echo pushed ${SPARK_EXEC_IMG} to DockerHub
 
 all_spark: pyspark
 	docker build --build-arg BASE_CONTAINER=${PYSPARK} ${curr_dir}/all-spark-notebook -t ${ALL_SPARK}
