@@ -10,6 +10,15 @@ COPY spark-defaults.conf /usr/local/spark/conf/spark-defaults.conf
 WORKDIR /usr/local/bin
 # Install scala kernels
 RUN curl -Lo coursier https://git.io/coursier-cli && chmod +x coursier
+# 2.11
+RUN ./coursier bootstrap \
+    -r jitpack \
+    -i user -I user:sh.almond:scala-kernel-api_2.11.12:0.6.0 \
+    sh.almond:scala-kernel_2.11.12:0.6.0 \
+    -o almond
+
+RUN ./almond --install --jupyter-path /usr/local/share/jupyter/kernels --id scala_2_11_12  --display-name "Scala 2.11.12"
+# 2.12
 RUN ./coursier bootstrap \
     -r jitpack \
     -i user -I user:sh.almond:scala-kernel-api_2.12.11:0.10.0 \
