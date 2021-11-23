@@ -34,7 +34,7 @@ gcs-connector for Apache Spark
    ```
 
 4. Verve package dependencies are then added on this all-spark-notebook base image to create datascience-notebook image. 
-   Also, spark default configuration and scala kernels `Toree` and `Almond` are added. This depends on make targets  
+   Also, spark default configuration and scala kernel`Almond` are added. This depends on make targets  
    `all_spark` and `dependencies` and can be built with
    ```shell
    make jupyterhub
