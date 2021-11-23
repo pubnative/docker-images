@@ -15,17 +15,17 @@ RUN ./coursier bootstrap \
     -r jitpack \
     -i user -I user:sh.almond:scala-kernel-api_2.11.12:0.6.0 \
     sh.almond:scala-kernel_2.11.12:0.6.0 \
-    -o almond
+    -o almond_211
 
-RUN ./almond --install --jupyter-path /usr/local/share/jupyter/kernels --id scala_2_11_12  --display-name "Scala 2.11.12"
+RUN ./almond_211 --install --jupyter-path /usr/local/share/jupyter/kernels --id scala_2_11_12  --display-name "Scala 2.11.12"
 # 2.12
 RUN ./coursier bootstrap \
     -r jitpack \
     -i user -I user:sh.almond:scala-kernel-api_2.12.11:0.10.0 \
     sh.almond:scala-kernel_2.12.11:0.10.0 \
-    -o almond
+    -o almond_212
 
-RUN ./almond --install --jupyter-path /usr/local/share/jupyter/kernels --id scala_2_12_11  --display-name "Scala 2.12.11"
+RUN ./almond_212 --install --jupyter-path /usr/local/share/jupyter/kernels --id scala_2_12_11  --display-name "Scala 2.12.11"
 USER ${NB_USER}
 
 RUN pip install jupyter_contrib_nbextensions && jupyter contrib nbextension install --user
