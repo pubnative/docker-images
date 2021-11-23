@@ -1,4 +1,4 @@
-ARG OWNER=pubnative
+ARG OWNER=pubnativetree
 ARG BASE_CONTAINER=$OWNER/all-spark-notebook
 FROM $BASE_CONTAINER
 
