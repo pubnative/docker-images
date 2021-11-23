@@ -5,7 +5,7 @@ PYSPARK			:= ${OWNER}/pyspark-notebook
 ALL_SPARK		:= ${OWNER}/all-spark-notebook
 
 NAME			:= ${OWNER}/jupyterhub
-HUB_VERSION		:= spark3.2-hadoop3.2-py3.9-java8-5
+HUB_VERSION		:= spark3.2-hadoop3.2-py3.9-java8-6
 JUPYTERHUB		:= ${NAME}:${HUB_VERSION}
 
 SPARK_EXEC		:= ${OWNER}/spark-py
