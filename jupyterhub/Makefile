@@ -1,15 +1,15 @@
 OWNER			:= pubnative
-
+RELEASE_VER		:= 7
 PYSPARK			:= ${OWNER}/pyspark-notebook
 
 ALL_SPARK		:= ${OWNER}/all-spark-notebook
 
 NAME			:= ${OWNER}/jupyterhub
-HUB_VERSION		:= spark3.2-hadoop3.2-py3.9-java8-6
+HUB_VERSION		:= spark3.2-hadoop3.2-py3.9-java8-${RELEASE_VER}
 JUPYTERHUB		:= ${NAME}:${HUB_VERSION}
 
 SPARK_EXEC		:= ${OWNER}/spark-py
-SPARK_EXEC_VER  := 3.2-hadoop3.2-py3.9-java8-3
+SPARK_EXEC_VER  := 3.2-hadoop3.2-py3.9-java8-${RELEASE_VER}
 SPARK_EXEC_IMG	:= ${SPARK_EXEC}:${SPARK_EXEC_VER}
 
 openjdk_version	:= 8
@@ -39,7 +39,7 @@ push_executors: spark_executors
 all_spark: pyspark
 	docker build --build-arg BASE_CONTAINER=${PYSPARK} ${curr_dir}/all-spark-notebook -t ${ALL_SPARK}
 
-jupyterhub: all_spark dependencies spark_defaults
+jupyterhub: all_spark spark_defaults
 	docker build --build-arg BASE_CONTAINER=${ALL_SPARK} ${curr_dir}/data-science-notebook -t ${JUPYTERHUB}
 
 push_jupyterhub: jupyterhub
