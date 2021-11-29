@@ -21,11 +21,11 @@ RUN ./almond_211 --install --jupyter-path /usr/local/share/jupyter/kernels --id 
 # 2.12
 RUN ./coursier bootstrap \
     -r jitpack \
-    -i user -I user:sh.almond:scala-kernel-api_2.12.11:0.10.0 \
-    sh.almond:scala-kernel_2.12.11:0.10.0 \
+    -i user -I user:sh.almond:scala-kernel-api_2.12.11:0.10.9 \
+    sh.almond:scala-kernel_2.12.11:0.10.9 \
     -o almond_212
 
-RUN ./almond_212 --install --jupyter-path /usr/local/share/jupyter/kernels --id scala_2_12_11  --display-name "Scala 2.12.11"
+RUN ./almond_212 --install --jupyter-path /usr/local/share/jupyter/kernels --id scala_2_12_11  --display-name "Scala 2.12.11" --env GOOGLE_APPLICATION_CREDENTIALS=/home/jovyan/shared/credentials/ds-credentials.json
 
 # install google cloud sdk
 RUN apt-get update
