@@ -21,7 +21,7 @@ dependencies:
 spark_defaults:
 	@sed 's#<spark-executor-image>#${SPARK_EXEC_IMG}#g' ${curr_dir}/data-science-notebook/spark-defaults.conf.template > ${curr_dir}/data-science-notebook/spark-defaults.conf
 
-pyspark:
+pyspark: dependencies
 	@cp ${curr_dir}/package-dependencies/requirements.txt ${curr_dir}/pyspark-notebook/.
 	# we override openjdk version 11 with 8 since gcs-connector only works with java 8
 	docker build \
