@@ -30,6 +30,7 @@ tensorflow-probability = "^0.15.0"
 seaborn = "^0.11.2"
 plotnine = "^0.8.0"
 black = "^21.11b1"
+gcsfs = "^2021.11.1"
 
 [tool.poetry.dev-dependencies]
 
