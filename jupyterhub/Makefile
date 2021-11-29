@@ -1,5 +1,5 @@
 OWNER			:= pubnative
-RELEASE_VER		:= 7
+RELEASE_VER		:= 8
 PYSPARK			:= ${OWNER}/pyspark-notebook
 
 ALL_SPARK		:= ${OWNER}/all-spark-notebook
