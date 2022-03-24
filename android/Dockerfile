@@ -17,18 +17,18 @@ RUN yum -y update \
                    ncurses-devel.i686 \
                    libX11-devel.i686 \
                    libXrender.i686 \
- && gem install bundler -v 1.7.3
+ && gem install bundler -v 2.3.10
 
-# Install Java 1.8 in CentOS/RHEL 7.X
+# Install Java 1.11 in CentOS/RHEL 7.X
 RUN cd /usr/local/ \
- && curl -s -j -k -L -H "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u131-b11/d54c1d3a095b4ff2b6607d096fa80163/jdk-8u131-linux-x64.rpm > jdk-8u131-linux-x64.rpm \
- && yum -y localinstall jdk-8u131-linux-x64.rpm
+ && curl -s -j -k -L -H "Cookie: oraclelicense=accept-securebackup-cookie" https://download.oracle.com/otn-pub/java/jdk/11.0.14%2B8/7e5bbbfffe8b45e59d52a96aacab2f04/jdk-11.0.14_linux-x64_bin.rpm > jdk-11.0.14_linux-x64_bin.rpm \
+ && yum -y localinstall jdk-11.0.14_linux-x64_bin.rpm
 
 # Java environment variables
-ENV JAVA_VERSION 1.8
-ENV JAVA_HOME /usr/java/jdk1.8.0_131
-ENV JRE_HOME /usr/java/jdk1.8.0_131/jre
-ENV PATH $PATH:/usr/java/jdk1.8.0_131/bin:/usr/java/jdk1.8.0_131/jre/bin
+ENV JAVA_VERSION 1.11
+ENV JAVA_HOME /usr/java/jdk-11.0.14
+ENV JRE_HOME /usr/java/jdk-11.0.14/jre
+ENV PATH $PATH:/usr/java/jdk-11.0.14/bin:/usr/java/jdk-11.0.14/jre/bin
 
 # Install Android SDK
 RUN mkdir -p /usr/local/android-sdk \
@@ -38,8 +38,8 @@ RUN mkdir -p /usr/local/android-sdk \
 
 # Install Android tools
 RUN /usr/local/android-sdk/tools/bin/sdkmanager --update <<< 'y'
-RUN yes | /usr/local/android-sdk/tools/bin/sdkmanager "platforms;android-28" "build-tools;28.0.3" "extras;google;m2repository" "extras;android;m2repository"
-#RUN echo yes | /usr/local/android-sdk-linux/tools/android update sdk --filter android-28 --no-ui --force -a
+RUN yes | /usr/local/android-sdk/tools/bin/sdkmanager "platforms;android-32" "build-tools;32.0.0" "extras;google;m2repository" "extras;android;m2repository"
+#RUN echo yes | /usr/local/android-sdk-linux/tools/android update sdk --filter android-32 --no-ui --force -a
 #RUN echo yes | /usr/local/android-sdk-linux/tools/android update sdk --filter platform-tools --no-ui --force -a
 #RUN echo yes | /usr/local/android-sdk-linux/tools/android update sdk --filter tools --no-ui --force -a
 #RUN echo yes | /usr/local/android-sdk-linux/tools/android update sdk --filter extra --no-ui --force -a
@@ -54,4 +54,4 @@ ENV PATH $PATH:$ANT_HOME/bin
 
 # Clean up
 RUN yum clean all
-RUN rm -rf /usr/local/sdk-tools-linux-3859397.zip /usr/local/jdk-8u131-linux-x64.rpm /var/cache/yum
+RUN rm -rf /usr/local/sdk-tools-linux-3859397.zip /usr/local/jdk-11.0.14_linux-x64_bin.rpm /var/cache/yum
