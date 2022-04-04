@@ -33,12 +33,24 @@ ENV PATH $PATH:/usr/java/jdk-11.0.14/bin:/usr/java/jdk-11.0.14/jre/bin
 # Install Android SDK
 RUN mkdir -p /usr/local/android-sdk \
  && cd /usr/local/android-sdk \
- && curl -L -O https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip \
- && unzip sdk-tools-linux-3859397.zip
+ && curl -L -O https://dl.google.com/android/repository/commandlinetools-linux-8092744_latest.zip \
+ && unzip commandlinetools-linux-8092744_latest.zip
+
+RUN mv /usr/local/android-sdk/cmdline-tools /usr/local/android-sdk/tools \
+ && mkdir /usr/local/android-sdk/cmdline-tools \
+ && mv /usr/local/android-sdk/tools /usr/local/android-sdk/cmdline-tools/tools
+
+# Environment variables
+ENV ANDROID_HOME /usr/local/android-sdk
+ENV ANDROID_SDK_ROOT /usr/local/android-sdk
+ENV PATH $PATH:$ANDROID_HOME/cmdline-tools
+ENV PATH $PATH:$ANDROID_HOME/cmdline-tools/tools/bin
+ENV PATH $PATH:$ANDROID_HOME/platform-tools
+ENV PATH $PATH:$ANT_HOME/bin
 
 # Install Android tools
-RUN /usr/local/android-sdk/tools/bin/sdkmanager --update <<< 'y'
-RUN yes | /usr/local/android-sdk/tools/bin/sdkmanager "platforms;android-32" "build-tools;32.0.0" "extras;google;m2repository" "extras;android;m2repository"
+RUN /usr/local/android-sdk/cmdline-tools/tools/bin/sdkmanager --update <<< 'y'
+RUN yes | /usr/local/android-sdk/cmdline-tools/tools/bin/sdkmanager "platforms;android-32" "build-tools;32.0.0" "extras;google;m2repository" "extras;android;m2repository"
 #RUN echo yes | /usr/local/android-sdk-linux/tools/android update sdk --filter android-32 --no-ui --force -a
 #RUN echo yes | /usr/local/android-sdk-linux/tools/android update sdk --filter platform-tools --no-ui --force -a
 #RUN echo yes | /usr/local/android-sdk-linux/tools/android update sdk --filter tools --no-ui --force -a
@@ -54,4 +66,4 @@ ENV PATH $PATH:$ANT_HOME/bin
 
 # Clean up
 RUN yum clean all
-RUN rm -rf /usr/local/sdk-tools-linux-3859397.zip /usr/local/jdk-11.0.14_linux-x64_bin.rpm /var/cache/yum
+RUN rm -rf /usr/local/commandlinetools-linux-8092744_latest.zip /usr/local/jdk-11.0.14_linux-x64_bin.rpm /var/cache/yum
