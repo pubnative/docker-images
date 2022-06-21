@@ -27,3 +27,7 @@ RUN curl -L https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java
   && cp mysql-connector-java-${MYSQL_VERSION}/mysql-connector-java-${MYSQL_VERSION}.jar ${HADOOP_HOME}/share/hadoop/common/lib/ \
   && cp mysql-connector-java-${MYSQL_VERSION}/mysql-connector-java-${MYSQL_VERSION}.jar ${HIVE_METASTORE_HOME}/lib/ \
   && rm -r mysql-connector-java-${MYSQL_VERSION}
+
+COPY entrypoint.sh ./entrypoint.sh
+
+ENTRYPOINT ["/opt/entrypoint.sh"]
