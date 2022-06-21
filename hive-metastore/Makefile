@@ -9,6 +9,7 @@ DOCKER_REPO_LATEST=$(DOCKER_REPO):latest
 
 build:
 	docker build \
+	    --platform linux/amd64 \
 	    --build-arg HIVE_METASTORE_VERSION=$(HIVE_METASTORE_VERSION) \
 	    --build-arg HADOOP_VERSION=$(HADOOP_VERSION) \
 	    --build-arg MYSQL_VERSION=$(MYSQL_VERSION) \
