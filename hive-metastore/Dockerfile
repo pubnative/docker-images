@@ -28,6 +28,10 @@ RUN curl -L https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java
   && cp mysql-connector-java-${MYSQL_VERSION}/mysql-connector-java-${MYSQL_VERSION}.jar ${HIVE_METASTORE_HOME}/lib/ \
   && rm -r mysql-connector-java-${MYSQL_VERSION}
 
+RUN wget https://storage.googleapis.com/hadoop-lib/gcs/gcs-connector-hadoop3-2.2.7.jar \
+  && cp gcs-connector-hadoop3-2.2.7.jar ${HIVE_METASTORE_HOME}/lib/ \
+  && rm -r gcs-connector-hadoop3-2.2.7.jar
+
 COPY entrypoint.sh ./entrypoint.sh
 
 ENTRYPOINT ["/opt/entrypoint.sh"]
