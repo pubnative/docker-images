@@ -9,6 +9,7 @@ FROM  apache/airflow:2.3.2
 COPY requirements.txt /tmp/requirements.txt
 RUN pip install -r /tmp/requirements.txt
 
+USER root
 # Install gcloud
 ENV CLOUDSDK_INSTALL_DIR /usr/local/gcloud/
 RUN curl -sSL https://sdk.cloud.google.com | bash

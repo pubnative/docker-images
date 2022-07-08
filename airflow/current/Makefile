@@ -12,7 +12,7 @@ build: update_req
 
 .PHONY: update_req
 update_req:
-	poetry export --output requirements.txt
+	poetry export --without-hashes --output requirements.txt
 
 .PHONY: push
 push:
