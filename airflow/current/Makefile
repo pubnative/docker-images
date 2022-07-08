@@ -1,6 +1,6 @@
 NAME := pubnative/airflow-2
 COMMIT := $(shell git log -1 --pretty=%h)
-VERSIONED := ${NAME}:plugins-${COMMIT}
+VERSIONED := ${NAME}:${COMMIT}
 LATEST := ${NAME}:latest
  
 all: build push
