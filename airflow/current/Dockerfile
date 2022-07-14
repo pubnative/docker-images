@@ -15,6 +15,7 @@ ENV CLOUDSDK_INSTALL_DIR /usr/local/gcloud/
 RUN curl -sSL https://sdk.cloud.google.com | bash
 ENV PATH $PATH:/usr/local/gcloud/google-cloud-sdk/bin
 
+
 # Install kubectl
 RUN  gcloud components install kubectl
 
@@ -22,5 +23,6 @@ RUN  gcloud components install kubectl
 COPY ./entrypoint.sh  /start/entrypoint.sh
 RUN chmod +x /start/entrypoint.sh
 
+USER airflow
 ENTRYPOINT [ "/start/entrypoint.sh" ]
 CMD [ "-h" ]
