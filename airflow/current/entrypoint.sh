@@ -12,3 +12,7 @@ function init_gcloud {
   # Create the kubeconfig
   gcloud container clusters get-credentials $LOCATION  --zone $ZONE  --project $PROJECT
 } 
+
+
+init_gcloud
+

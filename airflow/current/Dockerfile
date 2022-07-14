@@ -25,4 +25,3 @@ RUN chmod +x /start/entrypoint.sh
 
 USER airflow
 ENTRYPOINT [ "/start/entrypoint.sh" ]
-CMD [ "-h" ]
