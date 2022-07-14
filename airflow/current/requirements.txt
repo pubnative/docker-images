@@ -19,6 +19,7 @@ googleapis-common-protos==1.53.0; python_version >= "3.6" and python_full_versio
 grpcio==1.42.0; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.6"
 httplib2==0.19.0; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.4.0"
 idna==2.10; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0"
+influxdb==5.2.1
 jmespath==0.10.0; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0"
 numpy==1.21.1; python_full_version >= "3.6.1" and python_version >= "3.7"
 oauthlib==3.1.1; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.4.0" and python_version >= "3.6"
