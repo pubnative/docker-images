@@ -28,6 +28,15 @@ ENV PATH $PATH:/usr/local/gcloud/google-cloud-sdk/bin
 
 # Install kubectl
 RUN  gcloud components install kubectl
+
+
+# Copy the new entrypoint and define it as entrypoint
+COPY ./entrypoint.sh  /start/entrypoint.sh
+RUN chmod +x /start/entrypoint.sh
+
+ENTRYPOINT [ "/start/entrypoint.sh" ]
+CMD [ "-h" ]
+
 USER airflow
 
 
