@@ -35,7 +35,6 @@ COPY ./entrypoint.sh  /start/entrypoint.sh
 RUN chmod +x /start/entrypoint.sh
 
 ENTRYPOINT [ "/start/entrypoint.sh" ]
-CMD [ "-h" ]
 
 USER airflow
 
