@@ -34,8 +34,7 @@ RUN  gcloud components install kubectl
 COPY ./entrypoint.sh  /start/entrypoint.sh
 RUN chmod +x /start/entrypoint.sh
 
-ENTRYPOINT [ "/start/entrypoint.sh" ]
-
+ENTRYPOINT ["/usr/bin/dumb-init", "--", "/start/entrypoint.sh"]
 USER airflow
 
 
