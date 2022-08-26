@@ -14,6 +14,6 @@ function init_gcloud {
 } 
 
 
-echo "Authenticates Gcloud and creates a kube config file"
-init_gcloud
+#echo "Authenticates Gcloud and creates a kube config file"
+#init_gcloud
 
