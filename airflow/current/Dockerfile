@@ -4,9 +4,9 @@
 # 
 # C.f. Makefile
 
-FROM  apache/airflow:2.3.3
+FROM  apache/airflow:2.3.4
 
-ENV AIRFLOW_VERSION "2.3.3"
+ENV AIRFLOW_VERSION "2.3.4"
 ENV PYTHON_VERSION "3.7"
 COPY requirements.txt /tmp/requirements.txt
 RUN pip install --no-cache-dir -r /tmp/requirements.txt
