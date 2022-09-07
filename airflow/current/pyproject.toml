@@ -17,6 +17,7 @@ apache-airflow-providers-cncf-kubernetes = "4.3.0"
 apache-airflow-providers-google = "*"
 apache-airflow-providers-influxdb = "2.0.0"
 apache-airflow-providers-apache-spark = "3.0.0"
+apache-airflow-providers-amazon = "5.0.0"
 
 
 
