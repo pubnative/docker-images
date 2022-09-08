@@ -5,7 +5,7 @@ description = ""
 authors = []
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "3.7.12"
 boto3 = "^1.10.40"
 pyathena = "^1.9.0"
 pyyaml = "^5.3"
@@ -14,7 +14,7 @@ google-cloud-storage = "^1.36.2"
 pandas-gbq = "0.13.2"
 influxdb = "5.2.1"
 apache-airflow-providers-cncf-kubernetes = "4.3.0"
-apache-airflow-providers-google = "*"
+apache-airflow-providers-google = "8.3.0"
 apache-airflow-providers-influxdb = "2.0.0"
 apache-airflow-providers-apache-spark = "3.0.0"
 apache-airflow-providers-amazon = "5.0.0"
