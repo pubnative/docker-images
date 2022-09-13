@@ -14,9 +14,14 @@ RUN pip install --no-cache-dir -r /tmp/requirements.txt
 
 
 
-#ENV PYTHONPATH=/usr/local/lib/python3.7
-#ENV AIRFLOW_HOME=/opt/airflow
-#ENV PYTHONPATH "${PYTHONPATH}:${AIRFLOW_HOME}"
+ENV PYTHONPATH=/usr/local/lib/python3.7
+ENV AIRFLOW_HOME=/opt/airflow
+ENV PYTHONPATH "${PYTHONPATH}:${AIRFLOW_HOME}"
+
+
+WORKDIR ${AIRFLOW_HOME}
+
+COPY plugins/ plugins/
 
 
 USER root
@@ -36,6 +41,9 @@ RUN  gcloud components install kubectl
 #
 #ENTRYPOINT ["/usr/bin/dumb-init", "--", "/start/entrypoint.sh"]
 USER airflow
+WORKDIR ${AIRFLOW_HOME}
+
+COPY plugins/ plugins/
 
 
 
