@@ -4,7 +4,7 @@ from typing import List
 from airflow import DAG
 from airflow.models import BaseOperator, DagRun, TaskInstance
 from airflow.models.skipmixin import SkipMixin
-from airflow.operators import LatestOnlyOperator
+# from airflow.operators import LatestOnlyOperator
 
 
 class OnlyFreshestOperator(BaseOperator, SkipMixin):
