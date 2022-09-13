@@ -19,7 +19,8 @@ apache-airflow-providers-influxdb = "2.0.0"
 apache-airflow-providers-apache-spark = "3.0.0"
 apache-airflow-providers-amazon = "5.0.0"
 apache-airflow-upgrade-check = "1.4.0"
-
+flask-admin = "^1.5.8"
+flask-login = "*"
 
 
 [tool.poetry.dev-dependencies]
