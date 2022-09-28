@@ -1,13 +1,20 @@
-# Images:
-#  - pubnative/airflow:latest
-#  - pubnative/airflow:plugins-${GIT_COMMIT}
-# 
-# C.f. Makefile
+# Image: pubnative/airflow-2
 
-FROM pubnative/airflow:plugins-1.4
+ARG AIRFLOW_VERSION
+ARG PYTHON_VERSION
+
+FROM apache/airflow:$AIRFLOW_VERSION
+
+ENV PYTHONPATH="/usr/local/lib/python${PYTHON_VERSION}"
+ENV AIRFLOW_HOME=/opt/airflow
+ENV PYTHONPATH "${PYTHONPATH}:${AIRFLOW_HOME}"
+
+WORKDIR ${AIRFLOW_HOME}
 
 COPY requirements.txt /tmp/requirements.txt
-RUN pip install -r /tmp/requirements.txt
+RUN pip install --no-cache-dir -r /tmp/requirements.txt
+
+USER root
 
 # Install gcloud
 ENV CLOUDSDK_INSTALL_DIR /usr/local/gcloud/
@@ -15,11 +22,10 @@ RUN curl -sSL https://sdk.cloud.google.com | bash
 ENV PATH $PATH:/usr/local/gcloud/google-cloud-sdk/bin
 
 # Install kubectl
-RUN  gcloud components install kubectl
+RUN gcloud components install kubectl
 
-# Copy the new entrypoint and define it as entrypoint
-COPY ./entrypoint.sh  /start/entrypoint.sh
-RUN chmod +x /start/entrypoint.sh
+COPY plugins/ plugins/
 
-ENTRYPOINT [ "/start/entrypoint.sh" ]
-CMD [ "-h" ]
+USER airflow
+
+
