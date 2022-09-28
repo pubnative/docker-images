@@ -1,35 +1,28 @@
 # Airflow
 
-Image used for our Airflow deployment.
+Image used for our Airflow-2 deployment.
 It builds one image and tags it as:
 
-- `pubnative/airflow:latest`,
-- `pubnative/airflow:plugins-${GIT_COMMIT}`
-
-Where `${GIT_COMMIT}` is the first seven characters of the git commit.
+- `pubnative/airflow-2:latest`,
+- `pubnative/airflow-2:${AIRFLOW_VERSION}`
 
 ## Build
 
-`make -C airflow build`
+`make build`
 
 ## Deploy
 
-`make -C airflow push`
-
-## Both
-
-`make -C airflow`
+`make publish`
 
 ## Update requirements.txt
 
-`make -C airflow update_req`
+`make update-req`
 
 ## Docker image locally
 
-``` bash
-    docker build -t airflow_test .
-
-    docker run airflow_test -h
+``` 
+docker build --build-arg AIRFLOW_VERSION=2.3.4 --build-arg PYTHON_VERSION=3.7 -t airflow_test .
+docker run airflow_test -h
 ```
 
 ## Environment Variables

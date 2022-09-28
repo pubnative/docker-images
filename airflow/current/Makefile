@@ -1,20 +1,27 @@
-NAME := pubnative/airflow-2
-COMMIT := $(shell git log -1 --pretty=%h)
-VERSIONED := ${NAME}:${COMMIT}
-LATEST := ${NAME}:latest
- 
-all: build push
+AIRFLOW_VERSION?=2.3.4
+PYTHON_VERSION?=3.7
+VERSION=v$(AIRFLOW_VERSION)
+DOCKER_REPO=pubnative/airflow-2
+DOCKER_REPO_DOCKERFILE_FOLDER?=.
+DOCKER_REPO_VERSION=$(DOCKER_REPO):$(VERSION)
+DOCKER_REPO_LATEST=$(DOCKER_REPO):latest
 
-.PHONY: build
-build: update_req
-	docker build --rm . -t ${VERSIONED}
-	docker tag ${VERSIONED} ${LATEST}
+build: update-req
+	docker build \
+	    --build-arg AIRFLOW_VERSION=$(AIRFLOW_VERSION) \
+	    --build-arg PYTHON_VERSION=$(PYTHON_VERSION) \
+	    -t $(DOCKER_REPO_VERSION) \
+	    $(DOCKER_REPO_DOCKERFILE_FOLDER)
 
-.PHONY: update_req
-update_req:
+	docker tag $(DOCKER_REPO_VERSION) $(DOCKER_REPO_LATEST)
+
+update-req:
 	poetry export --without-hashes --output requirements.txt
 
-.PHONY: push
-push:
-	docker push ${VERSIONED}
-	docker push ${LATEST}
+publish: publish-latest publish-version
+
+publish-latest: build
+    docker push $(DOCKER_REPO_LATEST)
+
+publish-version: build
+	docker push $(DOCKER_REPO_VERSION)
