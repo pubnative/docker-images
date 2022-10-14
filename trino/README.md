@@ -14,10 +14,6 @@ It builds one image and tags it as:
 
 `make publish`
 
-## Update requirements.txt
-
-`make update-req`
-
 ## Docker image locally
 
 ``` 
