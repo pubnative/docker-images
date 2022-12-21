@@ -1,11 +1,11 @@
-AIRFLOW_VERSION?=2.4.1
-PYTHON_VERSION?=3.7
-COMMIT=$(shell git log -1 --pretty=%h)
-VERSION=v$(AIRFLOW_VERSION)-$(COMMIT)
-DOCKER_REPO=pubnative/airflow-2
-DOCKER_REPO_DOCKERFILE_FOLDER?=.
-DOCKER_REPO_VERSION=$(DOCKER_REPO):$(VERSION)
-DOCKER_REPO_LATEST=$(DOCKER_REPO):latest
+AIRFLOW_VERSION := 2.4.1
+PYTHON_VERSION := 3.7
+COMMIT := $(shell git log -1 --pretty=%h)
+VERSION := v${AIRFLOW_VERSION}-${COMMIT}
+DOCKER_REPO := pubnative/airflow-2
+DOCKER_REPO_DOCKERFILE_FOLDER := .
+DOCKER_REPO_VERSION := ${DOCKER_REPO}:${VERSION}
+DOCKER_REPO_LATEST := ${DOCKER_REPO}:latest
 
 build: update-req
 	docker build \
@@ -23,7 +23,7 @@ update-req:
 publish: publish-latest publish-version
 
 publish-latest: build
-    docker push $(DOCKER_REPO_LATEST)
+	docker push ${DOCKER_REPO_LATEST}
 
 publish-version: build
-	docker push $(DOCKER_REPO_VERSION)
+	docker push ${DOCKER_REPO_VERSION}
