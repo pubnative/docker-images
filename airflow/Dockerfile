@@ -24,7 +24,7 @@ ENV PATH $PATH:/usr/local/gcloud/google-cloud-sdk/bin
 # Install kubectl
 RUN gcloud components install kubectl
 
-COPY plugins/ plugins/
+COPY plugins plugins/
 
 USER airflow
 

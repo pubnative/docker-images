@@ -1,4 +1,4 @@
-AIRFLOW_VERSION := 2.4.1
+AIRFLOW_VERSION := 2.5.1
 PYTHON_VERSION := 3.7
 COMMIT := $(shell git log -1 --pretty=%h)
 VERSION := v${AIRFLOW_VERSION}-${COMMIT}
@@ -9,7 +9,7 @@ DOCKER_REPO_LATEST := ${DOCKER_REPO}:latest
 
 build: update-req
 	docker build \
-		--platform linux/amd64 \
+		   --platform linux/amd64 \
 	    --build-arg AIRFLOW_VERSION=$(AIRFLOW_VERSION) \
 	    --build-arg PYTHON_VERSION=$(PYTHON_VERSION) \
 	    -t $(DOCKER_REPO_VERSION) \
