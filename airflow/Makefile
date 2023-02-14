@@ -9,7 +9,7 @@ DOCKER_REPO_LATEST := ${DOCKER_REPO}:latest
 
 build: update-req
 	docker build \
-		--platform linux/amd64 \
+		   --platform linux/amd64 \
 	    --build-arg AIRFLOW_VERSION=$(AIRFLOW_VERSION) \
 	    --build-arg PYTHON_VERSION=$(PYTHON_VERSION) \
 	    -t $(DOCKER_REPO_VERSION) \
