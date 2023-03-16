@@ -11,6 +11,6 @@ ARG MYSQL_SHA=9140be77aafa5050bf4bb936d560cbacb5a6b5c1
 
 RUN wget -q ${MYSQL_URL} \
  && echo "${MYSQL_SHA}  ${MYSQL_JAR}" | sha1sum -c \
- && ln -s ./${MYSQL_JAR} /opt/druid/lib
+ && ln -s /opt/druid/extensions/mysql-metadata-storage/${MYSQL_JAR} /opt/druid/lib
 
 WORKDIR /opt/druid
