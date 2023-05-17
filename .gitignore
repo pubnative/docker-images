@@ -8,3 +8,4 @@ jupyterhub/data-science-notebook/spark-defaults.conf
 jupyterhub/package-dependencies/requirements.txt
 jupyterhub/pyspark-notebook/requirements.txt
 airflow/requirements.txt
+airflow/current/requirements.txt
