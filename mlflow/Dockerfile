@@ -12,4 +12,4 @@ RUN pip install -r requirements.txt
 # Port
 EXPOSE 80
 
-CMD mlflow server --host 0.0.0.0 --port 80
+CMD mlflow server --host 0.0.0.0 --port 80 --backend-store-uri postgresql://$DB_USER:$DB_PASSWORD@$DB_HOST:5432/mlflow
