@@ -1,4 +1,6 @@
-FROM python:3.8.10
+FROM --platform=linux/amd64 python:3.8.10 AS build
+
+USER root
 
 # Build dependencies
 RUN apt-get update -y \
@@ -12,4 +14,4 @@ RUN pip install -r requirements.txt
 # Port
 EXPOSE 80
 
-CMD mlflow server --host 0.0.0.0 --port 80 --backend-store-uri postgresql://$DB_USER:$DB_PASSWORD@$DB_HOST:5432/mlflow
+CMD mlflow server --host 0.0.0.0 --port 80 --backend-store-uri $BACKEND_STORE_URI
