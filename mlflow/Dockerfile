@@ -1,4 +1,6 @@
-FROM --platform=linux/amd64 ghcr.io/mlflow/mlflow:v2.0.1 AS build
+ARG MLFLOW_VERSION="2.0.1"
+FROM ghcr.io/mlflow/mlflow:v${MLFLOW_VERSION}
+
 USER root
 
 # Build dependencies

@@ -1,17 +1,22 @@
-# MLFlow Docker image
+# MLFlow Docker image 
 
+Image used for our MLflow deployment.
+It builds one image and tags it as:
 
-#### To update the docker image increament the version in ./makefile before build and push.
+- `pubnative/mlflow:latest`,
+- `pubnative/mlflow:${MLFLOW_VERSION}-${COMMIT}`
 
-To build the image:
+## Build
 
+`make build`
+
+## Deploy
+
+`make publish`
+
+## Docker image locally
+
+``` 
+docker build --build-arg MLFLOW_VERSION=v2.0.1 -t mlflow_test .
+docker run -it mlflow_test /bin/bash
 ```
-make build
-```
-
-To push the image:
-
-```
-make push
- ```
-
