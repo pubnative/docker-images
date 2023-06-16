@@ -1,5 +1,4 @@
-FROM --platform=linux/amd64 python:3.8.10 AS build
-
+FROM --platform=linux/amd64 ghcr.io/mlflow/mlflow:v2.0.1 AS build
 USER root
 
 # Build dependencies
