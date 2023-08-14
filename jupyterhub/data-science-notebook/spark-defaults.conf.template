@@ -3,6 +3,7 @@ spark.kubernetes.namespace jupyterhub
 spark.kubernetes.container.image <spark-executor-image>
 spark.submit.deployMode client
 spark.files /home/jovyan/shared/credentials/ds-credentials.json
+spark.kubernetes.executor.podTemplateFile /home/jovyan/shared/data/cm_executors_template.yaml
 spark.executorEnv.GOOGLE_APPLICATION_CREDENTIALS ds-credentials.json
 spark.kubernetes.pyspark.pythonVersion 3
 spark.jars /usr/local/spark/jars/gcs-connector-hadoop3-2.2.4-shaded.jar
