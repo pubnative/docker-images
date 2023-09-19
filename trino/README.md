@@ -1,4 +1,4 @@
-# Trino 
+# Trino
 
 Image used for our Trino deployment.
 It builds one image and tags it as:
@@ -16,7 +16,7 @@ It builds one image and tags it as:
 
 ## Docker image locally
 
-``` 
+```
 docker build --build-arg TRINO_VERSION=422 --build-arg AGENT_VERSION=0.17.2 -t trino_test .
 docker run -it trino_test /bin/bash
 ```
