@@ -1,5 +1,5 @@
 NAME := pubnative/turnilo
-VERSION := 1.32.0
+VERSION := 1.40.2
 VERSIONED := ${NAME}:${VERSION}
 TMPDIR := $(shell mktemp -d)
  
