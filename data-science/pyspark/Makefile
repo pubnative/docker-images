@@ -1,8 +1,6 @@
 OWNER			:= pubnative
-JAVA_BASE		:= 8-jre-slim
-
 REPO			:= ${OWNER}/pyspark
-TAG				:= v3.2.0-java8
+TAG				:= v3.4.1
 IMAGE			:= ${REPO}:${TAG}
 
 
@@ -11,8 +9,7 @@ pyspark:
 	@echo ${SPARK_HOME}
 	docker-image-tool.sh \
 		-r ${OWNER} \
-		-t v3.2.0-java8-base \
-		-b java_image_tag=8-jre-slim \
+		-t v3.4.1 \
 		-p ${SPARK_HOME}/kubernetes/dockerfiles/spark/bindings/python/Dockerfile \
 		build
 
