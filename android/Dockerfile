@@ -1,10 +1,11 @@
-# Image pubnative/android
+FROM drecom/centos-ruby:latest
 
-FROM drecom/centos-ruby
-
-LABEL maintainer="Eros Garcia Ponte <eros902002@googlemail.com>"
+LABEL maintainer="Abanoub Barayo <abanob.barayo@gmail.com>"
 
 WORKDIR /usr/local/
+
+RUN echo Bibo14
+RUN echo Start14
 
 # Install Development Tools
 RUN yum -y update \
@@ -21,44 +22,48 @@ RUN yum -y update \
  && gem install fastlane
 
 # Install Java 17 in CentOS/RHEL 7.X
-RUN cd /usr/local/ \
+RUN mkdir -p /usr/local/java-sdk \
+ && cd /usr/local/java-sdk \
  && curl -s -j -k -L -H "Cookie: oraclelicense=accept-securebackup-cookie" https://download.oracle.com/java/17/archive/jdk-17.0.9_linux-x64_bin.rpm > jdk-17.0.9_linux-x64_bin.rpm \
  && yum -y localinstall jdk-17.0.9_linux-x64_bin.rpm
 
-# Java environment variables
+# # Java environment variables
 ENV JAVA_VERSION 17
-# ENV JAVA_HOME /usr/java/jdk1.8.0_131
-ENV JAVA_HOME /usr/lib/jvm/jdk-17-oracle-aarch64
-# ENV JRE_HOME /usr/java/jdk1.8.0_131/jre
-# ENV PATH $PATH:/usr/java/jdk1.8.0_131/bin:/usr/java/jdk1.8.0_131/jre/bin
+ENV JAVA_HOME /usr/java/latest
+# ENV JAVA_HOME /usr/lib/jvm/jdk-17-oracle-aarch64
+ENV JRE_HOME /usr/lib/jvm/jdk-17-oracle-x64/jre
+ENV PATH $PATH:/usr/lib/jvm/jdk-17-oracle-x64/bin:/usr/lib/jvm/jdk-17-oracle-x64/jre/bin
 ENV PATH $PATH:/usr/lib/jvm/jdk-17-oracle-aarch64/bin
 
-# Install Android SDK
-RUN mkdir -p /usr/local/android-sdk \
- && cd /usr/local/android-sdk \
- && curl -L -O https://dl.google.com/android/repository/commandlinetools-linux-10406996_latest.zip \
- && unzip commandlinetools-linux-10406996_latest.zip
+# # Install Android SDK
+# RUN mkdir -p /usr/local/android-sdk \
+#  && cd /usr/local/android-sdk \
+#  && curl -L -O https://dl.google.com/android/repository/commandlinetools-linux-10406996_latest.zip \
+#  && unzip commandlinetools-linux-10406996_latest.zip
+
+# # # Install Android tools
+# # RUN /usr/local/android-sdk/tools/bin/sdkmanager --update <<< 'y'
+# # RUN yes | /usr/local/android-sdk/tools/bin/sdkmanager "platforms;android-28" "build-tools;28.0.3" "extras;google;m2repository" "extras;android;m2repository"
+# # #RUN echo yes | /usr/local/android-sdk-linux/tools/android update sdk --filter android-28 --no-ui --force -a
+# # #RUN echo yes | /usr/local/android-sdk-linux/tools/android update sdk --filter platform-tools --no-ui --force -a
+# # #RUN echo yes | /usr/local/android-sdk-linux/tools/android update sdk --filter tools --no-ui --force -a
+# # #RUN echo yes | /usr/local/android-sdk-linux/tools/android update sdk --filter extra --no-ui --force -a
 
 # # Install Android tools
-# RUN /usr/local/android-sdk/tools/bin/sdkmanager --update <<< 'y'
-# RUN yes | /usr/local/android-sdk/tools/bin/sdkmanager "platforms;android-28" "build-tools;28.0.3" "extras;google;m2repository" "extras;android;m2repository"
-# #RUN echo yes | /usr/local/android-sdk-linux/tools/android update sdk --filter android-28 --no-ui --force -a
-# #RUN echo yes | /usr/local/android-sdk-linux/tools/android update sdk --filter platform-tools --no-ui --force -a
-# #RUN echo yes | /usr/local/android-sdk-linux/tools/android update sdk --filter tools --no-ui --force -a
-# #RUN echo yes | /usr/local/android-sdk-linux/tools/android update sdk --filter extra --no-ui --force -a
+# RUN /usr/local/android-sdk/cmdline-tools/bin/sdkmanager --update <<< 'y'
+# RUN yes | /usr/local/android-sdk/cmdline-tools/bin/sdkmanager "platforms;android-34" "build-tools;34.0.0" "extras;google;m2repository" "extras;android;m2repository"
 
-# Install Android tools
-RUN /usr/local/android-sdk/cmdline-tools/bin/sdkmanager --update <<< 'y'
-RUN yes | /usr/local/android-sdk/cmdline-tools/bin/sdkmanager "platforms;android-34" "build-tools;34.0.0" "extras;google;m2repository" "extras;android;m2repository"
+# RUN cd /usr/local/ && ls -la
 
-RUN cd /usr/local/ && ls -la
-
-# Environment variables
-ENV ANDROID_HOME /usr/local/android-sdk
-ENV PATH $PATH:$ANDROID_HOME/tools
-ENV PATH $PATH:$ANDROID_HOME/platform-tools
-ENV PATH $PATH:$ANT_HOME/bin
+# # Environment variables
+# ENV ANDROID_HOME /usr/local/android-sdk
+# ENV PATH $PATH:$ANDROID_HOME/tools
+# ENV PATH $PATH:$ANDROID_HOME/platform-tools
+# ENV PATH $PATH:$ANT_HOME/bin
 
 # Clean up
 RUN yum clean all
-RUN rm -rf /usr/local/commandlinetools-linux-10406996_latest.zip /usr/local/jdk-17.0.9_linux-x64_bin.rpm /var/cache/yum
+RUN rm -rf /usr/local/jdk-17.0.9_linux-x64_bin.rpm /var/cache/yum
+# RUN rm -rf /usr/local/commandlinetools-linux-10406996_latest.zip /usr/local/jdk-17.0.9_linux-x64_bin.rpm /var/cache/yum
+
+RUN echo Finished
