@@ -1,26 +1,26 @@
 [tool.poetry]
 name = "airflow"
-version = "0.1.0"
+version = "0.2.0"
 description = ""
 authors = []
 
 [tool.poetry.dependencies]
-python = "3.7.12"
-boto3 = "^1.10.40"
-pyathena = "^1.9.0"
-pyyaml = "^5.3"
-google-api-python-client = "^1.12.8"
-google-cloud-storage = "^1.36.2"
-pandas-gbq = "0.13.2"
-influxdb = "5.2.1"
-apache-airflow = "2.5.1"
+python = "3.12.0"
+boto3 = "^1.28.85"
+pyathena = "^3.0.10"
+pyyaml = "^6.0"
+google-api-python-client = "^2.108.0"
+google-cloud-storage = "^2.13.0"
+pandas-gbq = "0.19.2"
+influxdb = "5.3.1"
+apache-airflow = "2.7.3"
 apache-airflow-providers-cncf-kubernetes = "4.3.0"
-apache-airflow-providers-google = "8.3.0"
-apache-airflow-providers-influxdb = "2.0.0"
-apache-airflow-providers-apache-spark = "3.0.0"
-apache-airflow-providers-amazon = "5.0.0"
-flask-admin = "^1.5.8"
-protobuf = "3.20.*"
+apache-airflow-providers-google = "10.11.1"
+apache-airflow-providers-influxdb = "2.3.0"
+apache-airflow-providers-apache-spark = "4.4.0"
+apache-airflow-providers-amazon = "8.11.0"
+flask-admin = "^1.6.0"
+protobuf = "4.25.*"
 
 [tool.poetry.dev-dependencies]
 
