@@ -1,4 +1,4 @@
-# Trino
+# Druid 
 
 Image used for our Druid deployment.
 It builds one image and tags it as:
