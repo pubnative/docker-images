@@ -1,4 +1,4 @@
-# Image: pubnative/druid
+# Based on https://github.com/apache/druid/blob/master/distribution/docker/Dockerfile.mysql
 
 ARG DRUID_VERSION
 FROM apache/druid:$DRUID_VERSION
