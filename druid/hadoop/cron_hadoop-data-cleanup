@@ -1,1 +1,0 @@
-0 * * * * /opt/druid/bin/hadoop-data-cleanup.sh > /var/log/cleanup_cron.log 2>&1
