@@ -1,5 +1,5 @@
 AIRFLOW_VERSION := 2.7.3
-PYTHON_VERSION := 3.12.0
+PYTHON_VERSION := 3.11.6
 COMMIT := $(shell git log -1 --pretty=%h)
 VERSION := v${AIRFLOW_VERSION}-${COMMIT}
 DOCKER_REPO := pubnative/airflow-2
