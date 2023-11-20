@@ -1,4 +1,4 @@
-# Image: pubnative/halo-druid
+# Image: pubnative/single-container-druid
 
 FROM openjdk:8-jre
 
