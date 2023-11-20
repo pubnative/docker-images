@@ -8,7 +8,7 @@ testing.
 ## Why do we need this image?
 
 - **Custom Configuration**: This image includes additional packages and configurations not present in the official Druid
-  image, making it more suited for our specific use cases.
+  image, making it more suited for our specific use cases, e.g. perl not present for running start-micro-quickstart.
 
 - **CircleCI Compatibility**: The official Druid image and docker-compose setup worked well locally but presented
   challenges in our CircleCI environment. This image is designed to be more CI/CD friendly.
@@ -23,11 +23,10 @@ Druid, and `<child_folder_with_Dockerfile>` with the path to the folder containi
 
 ```shell
 $ make build DRUID_VERSION=<druid_version> DOCKER_REPO_DOCKERFILE_FOLDER=<child_folder_with_Dockerfile>
-
 ```
 
 ## run
 
 ```shell
 docker run  -p 8081:8081 -p 8082:8082 -p 8083:8083 -p 8888:8888 --name my-druid-container pubnative/single-container-druid:v28.0.0
-
+```
