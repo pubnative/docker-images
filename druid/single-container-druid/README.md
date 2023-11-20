@@ -5,7 +5,7 @@ the official Druid Docker image. It's particularly useful in environments where 
 is often optimized for docker-compose or multi-node configurations, doesn't align with our requirements, e.g. E2E
 testing.
 
-## Why we need This Image?
+## Why do we need this image?
 
 - **Custom Configuration**: This image includes additional packages and configurations not present in the official Druid
   image, making it more suited for our specific use cases.
