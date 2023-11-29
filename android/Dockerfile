@@ -18,7 +18,7 @@ RUN yum -y update \
  && gem install bundler -v 2.4.22 \
  && gem install fastlane
 
-# Install Java 1.8 in CentOS/RHEL 7.X
+# Install Java 17 in CentOS/RHEL 7.X
 RUN cd /usr/local/ \
  && curl -s -j -k -L -H "Cookie: oraclelicense=accept-securebackup-cookie" https://download.oracle.com/java/17/latest/jdk-17_linux-x64_bin.rpm > jdk-17_linux-x64_bin.rpm \
  && yum -y localinstall jdk-17_linux-x64_bin.rpm
@@ -27,7 +27,6 @@ RUN cd /usr/local/ \
 ENV JAVA_VERSION 17
 ENV JAVA_HOME /usr/java/jdk-17
 ENV JRE_HOME /usr/java/jdk-17/jre
-ENV PATH $PATH:/usr/java/jdk-17/bin:/usr/java/jdk-17/jre/bin
 
 # Install Android SDK
 RUN mkdir -p /usr/local/android-sdk \
