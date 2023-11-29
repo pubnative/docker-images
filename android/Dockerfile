@@ -15,7 +15,8 @@ RUN yum -y update \
                    ncurses-devel.i686 \
                    libX11-devel.i686 \
                    libXrender.i686 \
- && gem install bundler -v 2.4.22
+ && gem install bundler -v 2.4.22 \
+ && gem install fastlane
 
 # Install Java 1.8 in CentOS/RHEL 7.X
 RUN cd /usr/local/ \
