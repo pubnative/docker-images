@@ -21,7 +21,7 @@ It builds one image and tags it as:
 ## Docker image locally
 
 ``` 
-docker build --build-arg AIRFLOW_VERSION=2.7.3 --build-arg PYTHON_VERSION=3.12.0 -t airflow_test .
+docker build --build-arg AIRFLOW_VERSION=2.7.3 --build-arg PYTHON_VERSION=3.11.6 -t airflow_test .
 docker run airflow_test -h
 ```
 
