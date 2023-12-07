@@ -1,5 +1,3 @@
-# Image: pubnative/single-container-druid
-
 FROM openjdk:11-jre
 
 RUN apt-get update \
@@ -8,24 +6,19 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 ARG DRUID_VERSION
+ARG DRUID_JAR=apache-druid-${DRUID_VERSION}-bin.tar.gz
+ARG DRUID_URL=https://downloads.apache.org/druid/${DRUID_VERSION}/${DRUID_JAR}
+ARG DRUID_SHA=c971ccbb4220fa2ae9f8a0a0f82c3e4b87750d27ac15d863d1e9f415863ccb8b8e5c764122dc8ef76044a42d27e1108b980ca2b88de8aff660db5a22356d6ab7
+ARG WORKDIR=/opt/druid
 
-ENV DRUID_DOWNLOAD_URL=https://downloads.apache.org/druid/${DRUID_VERSION}/apache-druid-${DRUID_VERSION}-bin.tar.gz
-ENV DRUID_SHA_URL=https://downloads.apache.org/druid/${DRUID_VERSION}/apache-druid-${DRUID_VERSION}-bin.tar.gz.sha512
+RUN wget -q ${DRUID_URL} \
+ && echo "${DRUID_SHA} ${DRUID_JAR}" | sha512sum -c \
+ && mkdir ${WORKDIR} \
+ && tar -xvf ${DRUID_JAR} -C ${WORKDIR} --strip-components=1 \
+ && rm -f ${DRUID_JAR}
 
-RUN mkdir /opt/druid
+WORKDIR ${WORKDIR}
 
-RUN wget -q -O /tmp/druid.tar.gz ${DRUID_DOWNLOAD_URL} \
-    && wget -q -O /tmp/druid.tar.gz.sha512 ${DRUID_SHA_URL}
+EXPOSE 8081-8083 8090-8091 8100-8199 8888
 
-# Verify the SHA checksum
-RUN echo "$(cat /tmp/druid.tar.gz.sha512) /tmp/druid.tar.gz" | sha512sum -c -
-
-RUN tar -xzf /tmp/druid.tar.gz -C /opt/druid --strip-components=1 \
-    && rm /tmp/druid.tar.gz /tmp/druid.tar.gz.sha512
-
-WORKDIR /opt/druid
-
-EXPOSE 8081 8082 8083 8090 8091 8100-8199 8888
-
-# Command to start Druid
-CMD ["bin/start-micro-quickstart"]
+CMD ["./bin/start-micro-quickstart"]

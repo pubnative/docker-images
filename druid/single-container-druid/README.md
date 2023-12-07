@@ -18,15 +18,15 @@ testing.
 
 ## Build
 
-Use the following command to build the custom Druid Docker image. Replace `<druid_version>` with the desired version of
-Druid, and `<child_folder_with_Dockerfile>` with the path to the folder containing your custom Dockerfile.
+`make -C ../ build DOCKER_REPO=pubnative/single-container-druid DOCKER_REPO_DOCKERFILE_FOLDER=./single-container-druid DRUID_VERSION=28.0.0`
 
-```shell
-$ make build DRUID_VERSION=<druid_version> DOCKER_REPO_DOCKERFILE_FOLDER=<child_folder_with_Dockerfile>
+## Deploy
+
+`make -C ../ publish DOCKER_REPO=pubnative/single-container-druid DOCKER_REPO_DOCKERFILE_FOLDER=./single-container-druid DRUID_VERSION=28.0.0`
+
+## Docker image locally
+
 ```
-
-## run
-
-```shell
-docker run  -p 8081:8081 -p 8082:8082 -p 8083:8083 -p 8888:8888 --name my-druid-container pubnative/single-container-druid:v28.0.0
+docker build --build-arg DRUID_VERSION=28.0.0 -t druid_test .
+docker run -it druid_test 
 ```
