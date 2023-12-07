@@ -1,5 +1,3 @@
-# Image: pubnative/single-container-druid
-
 FROM openjdk:11-jre
 
 RUN apt-get update \
@@ -8,24 +6,13 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 ARG DRUID_VERSION
-
-ENV DRUID_DOWNLOAD_URL=https://downloads.apache.org/druid/${DRUID_VERSION}/apache-druid-${DRUID_VERSION}-bin.tar.gz
-ENV DRUID_SHA_URL=https://downloads.apache.org/druid/${DRUID_VERSION}/apache-druid-${DRUID_VERSION}-bin.tar.gz.sha512
-
-RUN mkdir /opt/druid
-
-RUN wget -q -O /tmp/druid.tar.gz ${DRUID_DOWNLOAD_URL} \
-    && wget -q -O /tmp/druid.tar.gz.sha512 ${DRUID_SHA_URL}
-
-# Verify the SHA checksum
-RUN echo "$(cat /tmp/druid.tar.gz.sha512) /tmp/druid.tar.gz" | sha512sum -c -
-
-RUN tar -xzf /tmp/druid.tar.gz -C /opt/druid --strip-components=1 \
-    && rm /tmp/druid.tar.gz /tmp/druid.tar.gz.sha512
+ARG DRUID_JAR=apache-druid-${DRUID_VERSION}-bin.tar.gz
+ARG DRUID_URL=https://downloads.apache.org/druid/${DRUID_VERSION}/${DRUID_JAR}
 
 WORKDIR /opt/druid
 
-EXPOSE 8081 8082 8083 8090 8091 8100-8199 8888
+RUN wget -q ${DRUID_URL}
 
-# Command to start Druid
+EXPOSE 8081-8083 8090-8091 8100-8199 8888
+
 CMD ["bin/start-micro-quickstart"]
