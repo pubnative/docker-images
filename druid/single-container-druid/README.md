@@ -22,7 +22,7 @@ testing.
 
 ## Deploy
 
-`make -C ../ publish`
+`make -C ../ publish DOCKER_REPO=pubnative/single-container-druid DOCKER_REPO_DOCKERFILE_FOLDER=./single-container-druid DRUID_VERSION=28.0.0`
 
 ## Docker image locally
 
