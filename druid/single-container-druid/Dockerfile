@@ -12,7 +12,7 @@ ARG DRUID_SHA=c971ccbb4220fa2ae9f8a0a0f82c3e4b87750d27ac15d863d1e9f415863ccb8b8e
 ARG WORKDIR=/opt/druid
 
 RUN wget -q ${DRUID_URL} \
- && echo "${DRUID_SHA} ${DRUID_JAR}" | sha512sum -c - \
+ && echo "${DRUID_SHA} ${DRUID_JAR}" | sha512sum -c \
  && mkdir ${WORKDIR} \
  && tar -xvf ${DRUID_JAR} -C ${WORKDIR} --strip-components=1 \
  && rm -f ${DRUID_JAR}
