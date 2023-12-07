@@ -14,11 +14,11 @@ ARG WORKDIR=/opt/druid
 RUN wget -q ${DRUID_URL} \
  && echo "${DRUID_SHA} ${DRUID_JAR}" | sha512sum -c - \
  && mkdir ${WORKDIR} \
- && tar -xvf ${DRUID_JAR} -C ${WORKDIR} \
+ && tar -xvf ${DRUID_JAR} -C ${WORKDIR} --strip-components=1 \
  && rm -f ${DRUID_JAR}
 
 WORKDIR ${WORKDIR}
 
 EXPOSE 8081-8083 8090-8091 8100-8199 8888
 
-CMD ["bin/start-micro-quickstart"]
+CMD ["./bin/start-micro-quickstart"]
