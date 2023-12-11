@@ -17,6 +17,6 @@ It builds one image and tags it as:
 ## Docker image locally
 
 ```
-docker build --build-arg DRUID_VERSION=27.0.0 -t druid_test .
+docker build --build-arg DRUID_VERSION=28.0.0 -t druid_test .
 docker run -it --entrypoint /bin/bash druid_test 
 ```
