@@ -1,4 +1,4 @@
-DRUID_VERSION := 27.0.0
+DRUID_VERSION := 28.0.0
 COMMIT := $(shell git log -1 --pretty=%h)
 VERSION := v${DRUID_VERSION}-${COMMIT}
 DOCKER_REPO := pubnative/druid
