@@ -20,3 +20,4 @@ make minor publish
 ```sh
 make major publish
 ```
+
