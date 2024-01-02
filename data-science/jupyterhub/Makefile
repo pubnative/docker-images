@@ -1,23 +1,23 @@
 OWNER			:= pubnative
-RELEASE_VER		:= 1.0.0
-
-
 NAME			:= ${OWNER}/jupyterhub
-BUILD_VERSION	:= $$(poetry version | cut -f2 -d' ')
+BUILD_VERSION	:= $$(poetry version -s)
 HUB_VERSION		:= spark3.4.1-py3.11-hadoop3-openjdk17-scala2.12-build${BUILD_VERSION}
 JUPYTERHUB		:= ${NAME}:${HUB_VERSION}
 
 curr_dir		:= $$(pwd)
 
-dependencies:
+rule = major minor patch
+
+$(rule):
+	@poetry version $@
+
+dependencies: patch
 	@poetry export --output requirements.txt
 
-jupyterhub: dependencies
+build: dependencies
 	docker build . -t ${JUPYTERHUB}
 
-push_jupyterhub: jupyterhub
+publish: build
 	docker push ${JUPYTERHUB}
 	@echo pushed ${JUPYTERHUB} to DockerHub
 
-bump_version:
-	@poetry version
