@@ -18,4 +18,10 @@ RUN curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cl
 RUN tar -xf google-cloud-cli-458.0.1-linux-x86_64.tar.gz
 RUN ./google-cloud-sdk/install.sh --bash-completion true --path-update true --quiet
 
+# install almond kernel
+# using latest almond version 0.13.14 and scala version 2.12.11
+RUN curl -Lo coursier https://git.io/coursier-cli
+RUN chmod +x coursier
+RUN ./coursier launch --fork almond:0.13.14 --scala 2.12.11 -- --install --display-name "Scala 2.12.11"
+
 WORKDIR /home/jovyan/
