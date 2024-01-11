@@ -22,6 +22,6 @@ RUN ./google-cloud-sdk/install.sh --bash-completion true --path-update true --qu
 # using latest almond version 0.13.14 and scala version 2.12.11
 RUN curl -Lo coursier https://git.io/coursier-cli
 RUN chmod +x coursier
-RUN ./coursier launch --fork almond:0.13.14 --scala 2.12.11 -- --install --display-name "Scala 2.12.11"
+RUN ./coursier launch --fork almond:0.13.14 --scala 2.12.11 -- --install --display-name "Scala 2.12.11" --jupyter-path /usr/local/share/jupyter/kernels --id scala_2_12_11
 
 WORKDIR /home/jovyan/
