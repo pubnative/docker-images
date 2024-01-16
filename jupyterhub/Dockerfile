@@ -24,12 +24,10 @@ RUN ./google-cloud-sdk/install.sh --bash-completion true --path-update true --qu
 # install almond kernel
 RUN curl -Lo coursier https://git.io/coursier-cli && chmod +x coursier
 RUN chmod +x coursier
-RUN ./coursier bootstrap \
-    -r jitpack \
-    -i user -I user:sh.almond:scala-kernel-api_2.12.11:0.10.0 \
-    sh.almond:scala-kernel_2.12.11:0.10.0 \
-    -o almond_212
-RUN ./almond_212 --install --jupyter-path /usr/local/share/jupyter/kernels --id scala_2_12_11  --display-name "Scala 2.12.11"
+RUN ./coursier bootstrap --standalone \
+        almond:0.13.14 --scala 2.12.15 \
+        -o almond
+RUN ./almond --install --jupyter-path /usr/local/share/jupyter/kernels --id scala_2_12_15 --display-name "Scala 2.12.15"
 
 RUN pip install jupyter_contrib_nbextensions
 RUN pip install jupyterlab_execute_time
