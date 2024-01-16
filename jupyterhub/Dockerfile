@@ -27,7 +27,7 @@ RUN curl -Lo coursier https://git.io/coursier-cli
 RUN chmod +x coursier
 RUN ./coursier launch --fork almond:0.13.14 --scala 2.12.11 -- --install --display-name "Scala 2.12.11" --jupyter-path /usr/local/share/jupyter/kernels --id scala_2_12_11
 
-RUN pip install jupyter_contrib_nbextensions && jupyter contrib nbextension install --user
+RUN pip install jupyter_contrib_nbextensions
 RUN pip install jupyterlab_execute_time
 
 # to fix template paths issue mentioned here https://github.com/ipython-contrib/jupyter_contrib_nbextensions/issues/1529
