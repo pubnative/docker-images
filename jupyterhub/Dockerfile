@@ -22,10 +22,14 @@ RUN tar -xf google-cloud-cli-458.0.1-linux-x86_64.tar.gz
 RUN ./google-cloud-sdk/install.sh --bash-completion true --path-update true --quiet
 
 # install almond kernel
-# using latest almond version 0.13.14 and scala version 2.12.11
-RUN curl -Lo coursier https://git.io/coursier-cli
+RUN curl -Lo coursier https://git.io/coursier-cli && chmod +x coursier
 RUN chmod +x coursier
-RUN ./coursier launch --fork almond:0.13.14 --scala 2.12.11 -- --install --display-name "Scala 2.12.11" --jupyter-path /usr/local/share/jupyter/kernels --id scala_2_12_11
+RUN ./coursier bootstrap \
+    -r jitpack \
+    -i user -I user:sh.almond:scala-kernel-api_2.12.11:0.10.0 \
+    sh.almond:scala-kernel_2.12.11:0.10.0 \
+    -o almond_212
+RUN ./almond_212 --install --jupyter-path /usr/local/share/jupyter/kernels --id scala_2_12_11  --display-name "Scala 2.12.11"
 
 RUN pip install jupyter_contrib_nbextensions
 RUN pip install jupyterlab_execute_time
