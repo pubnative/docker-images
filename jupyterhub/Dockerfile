@@ -28,6 +28,7 @@ RUN ./coursier bootstrap --standalone \
         almond:0.13.14 --scala 2.12.15 \
         -o almond
 RUN ./almond --install --jupyter-path /usr/local/share/jupyter/kernels --id scala_2_12_15 --display-name "Scala 2.12.15"
+COPY kernel-almond.json /usr/local/share/jupyter/kernels/scala_2_12_15/kernel.json
 
 RUN pip install jupyter_contrib_nbextensions
 RUN pip install jupyterlab_execute_time
