@@ -57,7 +57,7 @@ Now, you want to build the Docker image. For the image, we will need to specify 
 If we continue the example building `3.4.1`, run:
 
 ```bash
-./bin/docker-image-tool.sh -r docker.io/pubnative -t 3.4.1 -b java_image_tag=17.0.8.1_1-jdk build
+./bin/docker-image-tool.sh -r docker.io/pubnative -t 3.4.1 -X build
 ```
 
 **Note**: Spark builds 3 images:
