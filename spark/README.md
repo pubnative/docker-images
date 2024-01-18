@@ -22,7 +22,7 @@ version to build.
 ```bash
 git clone https://github.com/apache/spark
 cd spark
-git checkout v3.1.1
+git checkout branch-3.4
 ```
 
 Then build it with:
@@ -30,10 +30,10 @@ Then build it with:
 ```bash
 build/mvn \
     -Pscala-2.12 \
-    -Dscala.version=2.12.10 \
+    -Dscala.version=2.12.15 \
     -Pkubernetes \
     -Phadoop-3.2 \
-    -Dhadoop.version=3.2.0 \
+    -Dhadoop.version=3.2.2 \
     -DskipTests \
     clean package
 ```
