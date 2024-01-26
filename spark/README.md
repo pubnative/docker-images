@@ -22,7 +22,7 @@ version to build.
 ```bash
 git clone https://github.com/apache/spark
 cd spark
-git checkout v3.4.1 
+git checkout v3.1.1
 ```
 
 Then build it with:
@@ -30,10 +30,10 @@ Then build it with:
 ```bash
 build/mvn \
     -Pscala-2.12 \
-    -Dscala.version=2.12.15 \
+    -Dscala.version=2.12.10 \
     -Pkubernetes \
-    -Phadoop-3.3 \
-    -Dhadoop.version=3.3.4 \
+    -Phadoop-3.2 \
+    -Dhadoop.version=3.2.0 \
     -DskipTests \
     clean package
 ```
@@ -53,11 +53,11 @@ To check all available profiles, check the `pom.xml` build file, inside `<profil
 
 #### Build the images
 
-Now, you want to build the Docker image. For the image, we will need to specify the JDK to include.
-If we continue the example building `3.4.1`, run:
+Now, you want to build the Docker image. For the image, we will need to specify the JRE to include.
+If we continue the example building `3.1.1`, run:
 
 ```bash
-./bin/docker-image-tool.sh -r docker.io/pubnative -t 3.4.1 -b java_image_tag=17.0.8.1_1-jre -X build
+./bin/docker-image-tool.sh -r docker.io/pubnative -t 3.1.1 -b java_image_tag=8-jre-slim build
 ```
 
 **Note**: Spark builds 3 images:
@@ -81,8 +81,8 @@ When pushing images, we need to rename them, to specify:
 Example:
 
 ```bash
-docker tag pubnative/spark:3.4.1 pubnative/spark:3.4.1-2.12.15-java17-k8s-hadoop3.3.4
-docker push pubnative/spark:3.4.1-2.12.15-java17-k8s-hadoop3.3.4
+docker tag pubnative/spark:3.1.1 pubnative/spark:3.1.1-2.12.10-java8-k8s-hadoop3.2.0
+docker push pubnative/spark:3.1.1-2.12.10-java8-k8s-hadoop3.2.0
 ```
 
 Example for PySpark:
