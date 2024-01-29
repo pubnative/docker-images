@@ -1,6 +1,5 @@
-FROM jupyter/all-spark-notebook@sha256:ca30ccd3a45ab2746bd602c12a89c9d311c8e81825fe94e17f0b7835d3335849
-# same as linux/amd64 image with following tag
-# FROM jupyter/all-spark-notebook:spark-3.4.1
+# Custom image, see README
+FROM jupyter/custom
 
 USER root
 WORKDIR /usr/local/
