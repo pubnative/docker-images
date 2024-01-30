@@ -30,7 +30,7 @@ Then build it with:
 ```bash
 build/mvn \
     -Pscala-2.12 \
-    -Dscala.version=2.12.15 \
+    -Dscala.version=2.12.17 \
     -Pkubernetes \
     -Phadoop-3.3 \
     -Dhadoop.version=3.3.4 \
@@ -81,8 +81,8 @@ When pushing images, we need to rename them, to specify:
 Example:
 
 ```bash
-docker tag pubnative/spark:3.4.1 pubnative/spark:3.4.1-2.12.15-java11-k8s-hadoop3.3.4
-docker push pubnative/spark:3.4.1-2.12.15-java11-k8s-hadoop3.3.4
+docker tag pubnative/spark:3.4.1 pubnative/spark:3.4.1-2.12.17-java11-k8s-hadoop3.3.4
+docker push pubnative/spark:3.4.1-2.12.17-java11-k8s-hadoop3.3.4
 ```
 
 Example for PySpark:
