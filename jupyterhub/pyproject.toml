@@ -1,12 +1,12 @@
 [tool.poetry]
 name = "jupyterhub"
-version = "1.3.2"
+version = "1.3.4"
 description = ""
 authors = ["Abhinav <abhinav.jain@pubnative.net>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = ">=3.11.7,<3.12"
+python = ">=3.11,<3.12"
 pandas = {extras = ["performance", "computation", "parquet", "feather", "fss", "gcp", "aws", "consortium-standard"], version = "^2.1.1"}
 pyspark = "3.4.1"
 scikit-learn = "^1.3.1"
