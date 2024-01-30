@@ -26,10 +26,7 @@ RUN chmod +x coursier
 RUN ./coursier bootstrap --standalone \
         almond:0.13.14 --scala 2.12.15 \
         -o almond
-# The --command is used to pass the configs needed to use JDK17 with Java8, to be removed when Java is updated
-RUN ./almond --install --jupyter-path /usr/local/share/jupyter/kernels --id scala_2_12_15 --display-name "Scala2.12.15" \
-  --command "java -Dio.netty.tryReflectionSetAccessible=true --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.nio=ALL-UNNAMED --add-opens=java.base/sun.nio.ch=ALL-UNNAMED -jar almond --jupyter-path /usr/local/share/jupyter/kernels --id scala_2_12_15 --display-name 'Scala2.12.15'" \
-  --copy-launcher
+RUN ./almond --install --jupyter-path /usr/local/share/jupyter/kernels --id scala_2_12_15 --display-name "Scala 2.12.15"
 
 RUN pip install jupyter_contrib_nbextensions
 RUN pip install jupyterlab_execute_time

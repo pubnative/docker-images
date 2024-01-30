@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "jupyterhub"
-version = "1.3.4"
+version = "1.3.5"
 description = ""
 authors = ["Abhinav <abhinav.jain@pubnative.net>"]
 readme = "README.md"
