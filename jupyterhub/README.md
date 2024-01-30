@@ -2,7 +2,6 @@
 This image is built on top of this [repo](https://github.com/jupyter/docker-stacks).
 To reproduce follow the steps below:
 - Clone repo 
-- Update base image `pyspark-notebook` with a  `linux/x86_64` compatible version, e.g. `x86_64-ubuntu-22.04`
 - Build the image(`jupyter/custom`) using the command below
 ```
 docker build --rm --force-rm \
