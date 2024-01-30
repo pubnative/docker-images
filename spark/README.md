@@ -46,7 +46,7 @@ When building, take into account the profiles:
   mode), this should usually match.
 - `-Pkubernetes` adds Kubernetes code, if the image is thought to be executed in a Kubernetes
   cluster. You cannot run a Spark on Kubernetes without it.
-- `-Phadoop-3.2`: can be used to use a different version Hadoop of Hadoop
+- `-Phadoop-3.3`: can be used to use a different version Hadoop of Hadoop
 - `-Dhadoop.version` sets the minor version for the Hadoop distribution.
 
 To check all available profiles, check the `pom.xml` build file, inside `<profiles>`.
@@ -57,7 +57,7 @@ Now, you want to build the Docker image. For the image, we will need to specify 
 If we continue the example building `3.4.1`, run:
 
 ```bash
-./bin/docker-image-tool.sh -r docker.io/pubnative -t 3.4.1 -b java_image_tag=11-jre -X build
+./bin/docker-image-tool.sh -r docker.io/pubnative -t 3.4.1 -b java_image_tag=11-jre build
 ```
 
 **Note**: Spark builds 3 images:
