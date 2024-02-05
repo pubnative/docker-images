@@ -10,7 +10,7 @@ pyspark:
 	docker-image-tool.sh \
 		-r ${OWNER} \
 		-t v3.4.1 \
-		-p ${SPARK_HOME}/kubernetes/dockerfiles/spark/bindings/python/Dockerfile \
+		-p ./bindings/python/Dockerfile \
 		build
 
 build: pyspark
