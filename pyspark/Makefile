@@ -1,6 +1,6 @@
 OWNER			:= pubnative
 REPO			:= ${OWNER}/pyspark
-TAG				:= v3.4.1
+TAG				:= v3.4.1-python3.11
 IMAGE			:= ${REPO}:${TAG}
 
 pyspark:
