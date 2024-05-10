@@ -1,4 +1,4 @@
-TRINO_VERSION := 444
+TRINO_VERSION := 447
 AGENT_VERSION := 0.20.0
 COMMIT := $(shell git log -1 --pretty=%h)
 VERSION := v$(TRINO_VERSION)-$(COMMIT)
