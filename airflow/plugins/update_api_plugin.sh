@@ -12,7 +12,7 @@ source airflow/plugins/deploy.sh
 set -euxo pipefail
 
 function download_archive {
-  local url="https://github.com/us-docker.pkg.dev/vgi-pn-277619/data-team/pubnative/airflow-rest-api-plugin/archive/${VERSION}.zip"
+  local url="https://github.com/pubnative/airflow-rest-api-plugin/archive/${VERSION}.zip"
   local archive_name="v${VERSION}.zip"
   local destination
   destination=$(mktemp -d)
