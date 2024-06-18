@@ -39,5 +39,5 @@ If you want to run this image with gcloud authentication you should define the f
 
 ## Development Environment for DAGs
 
-The `poetry.lock` file creates the consistent environment for development of DAGs in [data-tasks](https://github.com/us-docker.pkg.dev/vgi-pn-277619/data-team/pubnative/data-tasks/tree/master/airflow-2)
+The `poetry.lock` file creates the consistent environment for development of DAGs in [data-tasks](https://github.com/pubnative/data-tasks/tree/master/airflow-2)
 repository. Please do not forget to update the lock file when the image is updated.
