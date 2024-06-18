@@ -1,4 +1,3 @@
-# https://hub.docker.com/r/pubnative/zookeeper/
 # Use `make` to build and push
 FROM ubuntu:16.04
 

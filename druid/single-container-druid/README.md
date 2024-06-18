@@ -18,11 +18,11 @@ testing.
 
 ## Build
 
-`make -C ../ build DOCKER_REPO=pubnative/single-container-druid DOCKER_REPO_DOCKERFILE_FOLDER=./single-container-druid DRUID_VERSION=28.0.0`
+`make -C ../ build DOCKER_REPO=us-docker.pkg.dev/vgi-pn-277619/data-team/pubnative/single-container-druid DOCKER_REPO_DOCKERFILE_FOLDER=./single-container-druid DRUID_VERSION=28.0.0`
 
 ## Deploy
 
-`make -C ../ publish DOCKER_REPO=pubnative/single-container-druid DOCKER_REPO_DOCKERFILE_FOLDER=./single-container-druid DRUID_VERSION=28.0.0`
+`make -C ../ publish DOCKER_REPO=us-docker.pkg.dev/vgi-pn-277619/data-team/pubnative/single-container-druid DOCKER_REPO_DOCKERFILE_FOLDER=./single-container-druid DRUID_VERSION=28.0.0`
 
 ## Docker image locally
 

@@ -1,6 +1,6 @@
 # Turnilo
 
-Image containing [Turnilo][1] (a Druid frontebd). Images are published to `pubnative/turnilo`
+Image containing [Turnilo][1] (a Druid frontebd). Images are published to `us-docker.pkg.dev/vgi-pn-277619/data-team/pubnative/turnilo`
 
 ## Build
 

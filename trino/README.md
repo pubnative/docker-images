@@ -3,8 +3,8 @@
 Image used for our Trino deployment.
 It builds one image and tags it as:
 
-- `pubnative/trino:latest`,
-- `pubnative/trino:${TRINO_VERSION}-${COMMIT}`
+- `us-docker.pkg.dev/vgi-pn-277619/data-team/pubnative/trino:latest`,
+- `us-docker.pkg.dev/vgi-pn-277619/data-team/pubnative/trino:${TRINO_VERSION}-${COMMIT}`
 
 ## Build
 

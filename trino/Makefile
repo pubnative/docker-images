@@ -2,7 +2,7 @@ TRINO_VERSION := 448
 AGENT_VERSION := 0.20.0
 COMMIT := $(shell git log -1 --pretty=%h)
 VERSION := v$(TRINO_VERSION)-$(COMMIT)
-DOCKER_REPO := pubnative/trino
+DOCKER_REPO := us-docker.pkg.dev/vgi-pn-277619/data-team/pubnative/trino
 DOCKER_REPO_DOCKERFILE_FOLDER := .
 DOCKER_REPO_VERSION := $(DOCKER_REPO):$(VERSION)
 DOCKER_REPO_LATEST := $(DOCKER_REPO):latest
