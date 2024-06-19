@@ -3,8 +3,8 @@
 Image used for our Airflow-2 deployment.
 It builds one image and tags it as:
 
-- `pubnative/airflow-2:latest`,
-- `pubnative/airflow-2:${AIRFLOW_VERSION}`
+- `us-docker.pkg.dev/vgi-pn-277619/data-team/pubnative/airflow-2:latest`,
+- `us-docker.pkg.dev/vgi-pn-277619/data-team/pubnative/airflow-2:${AIRFLOW_VERSION}`
 
 ## Build
 

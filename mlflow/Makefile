@@ -1,7 +1,7 @@
 MLFLOW_VERSION?=2.0.1
 COMMIT=$(shell git log -1 --pretty=%h)
 VERSION=v$(MLFLOW_VERSION)-$(COMMIT)
-DOCKER_REPO=pubnative/mlflow
+DOCKER_REPO=us-docker.pkg.dev/vgi-pn-277619/data-team/pubnative/mlflow
 DOCKER_REPO_DOCKERFILE_FOLDER?=.
 DOCKER_REPO_VERSION=$(DOCKER_REPO):$(VERSION)
 DOCKER_REPO_LATEST=$(DOCKER_REPO):latest

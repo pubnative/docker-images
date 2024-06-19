@@ -3,8 +3,8 @@
 Image used for our MLflow deployment.
 It builds one image and tags it as:
 
-- `pubnative/mlflow:latest`,
-- `pubnative/mlflow:${MLFLOW_VERSION}-${COMMIT}`
+- `us-docker.pkg.dev/vgi-pn-277619/data-team/pubnative/mlflow:latest`,
+- `us-docker.pkg.dev/vgi-pn-277619/data-team/pubnative/mlflow:${MLFLOW_VERSION}-${COMMIT}`
 
 ## Build
 

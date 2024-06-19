@@ -9,7 +9,7 @@ make pyspark
 ```sh
 make build
 ```
-## push image to pubnative/pyspark
+## push image to us-docker.pkg.dev/vgi-pn-277619/data-team/pubnative/pyspark
 ```sh
 make push
 ```

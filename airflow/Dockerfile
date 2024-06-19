@@ -1,4 +1,4 @@
-# Image: pubnative/airflow-2
+# Image: us-docker.pkg.dev/vgi-pn-277619/data-team/pubnative/airflow-2
 
 ARG AIRFLOW_VERSION
 ARG PYTHON_VERSION

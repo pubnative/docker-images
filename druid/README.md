@@ -3,8 +3,8 @@
 Image used for our Druid deployment.
 It builds one image and tags it as:
 
-- `pubnative/druid:latest`,
-- `pubnative/druid:${DRUID_VERSION}-${COMMIT}`
+- `us-docker.pkg.dev/vgi-pn-277619/data-team/pubnative/druid:latest`,
+- `us-docker.pkg.dev/vgi-pn-277619/data-team/pubnative/druid:${DRUID_VERSION}-${COMMIT}`
 
 ## Build
 

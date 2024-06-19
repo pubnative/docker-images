@@ -1,4 +1,4 @@
-OWNER := pubnative
+OWNER := us-docker.pkg.dev/vgi-pn-277619/data-team/pubnative
 NAME := ${OWNER}/jupyterhub
 BUILD_VERSION := $(shell poetry version -s)
 HUB_VERSION := spark3.4.1-py3.11-hadoop3-openjdk11-scala2.12-build${BUILD_VERSION}
