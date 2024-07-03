@@ -1,42 +1,46 @@
-# Image pubnative/sbt-ci:0.14
-FROM centos:7
+# Image pubnative/sbt-ci:0.15
 
-ENV DOCKER_VER="17.03.2.ce-1"
-ENV SBT_VER="1.3.3"
-ENV DOCKERIZE_VERSION="v0.5.0"
+FROM ubuntu:24.04
 
-RUN curl -L -o docker-selinux-${DOCKER_VER}.rpm https://download.docker.com/linux/centos/7/x86_64/stable/Packages/docker-ce-selinux-${DOCKER_VER}.el7.centos.noarch.rpm \
-  && yum install -y docker-selinux-${DOCKER_VER}.rpm \
-  && rm docker-selinux-${DOCKER_VER}.rpm \
-  && curl -L -o docker-${DOCKER_VER}.rpm https://download.docker.com/linux/centos/7/x86_64/stable/Packages/docker-ce-${DOCKER_VER}.el7.centos.x86_64.rpm \
-  && yum install -y docker-${DOCKER_VER}.rpm \
-  && rm docker-${DOCKER_VER}.rpm
+ENV DEBIAN_FRONTEND=noninteractive
 
-RUN curl https://bintray.com/sbt/rpm/rpm | tee /etc/yum.repos.d/bintray-sbt-rpm.repo \
-  && yum install -y git sbt-${SBT_VER} java-1.8.0-openjdk java-1.8.0-openjdk-devel \
-  && sbt about
-# yum downloads a thin launcher, runnning sbt actually triggers the download of sbt files
+ARG SBT_VERSION=1.4.9
+ARG DOCKERIZE_VERSION=v0.6.1
 
-RUN curl -L -o /tmp/mysql57-community-release-el7-11.noarch.rpm https://dev.mysql.com/get/mysql57-community-release-el7-11.noarch.rpm \
-  && yum localinstall -y /tmp/mysql57-community-release-el7-11.noarch.rpm \
-  && yum install -y mysql-community-client \
-  && rm /tmp/mysql57-community-release-el7-11.noarch.rpm
+RUN apt-get update && \
+    apt-get install -y \
+    curl \
+    gnupg \
+    wget \
+    openjdk-8-jdk \
+    openssl \
+    apt-transport-https \
+    ca-certificates \
+    software-properties-common \
+    mysql-client \
+    && rm -rf /var/lib/apt/lists/*
 
-RUN curl https://s3.amazonaws.com/aws-cli/awscli-bundle.zip -o awscli-bundle.zip \
-  && yum install -y unzip \
-  && unzip awscli-bundle.zip \
-  && ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws \
-  && rm -rf ./awscli-bundle.zip ./awscli-bundle
+# Docker's key
+RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
+    add-apt-repository \
+    "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
 
+# Install Docker
+RUN apt-get update && \
+    apt-get install -y docker-ce docker-ce-cli containerd.io && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install SBT
+RUN echo "deb https://repo.scala-sbt.org/scalasbt/debian all main" > /etc/apt/sources.list.d/sbt.list && \
+    echo "deb https://repo.scala-sbt.org/scalasbt/debian /" >> /etc/apt/sources.list.d/sbt.list && \
+    curl -sL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x99E82A75642AC823" | apt-key add && \
+    apt-get update && \
+    apt-get install -y sbt=$SBT_VERSION && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install Dockerize
 RUN curl -L -o dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
     https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
-  && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
-  && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+    && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
+    && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
 
-RUN curl -L -o /tmp/google-chrome-stable.rpm https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm \
-  && yum install -y /tmp/google-chrome-stable.rpm
-
-RUN yum install -y yum-utils \
-  && rpm --import https://repo.yandex.ru/clickhouse/CLICKHOUSE-KEY.GPG \
-  && yum-config-manager --add-repo https://repo.yandex.ru/clickhouse/rpm/stable/x86_64 \
-  && yum install -y clickhouse-client
