@@ -4,7 +4,7 @@ FROM ubuntu:24.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-ARG SBT_VERSION=1.5.5
+ARG SBT_VERSION=1.4.9
 ARG DOCKERIZE_VERSION=v0.6.1
 
 RUN apt-get update && \
