@@ -12,7 +12,7 @@ RUN apt-get update && \
     curl \
     gnupg \
     wget \
-    openjdk-8-jdk \
+    openjdk-11-jdk \
     openssl \
     apt-transport-https \
     ca-certificates \
