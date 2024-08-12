@@ -1,5 +1,5 @@
-NAME := pubnative/turnilo
-VERSION := 1.32.0
+NAME := us-docker.pkg.dev/vgi-pn-277619/data-team/pubnative/turnilo
+VERSION := 1.40.2
 VERSIONED := ${NAME}:${VERSION}
 TMPDIR := $(shell mktemp -d)
  

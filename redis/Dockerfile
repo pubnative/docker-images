@@ -1,4 +1,4 @@
-FROM redis:5.0.7
+FROM redis:7.0.6
 
 MAINTAINER PubNative Team <team@pubnative.net>
 

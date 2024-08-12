@@ -1,42 +1,34 @@
-FROM centos:latest
+FROM openjdk:8-jre
 
-MAINTAINER denis@pubnative.net
+ARG HIVE_VERSION="3.1.3"
+ARG HADOOP_VERSION="3.3.3"
+ARG MYSQL_VERSION="8.0.29"
 
-ENV HADOOP_VERSION 2.7.1
-ENV HIVE_VERSION 2.1.1
-ENV MYSQL_JDBC=http://central.maven.org/maven2/mysql/mysql-connector-java/5.1.35/mysql-connector-java-5.1.35.jar
-
-RUN yum update -y && \
-  yum -y install \
-    gettext\
-    java-1.8.0-openjdk \
-    java-1.8.0-openjdk-devel \
-    wget \
-    which
-
-RUN cd /opt && \
-  wget http://apache.claz.org/hadoop/common/hadoop-$HADOOP_VERSION/hadoop-$HADOOP_VERSION.tar.gz && \
-  tar xzf hadoop-$HADOOP_VERSION.tar.gz && \
-  mv hadoop-$HADOOP_VERSION hadoop
-
-RUN cd /opt && \
-  wget http://artfiles.org/apache.org/hive/hive-$HIVE_VERSION/apache-hive-$HIVE_VERSION-bin.tar.gz && \
-  tar xzf apache-hive-$HIVE_VERSION-bin.tar.gz && \
-  mv apache-hive-$HIVE_VERSION-bin hive
-
-RUN wget $MYSQL_JDBC -P /opt/hive/lib/
-
-COPY conf/mapred-site.xml /opt/hadoop/etc/hadoop/mapred-site.xml
-COPY conf/hive-site.xml.tpl /opt/hadoop/etc/hadoop/hive-site.xml.tpl
-COPY entrypoint.sh /opt/entrypoint.sh
-COPY conf/hive-log4j2.properties /opt/hive/conf/hive-log4j2.properties
-
-ENV HADOOP_USER_CLASSPATH_FIRST true
-ENV HADOOP_HOME /opt/hadoop
+ENV HADOOP_HOME=/opt/hadoop
+ENV HIVE_HOME=/opt/hive
 ENV HADOOP_CLASSPATH $HADOOP_HOME/share/hadoop/tools/lib/*
-ENV HADOOP_LIBEXEC_DIR ${HADOOP_HOME}/libexec
-ENV PATH=$PATH:/opt/hadoop/bin/:/opt/hive/bin/
 
-RUN rm /opt/hadoop/share/hadoop/common/lib/slf4j-log4j12-*.jar
+WORKDIR /opt
 
-ENTRYPOINT ["/opt/entrypoint.sh"]
+RUN curl https://archive.apache.org/dist/hadoop/common/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz \
+   | tar xvz -C . \
+   && mkdir -p ${HADOOP_HOME} \
+   && mv hadoop-${HADOOP_VERSION}/* ${HADOOP_HOME} \
+   && rm -r hadoop-${HADOOP_VERSION} \
+   && rm -r ${HADOOP_HOME}/share/doc
+
+RUN curl -L https://archive.apache.org/dist/hive/hive-${HIVE_VERSION}/apache-hive-${HIVE_VERSION}-bin.tar.gz \
+   | tar xvz -C . \
+   && mkdir -p ${HIVE_HOME} \
+   && mv apache-hive-${HIVE_VERSION}-bin/* ${HIVE_HOME} \
+   && rm -r apache-hive-${HIVE_VERSION}-bin
+
+RUN curl -L https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-${MYSQL_VERSION}.tar.gz \
+  | tar xvz -C . \
+  && cp mysql-connector-java-${MYSQL_VERSION}/mysql-connector-java-${MYSQL_VERSION}.jar ${HADOOP_HOME}/share/hadoop/common/lib/ \
+  && cp mysql-connector-java-${MYSQL_VERSION}/mysql-connector-java-${MYSQL_VERSION}.jar ${HIVE_HOME}/lib/ \
+  && rm -r mysql-connector-java-${MYSQL_VERSION}
+
+RUN wget https://storage.googleapis.com/hadoop-lib/gcs/gcs-connector-hadoop3-2.2.7.jar \
+  && cp gcs-connector-hadoop3-2.2.7.jar ${HADOOP_HOME}/share/hadoop/tools/lib/ \
+  && rm -r gcs-connector-hadoop3-2.2.7.jar
