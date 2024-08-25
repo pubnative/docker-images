@@ -1,6 +1,5 @@
-# Image pubnative/android
-
-FROM ubuntu:22.04
+# Start from the official OpenJDK 11 image
+FROM openjdk:11-jdk
 
 LABEL maintainer="Eros Garcia Ponte <eros902002@googlemail.com>"
 
@@ -22,15 +21,8 @@ RUN apt-get update && apt-get install -y \
     ruby-dev \
     && gem install bundler -v 2.3.10
 
-# Add the Oracle JDK 17 PPA and install Oracle JDK 17
-RUN add-apt-repository ppa:linuxuprising/java \
-    && apt-get update \
-    && echo oracle-java17-installer shared/accepted-oracle-license-v1-3 select true | debconf-set-selections \
-    && apt-get install -y oracle-java17-installer \
-    && apt-get install -y oracle-java17-set-default
-
-# Java environment variables
-ENV JAVA_HOME /usr/lib/jvm/java-17-oracle
+# Set JAVA_HOME environment variable
+ENV JAVA_HOME /usr/local/openjdk-11
 ENV PATH $PATH:$JAVA_HOME/bin
 
 # Install Android SDK
