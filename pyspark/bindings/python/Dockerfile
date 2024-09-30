@@ -24,11 +24,12 @@ WORKDIR /
 USER 0
 
 RUN mkdir ${SPARK_HOME}/python
+RUN apt update && apt upgrade -y
+RUN apt install software-properties-common -y
+RUN add-apt-repository "ppa:deadsnakes/ppa" -y
 RUN apt-get update && apt install -y python3.11 python3-pip
 RUN ln -sf /usr/bin/python3.11 /usr/bin/python3
-RUN pip3 install --upgrade pip setuptools && \
-    # Removed the .cache to save space
-    rm -rf /root/.cache && rm -rf /var/cache/apt/* && rm -rf /var/lib/apt/lists/*
+RUN rm -rf /root/.cache && rm -rf /var/cache/apt/* && rm -rf /var/lib/apt/lists/*  # Removed the .cache to save space
 COPY python/pyspark ${SPARK_HOME}/python/pyspark
 COPY python/lib ${SPARK_HOME}/python/lib
 
