@@ -1,4 +1,4 @@
-FROM pubnative/spark-py:v3.4.1
+FROM us-docker.pkg.dev/vgi-pn-277619/data-team/pubnative/spark-py:v3.4.1-2
 
 USER 0
 
