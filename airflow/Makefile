@@ -1,5 +1,5 @@
 AIRFLOW_VERSION := 2.5.1
-PYTHON_VERSION := 3.7
+PYTHON_VERSION := 3.7.16
 COMMIT := $(shell git log -1 --pretty=%h)
 VERSION := v${AIRFLOW_VERSION}-${COMMIT}
 DOCKER_REPO := us-docker.pkg.dev/vgi-pn-277619/data-team/pubnative/airflow-2
