@@ -11,11 +11,10 @@ ENV PYTHONPATH "${PYTHONPATH}:${AIRFLOW_HOME}"
 
 WORKDIR ${AIRFLOW_HOME}
 
-USER root
-
 COPY requirements.txt /tmp/requirements.txt
 RUN pip install --no-cache-dir -r /tmp/requirements.txt
 
+USER root
 
 # Install gcloud
 ENV CLOUDSDK_INSTALL_DIR /usr/local/gcloud/
