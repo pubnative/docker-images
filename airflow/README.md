@@ -21,7 +21,7 @@ It builds one image and tags it as:
 ## Docker image locally
 
 ``` 
-docker build --build-arg AIRFLOW_VERSION=2.5.1 --build-arg PYTHON_VERSION=3.7 -t airflow_test .
+docker build --build-arg AIRFLOW_VERSION=2.5.1 -t airflow_test .
 docker run airflow_test -h
 ```
 
@@ -39,5 +39,5 @@ If you want to run this image with gcloud authentication you should define the f
 
 ## Development Environment for DAGs
 
-The `poetry.lock` file creates the consistent environment for development of DAGs in [data-tasks](https://github.com/pubnative/data-tasks/tree/master/airflow-2)
+The `requirements.lock` file creates the consistent environment for development of DAGs in [data-tasks](https://github.com/pubnative/data-tasks/tree/master/airflow-2)
 repository. Please do not forget to update the lock file when the image is updated.
