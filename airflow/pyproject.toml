@@ -1,6 +1,6 @@
 [project]
 name = "airflow"
-version = "0.1.0"
+version = "0.1.1"
 description = ""
 authors = []
 
@@ -30,9 +30,10 @@ dependencies = [
     "SQLAlchemy == 1.4.46",
     "gcsfs>=2024.10.0",
     "openpyxl>=3.1.5",
+    "pendulum==2.1.2",
 ]
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = "==3.10.14"
 
 [build-system]
 requires = ["hatchling"]
