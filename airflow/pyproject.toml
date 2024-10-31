@@ -33,6 +33,7 @@ dependencies = [
     # Fixed versions to solve progblems qwith Airflow 2.5.1 build
     "pendulum==2.1.2",
     "werkzeug==2.2.3",
+    "connexion==2.14.2",
 ]
 readme = "README.md"
 requires-python = "==3.10.14"
