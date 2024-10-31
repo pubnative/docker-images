@@ -785,7 +785,8 @@ watchtower==2.0.1
     # via apache-airflow-providers-amazon
 websocket-client==1.8.0
     # via kubernetes
-werkzeug==3.0.6
+werkzeug==2.2.3
+    # via airflow
     # via apache-airflow
     # via connexion
     # via flask

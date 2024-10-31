@@ -30,7 +30,9 @@ dependencies = [
     "SQLAlchemy == 1.4.46",
     "gcsfs>=2024.10.0",
     "openpyxl>=3.1.5",
+    # Fixed versions to solve progblems qwith Airflow 2.5.1 build
     "pendulum==2.1.2",
+    "werkzeug==2.2.3",
 ]
 readme = "README.md"
 requires-python = "==3.10.14"
