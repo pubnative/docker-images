@@ -34,6 +34,7 @@ dependencies = [
     "pendulum==2.1.2",
     "werkzeug==2.2.3",
     "connexion==2.14.2",
+    "pydantic>=2.9.2",
 ]
 readme = "README.md"
 requires-python = "==3.10.14"
