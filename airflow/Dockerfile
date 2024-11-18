@@ -15,6 +15,9 @@ RUN pip install --no-cache-dir -r /tmp/requirements.txt
 
 USER root
 
+# Install OpenJDK (Java)
+RUN apt-get update && apt-get install -y openjdk-11-jdk
+
 COPY plugins plugins/
 
 USER airflow

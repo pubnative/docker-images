@@ -355,6 +355,8 @@ googleapis-common-protos==1.65.0
     # via grpcio-status
 graphviz==0.20.3
     # via apache-airflow
+greenlet==3.1.1
+    # via sqlalchemy
 grpc-google-iam-v1==0.12.7
     # via google-cloud-bigtable
     # via google-cloud-container
