@@ -8,13 +8,13 @@ dependencies = [
     "boto3 ~= 1.15",
     "pyathena ~= 1.9.0",
     "pyyaml >= 5.5",
-    "google-api-python-client ~= 1.12.8",
-    "google-cloud-storage ~= 1.36.2",
+    "google-api-python-client ~= 2.156.0",
+    "google-cloud-storage ~= 2.19.0",
     "pandas-gbq == 0.13.2",
     "influxdb == 5.2.1",
     "apache-airflow == 2.5.1",
     "apache-airflow-providers-cncf-kubernetes == 4.3.0",
-    "apache-airflow-providers-google == 8.3.0",
+    "apache-airflow-providers-google == 10.7.0",
     "apache-airflow-providers-influxdb == 2.0.0",
     "apache-airflow-providers-apache-spark == 3.0.0",
     "apache-airflow-providers-amazon == 5.0.0",
@@ -35,7 +35,6 @@ dependencies = [
     "werkzeug==2.2.3",
     "connexion==2.14.2",
     "pydantic>=2.9.2",
-    "google-cloud-dataproc==5.11.0",
 ]
 readme = "README.md"
 requires-python = "==3.10.14"
