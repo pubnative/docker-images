@@ -15,6 +15,11 @@ RUN pip install --no-cache-dir -r /tmp/requirements.txt
 
 USER root
 
+# Install gcloud
+ENV CLOUDSDK_INSTALL_DIR /usr/local/gcloud/
+RUN curl -sSL https://sdk.cloud.google.com | bash
+ENV PATH $PATH:/usr/local/gcloud/google-cloud-sdk/bin
+
 # Install OpenJDK (Java)
 RUN apt-get update && apt-get install -y openjdk-11-jdk
 
