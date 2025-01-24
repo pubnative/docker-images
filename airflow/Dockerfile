@@ -21,7 +21,7 @@ ENV PATH $PATH:/usr/local/gcloud/google-cloud-sdk/bin
 RUN gcloud components install kubectl
 
 # Install OpenJDK (Java)
-RUN apt-get update && apt-get install -y openjdk-11-jdk:q
+RUN apt-get update && apt-get install -y openjdk-11-jdk
 
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
