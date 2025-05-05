@@ -5,10 +5,10 @@ FROM apache/druid:$DRUID_VERSION
 
 WORKDIR /opt/druid/extensions/mysql-metadata-storage
 
-ARG MYSQL_URL=https://repo1.maven.org/maven2/mysql/mysql-connector-java/5.1.49/mysql-connector-java-8.0.33.jar
-ARG MYSQL_JAR=mysql-connector-java-8.0.33.jar
-# https://repo1.maven.org/maven2/mysql/mysql-connector-java/5.1.49/mysql-connector-java-5.1.49.jar.sha1
-ARG MYSQL_SHA=cf76d2e4c9c3782a85c15c87bec5772b34ffd0e5
+ARG MYSQL_URL=https://repo1.maven.org/maven2/mysql/mysql-connector-java/8.0.30/mysql-connector-java-8.0.30.jar
+ARG MYSQL_JAR=mysql-connector-java-8.0.30.jar
+# https://repo1.maven.org/maven2/mysql/mysql-connector-java/8.0.30/mysql-connector-java-8.0.30.jar.sha1
+ARG MYSQL_SHA=b26dd6e4e917d3d4726c34d09d2fd67df7c1dd37
 
 ADD --chown=druid:druid ${MYSQL_URL} /opt/druid/extensions/mysql-metadata-storage/
 
