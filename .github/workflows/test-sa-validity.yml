@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Write service account key to file
-        run: printf '%s' "${{ secrets.DATA_TEAM_GAR_SA_KEY }}" > $HOME/data_team_gar_sa.json
+        run: echo "${{ secrets.DATA_TEAM_GAR_SA_KEY }}" | base64 -d > $HOME/data_team_gar_sa.json
 
       - name: Print key to console for troubleshooting
         run: cat $HOME/data_team_gar_sa.json
