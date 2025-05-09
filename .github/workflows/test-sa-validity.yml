@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Write service account key to file
-        run: echo "${{ secrets.DATA_TEAM_GAR_SA_KEY }}" > $HOME/data_team_gar_sa.json
+        run: printf '%s' "${{ secrets.DATA_TEAM_GAR_SA_KEY }}" > $HOME/data_team_gar_sa.json
 
       - name: Authenticate with GCP
         run: gcloud auth activate-service-account --key-file=$HOME/data_team_gar_sa.json
