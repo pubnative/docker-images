@@ -11,11 +11,11 @@ jobs:
       - name: Print key to console for troubleshooting
         run: cat $HOME/data_team_gar_sa.json
 
-      # - name: Authenticate with GCP
-      #   run: gcloud auth activate-service-account --key-file=$HOME/data_team_gar_sa.json
+      - name: Authenticate with GCP
+        run: gcloud auth activate-service-account --key-file=$HOME/data_team_gar_sa.json
 
-      # - name: Set vgi-pn-277619 as default project
-      #   run: gcloud config set project vgi-pn-277619
+      - name: Set vgi-pn-277619 as default project
+        run: gcloud config set project vgi-pn-277619
 
-      # - name: List us-east4 artifact repositories
-      #   run: gcloud artifacts repositories list --location=us-east4
+      - name: List us-east4 artifact repositories
+        run: gcloud artifacts repositories list --location=us-east4
