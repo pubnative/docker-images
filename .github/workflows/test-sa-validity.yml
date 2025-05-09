@@ -8,9 +8,6 @@ jobs:
       - name: Write service account key to file
         run: echo "${{ secrets.DATA_TEAM_GAR_SA_KEY }}" | base64 -d > $HOME/data_team_gar_sa.json
 
-      - name: Print key to console for troubleshooting
-        run: cat $HOME/data_team_gar_sa.json
-
       - name: Authenticate with GCP
         run: gcloud auth activate-service-account --key-file=$HOME/data_team_gar_sa.json
 
