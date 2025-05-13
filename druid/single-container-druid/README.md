@@ -18,15 +18,15 @@ testing.
 
 ## Build
 
-`make -C ../ build DOCKER_REPO=us-docker.pkg.dev/vgi-pn-277619/data-team/pubnative/single-container-druid DOCKER_REPO_DOCKERFILE_FOLDER=./single-container-druid DRUID_VERSION=30.0.0`
+`make -C ../ build DOCKER_REPO=us-docker.pkg.dev/vgi-pn-277619/data-team/pubnative/single-container-druid DOCKER_REPO_DOCKERFILE_FOLDER=./single-container-druid DRUID_VERSION=31.0.0`
 
 ## Deploy
 
-`make -C ../ publish DOCKER_REPO=us-docker.pkg.dev/vgi-pn-277619/data-team/pubnative/single-container-druid DOCKER_REPO_DOCKERFILE_FOLDER=./single-container-druid DRUID_VERSION=30.0.0`
+`make -C ../ publish DOCKER_REPO=us-docker.pkg.dev/vgi-pn-277619/data-team/pubnative/single-container-druid DOCKER_REPO_DOCKERFILE_FOLDER=./single-container-druid DRUID_VERSION=31.0.0`
 
 ## Docker image locally
 
 ```
-docker build --build-arg DRUID_VERSION=30.0.0 -t druid_test .
+docker build --build-arg DRUID_VERSION=31.0.0 -t druid_test .
 docker run -it --entrypoint /bin/bash druid_test 
 ```
