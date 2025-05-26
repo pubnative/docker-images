@@ -1,4 +1,4 @@
-DRUID_VERSION := 32.0.1
+DRUID_VERSION := 33.0.0
 COMMIT := $(shell git log -1 --pretty=%h)
 VERSION := v${DRUID_VERSION}-${COMMIT}
 DOCKER_REPO := us-docker.pkg.dev/vgi-pn-277619/data-team/pubnative/druid
