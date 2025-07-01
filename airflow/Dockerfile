@@ -2,11 +2,9 @@
 
 ARG AIRFLOW_VERSION
 
-FROM apache/airflow:$AIRFLOW_VERSION-python3.10
+FROM apache/airflow:${AIRFLOW_VERSION}-python3.10
 
-ENV PYTHONPATH="/usr/local/lib/python3.10"
 ENV AIRFLOW_HOME=/opt/airflow
-ENV PYTHONPATH "${PYTHONPATH}:${AIRFLOW_HOME}"
 
 WORKDIR ${AIRFLOW_HOME}
 
@@ -15,11 +13,20 @@ RUN pip install --no-cache-dir -r /tmp/requirements.txt
 
 USER root
 
+# Install Google Cloud SDK and kubectl
+ENV CLOUDSDK_INSTALL_DIR /usr/local/gcloud/
+RUN curl -sSL https://sdk.cloud.google.com | bash
+ENV PATH $PATH:/usr/local/gcloud/google-cloud-sdk/bin
+
+RUN gcloud components install kubectl
+
 # Install OpenJDK (Java)
 RUN apt-get update && apt-get install -y openjdk-11-jdk
 
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+
 COPY plugins plugins/
 
+RUN gcloud --version && kubectl version --client && java -version
+
 USER airflow
-
-
