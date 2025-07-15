@@ -1,4 +1,4 @@
-ARG MLFLOW_VERSION="2.0.1"
+ARG MLFLOW_VERSION="3.1.1"
 FROM ghcr.io/mlflow/mlflow:v${MLFLOW_VERSION}
 
 USER root
