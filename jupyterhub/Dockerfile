@@ -1,5 +1,8 @@
 # Custom image, see README
-FROM jupyter/custom
+# usually we build the fresh image of jupyter custom from docker stacks repo but since we are just updating a package
+# here we will build it on top of our existing jupyter image
+# FROM jupyter/custom
+FROM us-docker.pkg.dev/vgi-pn-277619/data-team/pubnative/jupyterhub:spark3.4.1-py3.11-hadoop3-openjdk11-scala2.12-build2.0.0
 
 USER root
 WORKDIR /usr/local/

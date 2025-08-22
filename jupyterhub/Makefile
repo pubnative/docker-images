@@ -23,4 +23,4 @@ build: requirements
 
 publish: build
 	docker push ${JUPYTERHUB}
-	@echo pushed ${JUPYTERHUB} to DockerHub
+	@echo pushed ${JUPYTERHUB} to Google Artifact Registry

@@ -1,5 +1,6 @@
-FROM us-docker.pkg.dev/vgi-pn-277619/data-team/pubnative/pyspark:v3.4.1-python3.11-2
+#FROM us-docker.pkg.dev/vgi-pn-277619/data-team/pubnative/pyspark:v3.4.1-python3.11-2
 # use the base image here
+FROM us-docker.pkg.dev/vgi-pn-277619/data-team/pubnative/pyspark-executor:v3.4.1-python3.11-2
 
 USER 0
 
