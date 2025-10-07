@@ -4,10 +4,10 @@ To reproduce follow the steps below:
 - Clone repo 
 - Build the image(`jupyter/custom`) using the command below
 ```
-docker build --rm --force-rm \
+docker build --rm --force-rm --no-cache \
 -t jupyter/custom ./images/pyspark-notebook \
---build-arg openjdk_version=11 \
---build-arg spark_version=3.4.1 \
+--build-arg openjdk_version=17 \
+--build-arg spark_version=4.0.1 \
 --build-arg hadoop_version=3 \
 --build-arg spark_download_url="https://archive.apache.org/dist/spark/" \
 --platform linux/amd64

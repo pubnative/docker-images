@@ -1,7 +1,7 @@
 OWNER := us-docker.pkg.dev/vgi-pn-277619/data-team/pubnative
 NAME := ${OWNER}/jupyterhub
 BUILD_VERSION := $(shell poetry version -s)
-HUB_VERSION := spark3.4.1-py3.11-hadoop3-openjdk11-scala2.12-build${BUILD_VERSION}
+HUB_VERSION := spark4.0.1-py3.12-hadoop3-openjdk17-scala2.13-build${BUILD_VERSION}
 JUPYTERHUB	:= ${NAME}:${HUB_VERSION}
 
 rule = major minor patch
