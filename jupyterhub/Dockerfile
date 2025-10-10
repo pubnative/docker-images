@@ -22,7 +22,7 @@ RUN tar -xf google-cloud-cli-541.0.0-linux-x86_64.tar.gz
 RUN ./google-cloud-sdk/install.sh --bash-completion true --path-update true --quiet
 
 # install almond kernel
-RUN curl -Lo coursier https://git.io/coursier-cli && chmod +x coursier
+RUN curl -fLo coursier https://github.com/coursier/launchers/raw/master/coursier && chmod +x coursier
 RUN chmod +x coursier
 RUN ./coursier bootstrap --standalone \
         almond:0.14.1 --scala 2.13.16 \

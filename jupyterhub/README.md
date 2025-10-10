@@ -4,7 +4,7 @@ To reproduce follow the steps below:
 - Clone repo 
 - Build the image(`jupyter/custom`) using the command below
 ```
-docker build --rm --force-rm --no-cache \
+docker build --rm --force-rm \
 -t jupyter/custom ./images/pyspark-notebook \
 --build-arg openjdk_version=17 \
 --build-arg spark_version=4.0.1 \

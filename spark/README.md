@@ -22,31 +22,31 @@ version to build.
 ```bash
 git clone https://github.com/apache/spark
 cd spark
-git checkout v3.4.1 
+git checkout v4.0.1 
 ```
 
 Then build it with:
 
 ```bash
 build/mvn \
-    -Pscala-2.12 \
-    -Dscala.version=2.12.17 \
+    -Pscala-2.13 \
+    -Dscala.version=2.13.16 \
     -Pkubernetes \
-    -Phadoop-3.3 \
-    -Dhadoop.version=3.3.4 \
+    -Phadoop-3.4 \
+    -Dhadoop.version=3.4.1 \
     -DskipTests \
     clean package
 ```
 
 When building, take into account the profiles:
 
-- `-Pscala-2.12` will prepare the build for the 2.12 major version of Scala. Similar parameters exist for other
+- `-Pscala-2.13` will prepare the build for the 2.13 major version of Scala. Similar parameters exist for other
   versions.
 - `-Dscala.version` will set the Scala minor version. For Jupuyter (or any Spark on client
   mode), this should usually match.
 - `-Pkubernetes` adds Kubernetes code, if the image is thought to be executed in a Kubernetes
   cluster. You cannot run a Spark on Kubernetes without it.
-- `-Phadoop-3.3`: can be used to use a different version Hadoop of Hadoop
+- `-Phadoop-3.4`: can be used to use a different version Hadoop of Hadoop
 - `-Dhadoop.version` sets the minor version for the Hadoop distribution.
 
 To check all available profiles, check the `pom.xml` build file, inside `<profiles>`.
@@ -54,10 +54,10 @@ To check all available profiles, check the `pom.xml` build file, inside `<profil
 #### Build the images
 
 Now, you want to build the Docker image. For the image, we will need to specify the JDK to include.
-If we continue the example building `3.4.1`, run:
+If we continue the example building `4.0.1`, run:
 
 ```bash
-./bin/docker-image-tool.sh -r docker.io/pubnative -t 3.4.1 -b java_image_tag=11-jre build
+./bin/docker-image-tool.sh -r docker.io/pubnative -t 4.0.1 -b java_image_tag=17-jre build
 ```
 
 **Note**: Spark builds 3 images:
@@ -81,8 +81,8 @@ When pushing images, we need to rename them, to specify:
 Example:
 
 ```bash
-docker tag pubnative/spark:3.4.1 pubnative/spark:3.4.1-2.12.17-java11-k8s-hadoop3.3.4
-docker push pubnative/spark:3.4.1-2.12.17-java11-k8s-hadoop3.3.4
+docker tag pubnative/spark:4.0.1 pubnative/spark:4.0.1-2.13.16-java17-k8s-hadoop3.4.1
+docker push pubnative/spark:4.0.1-2.13.16-java17-k8s-hadoop3.4.1
 ```
 
 Example for PySpark:
