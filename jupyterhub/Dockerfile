@@ -6,6 +6,7 @@ WORKDIR /usr/local/
 RUN apt-get update --yes && apt-get --yes install wget
 
 ENV GOOGLE_APPLICATION_CREDENTIALS /home/jovyan/shared/credentials/ds-credentials.json
+ENV JDK_JAVA_OPTIONS="--add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.util=ALL-UNNAMED"
 
 # https://spark.apache.org/releases/spark-release-4-0-0.html
 # add gcs connector
