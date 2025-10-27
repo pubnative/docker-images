@@ -12,7 +12,7 @@ build:
 	    --platform linux/$(TARGETARCH) \
 	    --build-arg DRUID_VERSION=$(DRUID_VERSION) \
 	    --build-arg TARGETARCH=$(TARGETARCH) \
-	    --build-arg JDK_VERSION=${JDK_VERSION}
+	    --build-arg JDK_VERSION=$(JDK_VERSION) \
 	    -t $(DOCKER_REPO_VERSION) \
 	    $(DOCKER_REPO_DOCKERFILE_FOLDER)
 
