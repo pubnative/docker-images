@@ -1,10 +1,9 @@
 # ARM64 Druid 
 
-Image used for Druid deployment running on ARM64.
+Image used for ARM64 Druid deployments.
 It builds one image and tags it as:
 
-- `us-docker.pkg.dev/vgi-pn-277619/data-team/pubnative/druid:latest`,
-- `us-docker.pkg.dev/vgi-pn-277619/data-team/pubnative/druid:${DRUID_VERSION}-${COMMIT}`
+- `us-docker.pkg.dev/vgi-pn-277619/data-team/pubnative/druid:${DRUID_VERSION}-${TARGETARCH}-${COMMIT}`
 
 ## Build
 
