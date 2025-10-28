@@ -16,8 +16,6 @@ build:
 	    -t $(DOCKER_REPO_VERSION) \
 	    $(DOCKER_REPO_DOCKERFILE_FOLDER)
 
-	docker tag $(DOCKER_REPO_VERSION)
-
 publish: publish-version
 
 publish-version: build
