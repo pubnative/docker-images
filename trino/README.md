@@ -17,6 +17,6 @@ It builds one image and tags it as:
 ## Docker image locally
 
 ```
-docker build --build-arg TRINO_VERSION=476 --build-arg AGENT_VERSION=0.20.0 -t trino_test .
+docker build --build-arg TRINO_VERSION=478 --build-arg AGENT_VERSION=0.20.0 -t trino_test .
 docker run -it trino_test /bin/bash
 ```
