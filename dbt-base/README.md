@@ -10,5 +10,5 @@
 ## Run docker container locally
 docker run -it --rm  \
 --env-file ./.env \
--v ./ssh/ssh:/etc/git-secret/ssh \
-pubnative/dbt-base:0.1.0 --version
+-v ./ssh/gitSshKey:/etc/git-secret/gitSshKey \
+us-docker.pkg.dev/vgi-pn-277619/data-team/pubnative/dbt-base:latest --version

@@ -25,10 +25,12 @@ echo "GitHub repository: ${GITHUB_PROJECT_ADDRESS}"
 echo "DBT project location: ${DBT_LOCAL_PATH}"
 echo "Using branch: ${BRANCH_NAME}"
 
-GIT_SSH_COMMAND="ssh -i /etc/git-secret/ssh -o StrictHostKeyChecking=no -o IdentitiesOnly=yes " \
+# TODO: It is necessary to provide a small PV for caching the project.
 git clone --branch ${BRANCH_NAME} --depth 1 ${GITHUB_PROJECT_ADDRESS}
 
 cd ${DBT_LOCAL_PATH}
+# TODO: Need to improve. Check if deps are already were installed, skip dbt deps step
 dbt deps
-dbt "$@"
+echo "Run: dbt $@"
+dbt $@
 
