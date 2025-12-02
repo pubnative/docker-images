@@ -1,0 +1,10 @@
+[project]
+name = "dbt-base"
+version = "0.1.0"
+description = "dbt"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "dbt-core>=1.10.15",
+    "dbt-trino>=1.9.3",
+]

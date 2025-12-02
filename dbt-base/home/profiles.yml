@@ -1,0 +1,32 @@
+trino_profile:
+  target: dev
+  outputs:
+    dev:
+      type: trino
+      method: ldap
+      user: trino
+      password: trino_password
+      host: localhost
+      port: 8443
+      database: mysql
+      schema: trino_db
+      threads: 4
+      http_scheme: https
+      cert: false
+      session_properties:
+        query_max_run_time: 1d
+
+    prod:
+      type: trino
+      method: ldap
+      user: "{{ env_var('TRINO_USER') }}"
+      password: "{{ env_var('TRINO_PASSWORD') }}"
+      host: trino-internal.pubnative.net
+      port: 443
+      database: dbt
+      schema: dbt_dq_results
+      threads: 4
+      http_scheme: https
+      cert: false
+
+
