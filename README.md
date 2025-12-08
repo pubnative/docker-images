@@ -1,7 +1,3 @@
-# Docker Images
-
-- pubnative/logstash
-
 # Releases
 
 Relase a new docker version via Github Actions.
