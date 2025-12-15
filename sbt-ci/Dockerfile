@@ -1,4 +1,4 @@
-# Image pubnative/sbt-ci:0.15
+# Image us-docker.pkg.dev/vgi-pn-277619/data-team/pubnative/sbt-ci:0.15
 
 FROM ubuntu:24.04
 
