@@ -1,3 +1,0 @@
-<filter **>
-  @type stdout
-</filter>
