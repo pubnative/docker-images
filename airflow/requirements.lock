@@ -107,7 +107,7 @@ cachetools==4.2.4
 cattrs==24.1.2
     # via apache-airflow
     # via looker-sdk
-certifi==2024.8.30
+certifi==2026.10.23
     # via httpcore
     # via httpx
     # via influxdb-client
