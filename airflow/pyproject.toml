@@ -35,6 +35,9 @@ dependencies = [
     "werkzeug==2.2.3",
     "connexion==2.14.2",
     "pydantic>=2.9.2",
+    # DI-9588: drop compromised root CAs (AAA Certificate Services, emSign ECC Root CA - G3)
+    "certifi>=2026.10.19",
+    "greenlet==3.1.1"
 ]
 readme = "README.md"
 requires-python = "==3.10.14"
