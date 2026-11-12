@@ -1,8 +1,8 @@
 OWNER := us-docker.pkg.dev/vgi-pn-277619/data-team/pubnative
 NAME := ${OWNER}/jupyterhub
-BUILD_VERSION := $(shell poetry version -s)
-HUB_VERSION := spark3.4.1-py3.11-hadoop3-openjdk11-scala2.12-build${BUILD_VERSION}
-JUPYTERHUB	:= ${NAME}:${HUB_VERSION}
+BUILD_VERSION = $(shell poetry version -s)
+HUB_VERSION = spark3.4.1-py3.11-hadoop3-openjdk11-scala2.12-build${BUILD_VERSION}
+JUPYTERHUB	= ${NAME}:${HUB_VERSION}
 
 rule = major minor patch
 
@@ -23,4 +23,4 @@ build: requirements
 
 publish: build
 	docker push ${JUPYTERHUB}
-	@echo pushed ${JUPYTERHUB} to DockerHub
+	@echo pushed ${JUPYTERHUB} to Google Artifact Registry

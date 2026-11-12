@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "jupyterhub"
-version = "2.0.0"
+version = "2.0.2"
 description = ""
 authors = ["Abhinav <abhinav.jain@pubnative.net>"]
 readme = "README.md"
@@ -26,6 +26,9 @@ influxdb = "^5.3.1"
 google-cloud-bigquery = "^3.16.0"
 tensorflow = "2.14.0"
 tensorflow-probability = "^0.23.0"
+xgboost = "^3.0.0"
+# DI-9607: drop compromised root CAs (AAA Certificate Services, emSign ECC Root CA - G3)
+certifi = ">=2026.10.19"
 
 
 [build-system]
