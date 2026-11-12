@@ -1,34 +1,37 @@
-FROM openjdk:8-jre
+# Built incrementally on top of the deployed hive image, because the original base image (openjdk:8-jre) was
+# removed from Docker Hub, see Dockerfile.base for how v3.1.3 was built.
+# Build history: v3.1.3 (Dockerfile.base) -> v3.1.3-1 (DI-9607: CA removal, brotli removal)
+FROM us-docker.pkg.dev/vgi-pn-277619/data-team/pubnative/hive:v3.1.3
 
-ARG HIVE_VERSION="3.1.3"
-ARG HADOOP_VERSION="3.3.3"
-ARG MYSQL_VERSION="8.0.29"
+USER root
 
-ENV HADOOP_HOME=/opt/hadoop
-ENV HIVE_HOME=/opt/hive
-ENV HADOOP_CLASSPATH $HADOOP_HOME/share/hadoop/tools/lib/*
+# DI-9607: Debian 11 (bullseye) is EOL, its packages moved to archive.debian.org.
+# - ca-certificates from bullseye LTS (newer Mozilla bundle)
+# - libbrotli1 1.0.9 has no fixed version for bullseye; it is only needed by curl and fontconfig/freetype,
+#   which hive does not use at runtime (curl was only needed to build the image), so it is removed with them
+RUN sed -i -e 's@http://deb.debian.org/@http://archive.debian.org/@g' /etc/apt/sources.list \
+    && apt-get update \
+    && apt-get install --yes --only-upgrade ca-certificates \
+    && apt-get purge --yes curl libcurl4 fontconfig libfontconfig1 libfreetype6 libbrotli1 \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /opt
+# DI-9607: remove compromised root CAs from the system (OpenSSL) store and the JDK cacerts keystore
+# (java 8 keytool has no -cacerts option, so the keystore path is given explicitly)
+ENV COMPROMISED_CA_REGEX="AAA Certificate Services|emSign ECC Root CA - G3"
+ENV JAVA_CACERTS=/usr/local/openjdk-8/lib/security/cacerts
+RUN set -eux; \
+    sed -i -E 's@^(mozilla/(Comodo_AAA_Services_root|emSign_ECC_Root_CA_-_G3)\.crt)$@!\1@' /etc/ca-certificates.conf; \
+    update-ca-certificates --fresh; \
+    keytool -list -v -keystore "${JAVA_CACERTS}" -storepass changeit \
+        | awk -v re="^Owner: CN=(${COMPROMISED_CA_REGEX})," '/^Alias name: / {sub(/^Alias name: /, ""); a=$0} $0 ~ re {print a}' \
+        | while IFS= read -r alias; do keytool -delete -keystore "${JAVA_CACERTS}" -storepass changeit -alias "$alias"; done
 
-RUN curl https://archive.apache.org/dist/hadoop/common/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz \
-   | tar xvz -C . \
-   && mkdir -p ${HADOOP_HOME} \
-   && mv hadoop-${HADOOP_VERSION}/* ${HADOOP_HOME} \
-   && rm -r hadoop-${HADOOP_VERSION} \
-   && rm -r ${HADOOP_HOME}/share/doc
-
-RUN curl -L https://archive.apache.org/dist/hive/hive-${HIVE_VERSION}/apache-hive-${HIVE_VERSION}-bin.tar.gz \
-   | tar xvz -C . \
-   && mkdir -p ${HIVE_HOME} \
-   && mv apache-hive-${HIVE_VERSION}-bin/* ${HIVE_HOME} \
-   && rm -r apache-hive-${HIVE_VERSION}-bin
-
-RUN curl -L https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-${MYSQL_VERSION}.tar.gz \
-  | tar xvz -C . \
-  && cp mysql-connector-java-${MYSQL_VERSION}/mysql-connector-java-${MYSQL_VERSION}.jar ${HADOOP_HOME}/share/hadoop/common/lib/ \
-  && cp mysql-connector-java-${MYSQL_VERSION}/mysql-connector-java-${MYSQL_VERSION}.jar ${HIVE_HOME}/lib/ \
-  && rm -r mysql-connector-java-${MYSQL_VERSION}
-
-RUN wget https://storage.googleapis.com/hadoop-lib/gcs/gcs-connector-hadoop3-2.2.7.jar \
-  && cp gcs-connector-hadoop3-2.2.7.jar ${HADOOP_HOME}/share/hadoop/tools/lib/ \
-  && rm -r gcs-connector-hadoop3-2.2.7.jar
+# DI-9607: fail the build if a compromised root CA is still present or libbrotli is still installed
+RUN set -eux; \
+    FOUND=$( { \
+        openssl crl2pkcs7 -nocrl -certfile /etc/ssl/certs/ca-certificates.crt | openssl pkcs7 -print_certs -noout; \
+        keytool -list -v -keystore "${JAVA_CACERTS}" -storepass changeit; \
+    } | grep -E "(CN ?= ?)(${COMPROMISED_CA_REGEX})(,|$)" || true ); \
+    if [ -n "${FOUND}" ]; then echo "Compromised root CA still present: ${FOUND}"; exit 1; fi; \
+    if dpkg -l | grep -i brotli; then exit 1; fi; \
+    if find / -xdev -name 'libbrotli*' | grep .; then exit 1; fi
