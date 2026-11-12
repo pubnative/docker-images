@@ -20,7 +20,7 @@ build:
 publish: publish-latest publish-version
 
 publish-latest: build
- docker push $(DOCKER_REPO_LATEST)
+	docker push $(DOCKER_REPO_LATEST)
 
 publish-version: build
 	docker push $(DOCKER_REPO_VERSION)
